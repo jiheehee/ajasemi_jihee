@@ -1,0 +1,96 @@
+@charset "UTF-8";
+	
+	/* main - 시작 */
+	#sectionDiv{
+		width: 100%;
+		height: 2500px;
+	}
+	
+	#videoSection{
+		margin-top:0;
+	}
+
+	/* main - 끝 */
+	
+	#footerMain{
+		/* border: 1px solid red; */
+		height: 250px;
+		display: flex;
+	}
+	
+	/* 주소 전화번호 등 */
+	#footerMainLeft{
+		/* border: 1px solid orange; */
+		display: flex;
+		flex-direction: column;
+		width: 69%;
+		margin-left: 1%;
+	}
+	
+	/* Q&A 등 하이퍼링크 */
+	#footerMainRight{
+		/* border: 1px solid orange; */
+		width: 30%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding-top: 5px; 
+	}
+	
+	/* 영역크기 */
+	#footerMainRight>div{
+		/* border: 1px solid green; */
+		width: 45%;
+		height: 20%;
+	}
+	
+	/* 폰트 적용 */
+	#footerMainRight a{
+		text-decoration-line: none;
+		font-size: 20px;     
+	}
+	 
+	#headerMain{
+		border: 1px solid red;
+		/* background-color: red; */
+		height: 70px;
+		display: flex;
+		width: 100%;
+	}
+
+	/* 로고 */
+	#headerLogo{
+		/* border: 1px solid orange; */
+		margin-left: 1%;
+		display: flex;
+		align-items: center;
+		width: 10%;
+	}
+
+      /* 제품,About */
+      #headerTitle{
+          /* border: 1px solid orange; */
+          display: flex;
+          margin-left: 10%;
+          justify-content: space-between;
+          align-items: center;
+          width: 40%;
+      }
+
+      /* 폰트적용 */
+      #headerTitle a{
+          text-decoration-line: none;
+          font-size: 20px;
+      }
+
+      /* 장바구니,마이페이지,검색,메뉴? */
+      #headerMypage{
+          /* border: 1px solid orange; */
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 14%;
+          margin-left: 24%;
+      }
+	 
+	 
