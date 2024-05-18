@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aja.member.model.dto.Customer;
+import com.aja.member.service.MemberService;
 
 /**
  * Servlet implementation class SignUpEndServlet
@@ -63,6 +64,7 @@ public class SignUpEndServlet extends HttpServlet {
 					.custDetailAddress(custDetailAdress)
 					.build();
 		
+		new MemberService().signUp(ct);
 		
 	}
 
