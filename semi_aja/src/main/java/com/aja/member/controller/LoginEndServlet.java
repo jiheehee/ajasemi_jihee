@@ -1,23 +1,27 @@
 package com.aja.member.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.aja.member.model.dto.Customer;
+import com.aja.member.service.MemberService;
+
 /**
- * Servlet implementation class SignUpServlet
+ * Servlet implementation class LoginEndServlet
  */
-@WebServlet("/member/signup.do")
-public class SignUpServlet extends HttpServlet {
+@WebServlet("/member/loginend.do")
+public class LoginEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SignUpServlet() {
+    public LoginEndServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +30,17 @@ public class SignUpServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("/WEB-INF/views/member/signup.jsp").forward(request, response);
+		String custEmailId=request.getParameter("custEmailId");
+		String emailDomain = request.getParameter("emailDomain");
+		
+		String custEmail = custEmailId+emailDomain;
+		String custPw =request.getParameter("custPw");
+		
+		
+		Customer ct =  new MemberService().searchMemberById(custEmail, custPw);
+		
+		
+		
 	}
 
 	/**

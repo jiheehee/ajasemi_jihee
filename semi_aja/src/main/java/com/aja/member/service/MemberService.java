@@ -26,6 +26,7 @@ public class MemberService {
 		return result;
 	}
 	
+//<<<<<<< HEAD
 	public Address getDefaultAddress(int memberNo) {
 		Connection conn = getConnection();
 		Address result = dao.getDefaultAddress(conn, memberNo);
@@ -33,4 +34,15 @@ public class MemberService {
 		return result;
 	}
 	
+//=======
+	public Customer searchMemberById(String custEmail, String custPw) {
+		Connection conn = getConnection();
+		Customer ct = dao.searchMemberById(conn,custEmail);
+		// 1. id 가 존재하지 않음
+		// 2. pw 가 일치하지 않음
+		if(ct==null || !ct.getCustPw().equals(custPw)) ct = null;
+		
+		return ct;
+	}
+//>>>>>>> branch 'dev' of https://github.com/uoahir/ajasemi.git
 }

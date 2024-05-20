@@ -57,6 +57,14 @@
                     <a href=""><img src="https://i.pinimg.com/236x/24/d8/9b/24d89b2ebde80c8098f7525f55267686.jpg" 
                         alt="메뉴" height="25"></a>
                 </div>
+                <div>
+                    <a href="<%=request.getContextPath() %>/member/login.do"><img src="https://i.pinimg.com/236x/24/d8/9b/24d89b2ebde80c8098f7525f55267686.jpg" 
+                        alt="로그인" height="25"></a>
+                </div>
+                <div>
+                    <a href=""><img src="https://i.pinimg.com/236x/24/d8/9b/24d89b2ebde80c8098f7525f55267686.jpg" 
+                        alt="회원가입" height="25"></a>
+                </div>
             </div>
         </div>  <!-- <div id="headerMain">닫힘 -->
     </header>
