@@ -21,7 +21,7 @@ public class MemberDao {
 	
 	{
 		// 프로펄티즈 파일 내 쿼리문 변경될 때, dao 로직 실행 시 프로펄티즈 파일을 재로드해서 실행하기 때문에 유지보수성 향상됨
-		String path = MemberDao.class.getResource("member.properties").getPath();
+		String path = MemberDao.class.getResource("/member.properties").getPath();
 		try (FileReader fr = new FileReader(path)){
 			
 			prop.load(fr);
@@ -30,7 +30,6 @@ public class MemberDao {
 			e.printStackTrace();
 		}
 	}
-//>>>>>>> branch 'dev' of https://github.com/uoahir/ajasemi.git
 	
 	public int signUp(Connection conn, Customer ct) {
 		PreparedStatement pstmt = null;
@@ -59,7 +58,6 @@ public class MemberDao {
 		return result;
 	}
 	
-//<<<<<<< HEAD
 	public Address getDefaultAddress(Connection conn, int memberNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -86,12 +84,11 @@ public class MemberDao {
 		}
 		return defaultAddress;
 	}
-//=======
+	
 	public Customer searchMemberById(Connection conn, String custEmail) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Customer ct = null;
-//		String sql = "SELECT * FROM CUSTOMER WHERE CUST_EMAIL=? AND CUST_DELETE ='N'";
 		try {
 			pstmt = conn.prepareStatement(prop.getProperty("searchMemberById"));
 			pstmt.setString(1, custEmail);
@@ -123,14 +120,6 @@ public class MemberDao {
 											+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY)"
 											+ "LEFT JOIN PRODUCT USING(PROD_KEY)"
 											+ "WHERE CUST = ?");
-//			private String prodImage;
-//			private String prodName;
-//			private String prodContent;
-//			private String optionFlavor;
-//			private String optionSize;
-//			private int optionPrice;
-//			private int prodPrice;
-//			private int cartQuantity;
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -168,6 +157,5 @@ public class MemberDao {
 				.custPw(rs.getString("cust_pw"))
 				.custDelete(rs.getString("cust_delete"))
 				.build();
-//>>>>>>> branch 'dev' of https://github.com/uoahir/ajasemi.git
 	}
 }
