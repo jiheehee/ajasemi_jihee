@@ -12,7 +12,7 @@
         <property name="context-root" value="semi_aja"/>
                         
         
-        <property name="java-output-path" value="/semi_aja/src/main/webapp/WEB-INF/build/classes"/>
+        <property name="java-output-path" value="/semi_aja/src/main/webapp/WEB-INF/classes"/>
                     
     
     </wb-module>
