@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "com.aja.member.model.dto.Address" %>
+<%@ page import = "com.aja.member.model.dto.Address, java.util.List, com.aja.member.model.dto.ProductInfo" %>
 <%
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
+	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -140,10 +141,10 @@
                     <tbody>
                         <tr>
                             <td>
-                                <div id="prodImgContainer">
+                                <div class="prodImgContainer">
                                     <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
                                 </div>
-                                <div id="prodContentContainer">
+                                <div class="prodContentContainer">
                                     <p>상품명</p>
                                     <p>
                                     	[1등 컨실러/NEW컬러출시] 더샘 
@@ -163,10 +164,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <div id="prodImgContainer">
+                                <div class="prodImgContainer">
                                     <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
                                 </div>
-                                <div id="prodContentContainer">
+                                <div class="prodContentContainer">
                                     <p>상품명</p>
                                     <p>[1등 컨실러/NEW컬러출시] 더샘 
                                         커버 퍼펙션 트리플 팟 컨실러 5colors
@@ -185,10 +186,10 @@
                         </tr>
                         <tr>
                             <td>
-                                <div id="prodImgContainer">
+                                <div class="prodImgContainer">
                                     <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
                                 </div>
-                                <div id="prodContentContainer">
+                                <div class="prodContentContainer">
                                     <p>상품명</p>
                                     <p>[1등 컨실러/NEW컬러출시] 더샘 
                                         커버 퍼펙션 트리플 팟 컨실러 5colors
@@ -205,6 +206,31 @@
                                 <p>1</p>
                             </td>
                         </tr>
+                        <%for(ProductInfo p : cartInfo) {%>
+	                        <tr>
+	                            <td>
+	                                <div class="prodImgContainer">
+	                                    <img src="<%= p.getProdImage() %>" alt="" wdith="100px" height="100px">
+	                                </div>
+	                                <div class="prodContentContainer">
+	                                    <p><%= p.getProdName() %></p>
+	                                    <p>
+	                                    	<%= p.getProdContent() %>
+	                                    </p>
+	                                </div>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getOptionFlavor()%></p>
+	                                <p><%= p.getOptionSize() %></p>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getProdPrice() %></p>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getCartQuantity() %></p>
+	                            </td>
+	                        </tr>
+                        <%}%>
                     </tbody>
                 </table>
             </div>
@@ -237,7 +263,7 @@
                     <ul>
                         <li>
                             <span>총 상품금액</span>
-                            <span>60000원</span>
+                            <span id="totalPaySpan">60000원</span>
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
@@ -364,7 +390,7 @@
             height: 70px;
             display: flex;
         }
-        #prodInfoContainer{
+        .prodInfoContainer{
             margin-top:70px;
             overflow:hidden;
         }
@@ -374,7 +400,7 @@
         .prodInfoRow>td>p{
             width:100px;
         }
-        #prodInfoContainer table *{
+        .prodInfoContainer table *{
             text-align:center;
         }
         .prodInfoScope{
@@ -390,19 +416,19 @@
             height:150px;
             width:150px;
         }
-        #prodContentContainer>p{
+        .prodContentContainer>p{
             width:100px;
             text-align:left;
         }
-        #prodContentContainer>p:first-child{
+        .prodContentContainer>p:first-child{
             margin-top:10px;
             margin-bottom:10px;
         }
-        #prodContentContainer>p:last-child{
+        .prodContentContainer>p:last-child{
             margin-top:10px;
             width:200px;
         }
-        #prodContentContainer{
+        .prodContentContainer{
             width:200px;
         }
         #paymentContainer{
@@ -601,7 +627,7 @@
 	    	inputNewRadio.checked = true;
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click", e => {
 	    		e.target.disabled = true;
-	    		alert("기존 배송지를 선택할 수 없습니다.");
+	    		alert("기존 배송지를 선택할 수 없습니다. 기본 배송지를 설정하고 이용해주세요. 기본 배송지는 마이페이지에서 설정 가능합니다.");
 	    		inputNewRadio.checked = true;
 	    	})
 	    <%} else {%>
@@ -622,6 +648,50 @@
 	    		document.querySelector("input[name='deliveryRequestMessage']").hidden = true;
 	    	}
 	    })
+	    
+	    
+	    
+		let totalPay = 0;
+	    let totalQuantity = 0;
+	    let totalProdName = "";
+	    //결제할 총 금액 정보를 담아줄 총 수량, 금액 등등...을 구하고 list의 span태그에 값을 넣어주는 로직입니다.
+	    //다른 정보들은 카카오api결제 request에 필요한 body data를 전달하기위한 로직입니다.
+	    <%
+		    int totalPay = 0; //총 금액
+	    	int totalQuantity = 0; //총 수량
+	    	String totalProdName = "";//총 상품명 이름
+	    	int count = 1;
+	    	for(ProductInfo p : cartInfo) {
+	    		//
+	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity();
+	    		totalQuantity += p.getCartQuantity();
+	    		//상품명이 너무 길어지면 카카오페이 결제에서 보기 안좋으므로 상품명이 3개가 넘어가면 ... 으로 대체합니다.
+	    		if(cartInfo.size() <= 3) {
+		    		if(cartInfo.size() == count) {
+		    			totalProdName += p.getProdName();
+		    			count++;
+		    		} else {
+		    			totalProdName += p.getProdName() + ", ";
+		    			count++;
+		    		}
+	    		} else {
+	    			if(3 > count) {
+		    			totalProdName += p.getProdName() + ", ";
+		    			count++;
+		    		} else if(count == 3){
+		    			totalProdName += p.getProdName() + "...";
+		    			count++;
+		    		}
+	    		}
+	    	}
+	    	System.out.println(totalProdName);
+    	%>
+    	console.log(<%= count %>);
+    	totalPay = <%= totalPay %>;
+    	totalQuantity = <%= totalQuantity %>;
+    	totalProdName = "<%= totalProdName %>";
+    	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
+    	
     </script>
 
     <!-- 카카오페이 결제 API script -->
@@ -630,16 +700,16 @@
         	fetch("<%=request.getContextPath()%>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
                 //상품정보와 상품결제/실패/성공/취소로 이동할 주소등등 을 body에 담아서 넘겨줍니다
                 body: JSON.stringify({
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
                     "partner_user_id": "partner_user_id",
-                    "item_name": "chocopie",
-                    "quantity": "1",
-                    "total_amount": "2200",
+                    "item_name": totalProdName,
+                    "quantity": totalQuantity,
+                    "total_amount": totalPay,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
                     "approval_url": "http://localhost:8080/testproject/success",

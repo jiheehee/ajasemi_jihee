@@ -2,6 +2,7 @@ package com.aja.member.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,10 +37,12 @@ public class ChangePayViewServlet extends HttpServlet {
 		
 		Address defaultAddress = new MemberService().getDefaultAddress(memberNo);
 		System.out.println(defaultAddress);
-		
+		int totalPay = 0;
 		List<ProductInfo> products = new MemberService().getCartInfo(memberNo);
+		products.forEach(System.out::println);
 		
 		request.setAttribute("defaultAddress", defaultAddress);
+		request.setAttribute("cartInfo", products);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/payment.jsp")
 		.forward(request, response);
