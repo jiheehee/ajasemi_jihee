@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/style.css"/>
-<script src="<%=request.getContextPath()%>/js/jquery-3.7.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/jquery-3.7.1.js"></script>
 
 <title>AJA</title>
 </head>
