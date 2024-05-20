@@ -1,13 +1,15 @@
 package com.aja.member.service;
 
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.commit;
 import static com.aja.common.JDBCTemplate.getConnection;
+import static com.aja.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 
 import com.aja.member.model.dao.MemberDao;
+import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.Customer;
-
-import static com.aja.common.JDBCTemplate.*;
 
 public class MemberService {
 	
@@ -21,6 +23,13 @@ public class MemberService {
 		if(result > 0) commit(conn);
 		else rollback(conn);
 		
+		return result;
+	}
+	
+	public Address getDefaultAddress(int memberNo) {
+		Connection conn = getConnection();
+		Address result = dao.getDefaultAddress(conn, memberNo);
+		close(conn);
 		return result;
 	}
 	

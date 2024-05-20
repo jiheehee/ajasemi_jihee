@@ -28,7 +28,7 @@ public class KakaoPayServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {    	
-    	System.out.println("doPost moethod execute");
+    	
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
 
@@ -43,7 +43,7 @@ public class KakaoPayServlet extends HttpServlet {
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());
-
+            //kakaopayapi url주소 설정후 header와 method 설정해주고 url주소로 이동하니다.
             URL url = new URL("https://open-api.kakaopay.com/online/v1/payment/ready");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -51,7 +51,8 @@ public class KakaoPayServlet extends HttpServlet {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             
-
+            //밑에코드들은 response객체를 가져오는 것 같습니다.
+            //fetch후 response.json()후 response data를 가져오는 로직이고 error메세지가 있다면 error메세지도 가져옵니다.
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = requestJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
