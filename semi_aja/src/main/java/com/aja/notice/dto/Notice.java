@@ -7,25 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Notice {
 	private String noticeTitle;
 	private String noticeImage;
 	private String noticeContent;
-	private Date noticeEnrolldate;
-	//
-	
-	public Notice(String noticeTitle, String noticeImage, String noticeContent, Date noticeEnrolldate) {
-		super();
-		this.noticeTitle = noticeTitle;
-		this.noticeImage = noticeImage;
-		this.noticeContent = noticeContent;
-		this.noticeEnrolldate = noticeEnrolldate;
-	}	
-	
-	
-	
+	private Date noticeEnrolldate;	
 	
 }

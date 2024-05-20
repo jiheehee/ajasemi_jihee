@@ -12,6 +12,8 @@ import java.util.Properties;
 
 import com.aja.notice.dto.Notice;
 
+import static com.aja.common.JDBCTemplate.close;
+
 // 공지사항 목록 조회하는 로직 NoticeDao 
 // 전체 쿼리를 반환받아 List<Notice>로 저장하고 반환한다. 
 public class NoticeDao {
@@ -48,5 +50,15 @@ public class NoticeDao {
 		}return result;		
 	}
 	
-
+	
+	
+	
+	public static Notice getNotice(ResultSet rs) throws SQLException{
+		return Notice.builder()
+				.noticeTitle(rs.getString("notice_title"))
+				.noticeImage(rs.getString("notice_image"))
+				.noticeContent(rs.getString("notice_content"))
+				.noticeEnrolldate(rs.getDate("notice_enrolldate"))
+				.build();		
+	}	
 }
