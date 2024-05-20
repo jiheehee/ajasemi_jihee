@@ -17,7 +17,7 @@ public class NoticeService {
 	//1. 공지사항 목록 조회
 	Connection conn=null;
 	
-	List<Notice> listNotice=dao.selectNotice(conn);
+	List<Notice> listNotice=dao.selectNoticeAll(conn,cPage,numPerPage);
 	
 	close(conn);
 	return listNotice;

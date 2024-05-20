@@ -32,7 +32,16 @@ public class NoticeListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<Notice> noticelist=new NoticeService().selectNotice();
+		int cPage=1;
+		try {
+			cPage=Integer.parseInt(request.getParameter("numPerpage"));
+		}catch(NumberFormatException e) {}
+		int numPerpage=5;
+		try{
+			numPerpage=Integer.parseInt(request.getParameter("numPerpage"));
+		}catch(NumberFormatException e) {}
+		List<Notice> noticelist=new NoticeService().selectNotice(cPage,numPerpage);
+		
 			
 	}
 
