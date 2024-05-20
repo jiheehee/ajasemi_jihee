@@ -11,7 +11,7 @@ import static com.aja.common.JDBCTemplate.close;
 
 public class NoticeService {
 	
-	public List<Notice> selectNotice() {
+	public List<Notice> selectNotice(int cPage, int numPerPage) {
 	NoticeDao dao=new NoticeDao();
 		
 	//1. 공지사항 목록 조회
