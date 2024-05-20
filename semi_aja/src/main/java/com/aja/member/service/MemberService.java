@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.aja.member.model.dao.MemberDao;
 import com.aja.member.model.dto.Address;
+import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
 import com.aja.member.model.dto.ProductInfo;
 
@@ -50,5 +51,12 @@ public class MemberService {
 		List<ProductInfo> products = dao.getCartInfo(conn, memberNo);
 		close(conn);
 		return products;
+	}
+	
+	public List<CouponInfo> getCouponInfo(int memberNo) {
+		Connection conn = getConnection();
+		List<CouponInfo> coupons = dao.getCouponInfo(conn, memberNo);
+		close(conn);
+		return coupons;
 	}
 }
