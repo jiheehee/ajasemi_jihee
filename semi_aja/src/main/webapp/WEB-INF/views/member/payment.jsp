@@ -594,7 +594,7 @@
 	        }).open();
 	    }
 	 	 //사용자가 기본으로 설정한 배송지가 없을 경우 기존배송지를 선택할 수 없게하고 신규배송지를 입력하도록 하는로직입니다.
-	 	 //else문에 빠지면 가져온 배송지 정보를 input태그 안에 value값으러 넣어줍니다.
+	 	 //else문에 빠지면 가져온 배송지 정보를 input태그 안에 value값으로 넣어줍니다.
 	    <%if(defaultAddressInfo == null) {%>
 	    	alert("기본으로 설정된 배송지가 없습니다. 신규 배송지를 입력해주세요!!");
 	    	const inputNewRadio = document.querySelector("input[value='신규 배송지']");

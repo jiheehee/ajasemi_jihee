@@ -35,6 +35,8 @@ public class ChangePayViewServlet extends HttpServlet {
 		Address defaultAddress = new MemberService().getDefaultAddress(memberNo);
 		System.out.println(defaultAddress);
 		
+		List<ProductInfo> products = new MemberService().getProductsInfo(memberNo);
+		
 		request.setAttribute("defaultAddress", defaultAddress);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/payment.jsp")
