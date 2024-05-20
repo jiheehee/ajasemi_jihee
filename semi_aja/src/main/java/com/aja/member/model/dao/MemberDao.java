@@ -149,12 +149,12 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE) -1) AS \"COUPON_SALE\", COUPON_ENROLLDATE "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "WHERE CUST_KEY = ?");
-			rs = pstmt.executeQuery();
 			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				coupons.add(CouponInfo.builder()
 								.couponName(rs.getString("coupon_name"))
