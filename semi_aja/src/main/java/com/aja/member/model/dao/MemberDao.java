@@ -154,6 +154,7 @@ public class MemberDao {
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "WHERE CUST_KEY = ?");
 			rs = pstmt.executeQuery();
+			pstmt.setInt(1, memberNo);
 			while(rs.next()) {
 				coupons.add(CouponInfo.builder()
 								.couponName(rs.getString("coupon_name"))
