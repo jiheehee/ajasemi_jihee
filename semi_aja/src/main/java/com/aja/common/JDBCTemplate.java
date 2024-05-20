@@ -22,8 +22,6 @@ public class JDBCTemplate {
 			driver.load(fr);
 			Class.forName(driver.getProperty("driver"));
 			conn = DriverManager.getConnection(driver.getProperty("url"), driver.getProperty("user"), driver.getProperty("pw"));
-//				Class.forName("oracle.jdbc.driver.OracleDriver");
-//				conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","WEB","WEB");
 			
 			conn.setAutoCommit(false);
 		
