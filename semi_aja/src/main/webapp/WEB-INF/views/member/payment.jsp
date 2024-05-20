@@ -691,7 +691,6 @@
     	totalQuantity = <%= totalQuantity %>;
     	totalProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
-    	
     </script>
 
     <!-- 카카오페이 결제 API script -->
