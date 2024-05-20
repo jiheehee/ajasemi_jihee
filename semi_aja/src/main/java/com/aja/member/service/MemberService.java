@@ -28,7 +28,6 @@ public class MemberService {
 		return result;
 	}
 	
-//<<<<<<< HEAD
 	public Address getDefaultAddress(int memberNo) {
 		Connection conn = getConnection();
 		Address result = dao.getDefaultAddress(conn, memberNo);
@@ -36,7 +35,6 @@ public class MemberService {
 		return result;
 	}
 	
-//=======
 	public Customer searchMemberById(String custEmail, String custPw) {
 		Connection conn = getConnection();
 		Customer ct = dao.searchMemberById(conn,custEmail);
@@ -46,7 +44,7 @@ public class MemberService {
 		
 		return ct;
 	}
-//>>>>>>> branch 'dev' of https://github.com/uoahir/ajasemi.git
+	
 	public List<ProductInfo> getCartInfo(int memberNo) {
 		Connection conn = getConnection();
 		List<ProductInfo> products = dao.getCartInfo(conn, memberNo);
