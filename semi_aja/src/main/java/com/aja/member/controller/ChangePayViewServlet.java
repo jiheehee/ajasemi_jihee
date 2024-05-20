@@ -40,7 +40,7 @@ public class ChangePayViewServlet extends HttpServlet {
 		List<ProductInfo> products = new MemberService().getCartInfo(memberNo);
 		products.forEach(System.out::println);
 		List<CouponInfo> coupons = new MemberService().getCouponInfo(memberNo);
-		
+		coupons.forEach(System.out::println);
 		request.setAttribute("defaultAddress", defaultAddress);
 		request.setAttribute("cartInfo", products);
 		

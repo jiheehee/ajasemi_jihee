@@ -15,4 +15,5 @@ public class CouponInfo {
 	private String couponName;
 	private int couponSale;
 	private Date couponDate;
+	private Date couponEnddate;
 }
