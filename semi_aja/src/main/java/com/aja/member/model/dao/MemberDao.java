@@ -8,10 +8,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.Customer;
+import com.aja.member.model.dto.ProductInfo;
 
 public class MemberDao {
 	private Properties prop = new Properties();
@@ -107,6 +110,48 @@ public class MemberDao {
 		}
 		return ct;
 		
+	}
+	
+	public List<ProductInfo> getCartInfo(Connection conn, int memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
+		try {
+			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY"
+											+ "FROM CART"
+											+ "LEFT JOIN CUSTOMER USING(CUST_KEY)"
+											+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY)"
+											+ "LEFT JOIN PRODUCT USING(PROD_KEY)"
+											+ "WHERE CUST = ?");
+//			private String prodImage;
+//			private String prodName;
+//			private String prodContent;
+//			private String optionFlavor;
+//			private String optionSize;
+//			private int optionPrice;
+//			private int prodPrice;
+//			private int cartQuantity;
+			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				productInCart.add(ProductInfo.builder()
+										.prodImage(rs.getString("prod_image"))
+										.prodName(rs.getString("prod_name"))
+										.prodContent(rs.getString("prod_content"))
+										.optionFlavor(rs.getString("option_flavor"))
+										.optionSize(rs.getString("option_size"))
+										.optionPrice(rs.getInt("option_price"))
+										.prodPrice(rs.getInt("prod_price"))
+										.cartQuantity(rs.getInt("cartQuantity"))
+										.build());
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return productInCart;
 	}
 	
 	public static Customer getCustomer(ResultSet rs) throws SQLException{

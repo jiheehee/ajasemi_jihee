@@ -6,10 +6,12 @@ import static com.aja.common.JDBCTemplate.getConnection;
 import static com.aja.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.aja.member.model.dao.MemberDao;
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.Customer;
+import com.aja.member.model.dto.ProductInfo;
 
 public class MemberService {
 	
@@ -45,4 +47,10 @@ public class MemberService {
 		return ct;
 	}
 //>>>>>>> branch 'dev' of https://github.com/uoahir/ajasemi.git
+	public List<ProductInfo> getCartInfo(int memberNo) {
+		Connection conn = getConnection();
+		List<ProductInfo> products = dao.getCartInfo(conn, memberNo);
+		close(conn);
+		return products;
+	}
 }
