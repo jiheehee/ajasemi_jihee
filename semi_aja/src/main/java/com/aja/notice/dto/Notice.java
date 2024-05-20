@@ -15,6 +15,7 @@ public class Notice {
 	private String noticeImage;
 	private String noticeContent;
 	private Date noticeEnrolldate;
+	//
 	
 	public Notice(String noticeTitle, String noticeImage, String noticeContent, Date noticeEnrolldate) {
 		super();
