@@ -1,18 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import = "com.aja.member.model.dto.Address, java.util.List, com.aja.member.model.dto.ProductInfo
+, com.aja.member.model.dto.CouponInfo" %>
+<%
+	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
+	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
+	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
+	System.out.println("coupons : " + coupons);
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>°áÁ¦Ã¢</title>
-    <style>
-        /* body *{
-            border:1px solid red;
-        } */
-    </style>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
+    <title>ê²°ì œì°½</title>
 </head>
 <body>
     <header>
@@ -38,19 +39,19 @@
             <div id="headerMypage">
                 <div>
                     <a href=""><img src="https://i.pinimg.com/236x/db/a3/12/dba312c2f4808382c9086f42cfdfcd88.jpg" 
-                        alt="Àå¹Ù±¸´Ï" height="35"></a>
+                        alt="ì¥ë°”êµ¬ë‹ˆ" height="35"></a>
                 </div>
                 <div>
                     <a href=""><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
-                        alt="¸¶ÀÌÆäÀÌÁö" height="35"></a>
+                        alt="ë§ˆì´í˜ì´ì§€" height="35"></a>
                 </div>
                 <div>
                     <a href=""><img src="https://i.pinimg.com/236x/55/da/93/55da9379cadae5a06c4f4efd06ffffde.jpg" 
-                        alt="°Ë»ö" height="35"></a>
+                        alt="ê²€ìƒ‰" height="35"></a>
                 </div>
                 <div>
                     <a href=""><img src="https://i.pinimg.com/236x/24/d8/9b/24d89b2ebde80c8098f7525f55267686.jpg" 
-                        alt="¸Ş´º?" height="35"></a>
+                        alt="ë©”ë‰´?" height="35"></a>
                 </div>
             </div>
         </div>
@@ -58,97 +59,121 @@
     <section>
         <div id="totalPaymentContainer">
             <div id="deliAddContainer">
-                <p class="p">¹è¼ÛÁö Á¤º¸</p>
+                <p class="p">ë°°ì†¡ì§€ ì •ë³´</p>
                 <table class="infoTable">
                     <tr>
-                        <th>¹è¼ÛÁö ¼±ÅÃ</th>
+                        <th>ë°°ì†¡ì§€ ì„ íƒ</th>
                         <td>
-                            <input type="radio" value="±âÁ¸ ¹è¼ÛÁö" name="address">±âÁ¸ ¹è¼ÛÁö
-                            <input type="radio" value="½Å±Ô ¹è¼ÛÁö" name="address">½Å±Ô ¹è¼ÛÁö
+                            <input type="radio" value="ê¸°ì¡´ ë°°ì†¡ì§€" name="address">ê¸°ì¡´ ë°°ì†¡ì§€
+                            <input type="radio" value="ì‹ ê·œ ë°°ì†¡ì§€" name="address">ì‹ ê·œ ë°°ì†¡ì§€
                         </td>
                     </tr>
                     <tr>
-                        <th>¹è¼ÛÁö¸í</th>
+                        <th>ë°°ì†¡ì§€ëª…</th>
                         <td class="needStarTd">
-                            <span class="star">*</span><input type="text" name="deliAddName" required>
+                            <span class="star">*</span><input type="text" name="receptionAddName" required>
                         </td>
                     </tr>
                     <tr>
-                        <th>¹Ş´ÂºĞ ÀÌ¸§</th>
+                        <th>ë°›ëŠ”ë¶„ ì´ë¦„</th>
                         <td>
                             <span class="star">*</span><input type="text" name="receptionName" required>
                         </td>
                     </tr>
                     <tr>
-                        <th>¿¬¶ôÃ³ 1</th>
+                        <th>ì—°ë½ì²˜ 1</th>
                         <td>
                             <span class="star">*</span><input type="tel" name="receptionPhoneNum1" requried>
                         </td>
                     </tr>
                     <tr>
-                        <th>¿¬¶ôÃ³ 2</th>
+                        <th>ì—°ë½ì²˜ 2</th>
                         <td>
                             <input type="tel" name="receptionPhoneNum2">
                         </td>
                     </tr>
                     <tr id="addressInputTr">
-                        <th>ÁÖ¼Ò</th>
+                        <th>ì£¼ì†Œ</th>
                         <td id="addressContainer">
-                            <input type="text" id="sample4_postcode" placeholder="¿ìÆí¹øÈ£">
-                            <input type="button" onclick="sample4_execDaumPostcode()" value="¿ìÆí¹øÈ£ Ã£±â"><br>
-                            <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="µµ·Î¸íÁÖ¼Ò"><br>
-                            <input type="text" id="sample4_jibunAddress" class="addressInput" placeholder="Áö¹øÁÖ¼Ò"><br>
+                            <input type="text" id="sample4_postcode" placeholder="ìš°í¸ë²ˆí˜¸">
+                            <input type="button" onclick="sample4_execDaumPostcode()" value="ìš°í¸ë²ˆí˜¸ ì°¾ê¸°"><br>
+                            <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="ë„ë¡œëª…ì£¼ì†Œ"><br>
+                            <input type="text" id="sample4_jibunAddress" class="addressInput" placeholder="ì§€ë²ˆì£¼ì†Œ"><br>
                             <span id="guide" style="color:#999;display:none"></span>
-                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="»ó¼¼ÁÖ¼Ò"><br>
-                            <input type="text" id="sample4_extraAddress" class="addressInput" placeholder="Âü°íÇ×¸ñ">
+                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="ìƒì„¸ì£¼ì†Œ"><br>
+                            <input type="text" id="sample4_extraAddress" class="addressInput" placeholder="ì°¸ê³ í•­ëª©">
                         </td>
                     </tr>
                 </table>
             </div>
             <div id="customerRequestContainer">
-                <p class="p">¹è¼Û ¿äÃ»»çÇ×</p>
+                <p class="p">ë°°ì†¡ ìš”ì²­ì‚¬í•­</p>
                 <table class="infoTable">
                     <tr>
-                        <th>¹è¼Û ¸Ş¼¼Áö</th>
+                        <th>ë°°ì†¡ ë©”ì„¸ì§€</th>
                         <td>
                             <select name="deliveryMessage" id="">
-                                <option value="">¹®¾Õ¿¡ µÎ°í ¹®ÀÚ³²°ÜÁÖ¼¼¿ä</option>
-                                <option value="">Á÷Á¢ ¹ŞÀ»°Ô¿ä</option>
-                                <option value="">º§À» ´©¸£Áö ¸»¾ÆÁÖ¼¼¿ä</option>
-                                <option value="">µµÂø ÈÄ ÀüÈ­ÁÖ½Ã¸é Á÷Á¢ ¹ŞÀ¸·¯ °¥°Ô¿ä</option>
-                                <option value="">Á÷Á¢ ÀÔ·ÂÇÏ±â</option>
+                                <option value="">ë¬¸ì•ì— ë‘ê³  ë¬¸ìë‚¨ê²¨ì£¼ì„¸ìš”</option>
+                                <option value="">ì§ì ‘ ë°›ì„ê²Œìš”</option>
+                                <option value="">ë²¨ì„ ëˆ„ë¥´ì§€ ë§ì•„ì£¼ì„¸ìš”</option>
+                                <option value="">ë„ì°© í›„ ì „í™”ì£¼ì‹œë©´ ì§ì ‘ ë°›ìœ¼ëŸ¬ ê°ˆê²Œìš”</option>
+                                <option value="">ì§ì ‘ ì…ë ¥í•˜ê¸°</option>
                             </select>
+                            <input type="text" name="deliveryRequestMessage" style="width:500px" hidden="true" required placeholder="ìš”ì²­ì‚¬í•­ì„ ì…ë ¥í•˜ì„¸ìš”">
                         </td>
                     </tr>
                     <tr>
-                        <th>°øµ¿Çö°ü ÃâÀÔ¹æ¹ı</th>
+                        <th>ê³µë™í˜„ê´€ ì¶œì…ë°©ë²•</th>
                         <td>
-                            <input type="text" name="deliAddName" required>
+                            <input type="text" name="deliAddName" placeholder="ì—†ìœ¼ë©´ ê±´ë„ˆë›°ì„¸ìš”" required>
                         </td>
                     </tr>
                 </table>
             </div>
             <div id="prodInfoContainer">
-                <p class="p">¼±ÅÃ»óÇ°</p>
+                <p class="p">ì„ íƒìƒí’ˆ</p>
                 <table class="infoTable">
                     <thead>
                         <tr>
-                            <th>»óÇ°Á¤º¸</th>
-                            <th>¿É¼Ç</th>
-                            <th>°¡°İ</th>
-                            <th>¼ö·®</th>
+                            <th>ìƒí’ˆì •ë³´</th>
+                            <th>ì˜µì…˜</th>
+                            <th>ê°€ê²©</th>
+                            <th>ìˆ˜ëŸ‰</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <div id="prodImgContainer">
+                                <div class="prodImgContainer">
                                     <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
                                 </div>
-                                <div id="prodContentContainer">
-                                    <p>»óÇ°¸í</p>
-                                    <p>[1µî ÄÁ½Ç·¯/NEWÄÃ·¯Ãâ½Ã] ´õ»ù 
-                                        Ä¿¹ö ÆÛÆå¼Ç Æ®¸®ÇÃ ÆÌ ÄÁ½Ç·¯ 5colors
+                                <div class="prodContentContainer">
+                                    <p>ìƒí’ˆëª…</p>
+                                    <p>
+                                    	[1ë“± ì»¨ì‹¤ëŸ¬/NEWì»¬ëŸ¬ì¶œì‹œ] ë”ìƒ˜ 
+                                        ì»¤ë²„ í¼í™ì…˜ íŠ¸ë¦¬í”Œ íŒŸ ì»¨ì‹¤ëŸ¬ 5colors
+                                    </p>
+                                </div>
+                            </td>
+                            <td class="numtd">
+                                <p>1</p>
+                            </td>
+                            <td class="numtd">
+                                <p>1</p>
+                            </td>
+                            <td class="numtd">
+                                <p>1</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="prodImgContainer">
+                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
+                                </div>
+                                <div class="prodContentContainer">
+                                    <p>ìƒí’ˆëª…</p>
+                                    <p>[1ë“± ì»¨ì‹¤ëŸ¬/NEWì»¬ëŸ¬ì¶œì‹œ] ë”ìƒ˜ 
+                                        ì»¤ë²„ í¼í™ì…˜ íŠ¸ë¦¬í”Œ íŒŸ ì»¨ì‹¤ëŸ¬ 5colors
                                         </p>
                                 </div>
                             </td>
@@ -164,13 +189,13 @@
                         </tr>
                         <tr>
                             <td>
-                                <div id="prodImgContainer">
+                                <div class="prodImgContainer">
                                     <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
                                 </div>
-                                <div id="prodContentContainer">
-                                    <p>»óÇ°¸í</p>
-                                    <p>[1µî ÄÁ½Ç·¯/NEWÄÃ·¯Ãâ½Ã] ´õ»ù 
-                                        Ä¿¹ö ÆÛÆå¼Ç Æ®¸®ÇÃ ÆÌ ÄÁ½Ç·¯ 5colors
+                                <div class="prodContentContainer">
+                                    <p>ìƒí’ˆëª…</p>
+                                    <p>[1ë“± ì»¨ì‹¤ëŸ¬/NEWì»¬ëŸ¬ì¶œì‹œ] ë”ìƒ˜ 
+                                        ì»¤ë²„ í¼í™ì…˜ íŠ¸ë¦¬í”Œ íŒŸ ì»¨ì‹¤ëŸ¬ 5colors
                                         </p>
                                 </div>
                             </td>
@@ -184,50 +209,57 @@
                                 <p>1</p>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div id="prodImgContainer">
-                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
-                                </div>
-                                <div id="prodContentContainer">
-                                    <p>»óÇ°¸í</p>
-                                    <p>[1µî ÄÁ½Ç·¯/NEWÄÃ·¯Ãâ½Ã] ´õ»ù 
-                                        Ä¿¹ö ÆÛÆå¼Ç Æ®¸®ÇÃ ÆÌ ÄÁ½Ç·¯ 5colors
-                                        </p>
-                                </div>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                        </tr>
+                        <%for(ProductInfo p : cartInfo) {%>
+	                        <tr>
+	                            <td>
+	                                <div class="prodImgContainer">
+	                                    <img src="<%= p.getProdImage() %>" alt="" wdith="100px" height="100px">
+	                                </div>
+	                                <div class="prodContentContainer">
+	                                    <p><%= p.getProdName() %></p>
+	                                    <p>
+	                                    	<%= p.getProdContent() %>
+	                                    </p>
+	                                </div>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getOptionFlavor()%></p>
+	                                <p><%= p.getOptionSize() %></p>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getProdPrice() %></p>
+	                            </td>
+	                            <td class="numtd">
+	                                <p><%= p.getCartQuantity() %></p>
+	                            </td>
+	                        </tr>
+                        <%}%>
                     </tbody>
                 </table>
             </div>
             
             <div id="paymentContainer">
                 <div id="discountContainer">
-                    <p class="p">ÄíÆùÀû¿ë</p>
+                    <p class="p">ì¿ í°ì ìš©</p>
                     <table id="couponTable">
                         <thead>
                             <tr>
-                                <th colspan="2" class="couponTableTh">ÄíÆù ¼±ÅÃ</th>
+                                <th colspan="2" class="couponTableTh">ì¿ í° ì„ íƒ</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="applyableTd"><p id="couponPtag">Àû¿ë °¡´ÉÇÑ ÄíÆù</p></td>
+                                <td id="applyableTd"><p id="couponPtag">ì ìš© ê°€ëŠ¥í•œ ì¿ í°</p></td>
                                 <td>
-                                    <select name="" id="">
-                                        <option>Àû¿ë°¡´ÉÇÑ ÄíÆùÀÌ ¾ø½À´Ï´Ù.</option>
-                                        <option>»ıÀÏÄíÆù 10%</option>
-                                        <option>¸â¹ö½Ê ÄíÆù 10%</option>
-                                        <option>¸â¹ö½Ê ÄíÆù 20%</option>
+                                    <select name="choiceCoupon" id="choiceCoupon">
+                                        <% if(coupons == null || coupons.isEmpty()) { %>
+											    <option>ì„ íƒ ê°€ëŠ¥í•œ ì¿ í°ì´ ì—†ìŠµë‹ˆë‹¤.</option>
+										<% } else { %>
+										   		<option>ì¿ í°ì„ ì„ íƒí•´ì£¼ì„¸ìš”</option>
+											<% for(CouponInfo c : coupons) { %>
+											    	<option value="<%= c.getCouponSale() %>">ì¿ í°ëª… : <%= c.getCouponName() %> <%= c.getCouponSale() %>%</option>
+											<% } %>
+										<% } %>
                                     </select>
                                 </td>
                             </tr>
@@ -237,23 +269,23 @@
                 <div id="executePayContainer">
                     <ul>
                         <li>
-                            <span>ÃÑ »óÇ°±İ¾×</span>
-                            <span>60000¿ø</span>
+                            <span>ì´ ìƒí’ˆê¸ˆì•¡</span>
+                            <span id="totalPaySpan">60000ì›</span>
                         </li>
                         <li>
-                            <span>ÄíÆù ÇÒÀÎ±İ¾×</span>
-                            <span>5000¿ø</span>
+                            <span>ì¿ í° í• ì¸ê¸ˆì•¡</span>
+                            <span>5000ì›</span>
                         </li>
                         <li>
-                            <span>ÃÑ ¹è¼Ûºñ</span>
-                            <span>3500¿ø</span>
+                            <span>ì´ ë°°ì†¡ë¹„</span>
+                            <span>3500ì›</span>
                         </li>
                         <li>
-                            <span>ÃÑ °áÁ¦±İ¾×</span>
+                            <span>ì´ ê²°ì œê¸ˆì•¡</span>
                             <span>51500</span>
                         </li>
                         <li>
-                            <button id="payButton">°áÁ¦ÇÏ±â</button>
+                            <button id="payButton">ê²°ì œí•˜ê¸°</button>
                         </li>
                     </ul>
                 </div>
@@ -262,15 +294,15 @@
     </section>
     <footer>
         <div id="footerMain">
-            <!-- ÁÖ¼Ò ÀüÈ­¹øÈ£ µî -->
+            <!-- ì£¼ì†Œ ì „í™”ë²ˆí˜¸ ë“± -->
             <div id="footerMainLeft">
                 <div>
                     <p>ajaaja</p>
                 </div>
                 <div>
                     <p>
-                        2024-¼­¿ï°¡»ê-eÈ£ <br>
-                        (08505)¼­¿ïÆ¯º°½Ã ±İÃµ±¸ °¡»êµğÁöÅĞ2·Î95(°¡»êµ¿,kmÅ¸¿ö)3Ãş 305È£
+                        2024-ì„œìš¸ê°€ì‚°-eí˜¸ <br>
+                        (08505)ì„œìš¸íŠ¹ë³„ì‹œ ê¸ˆì²œêµ¬ ê°€ì‚°ë””ì§€í„¸2ë¡œ95(ê°€ì‚°ë™,kmíƒ€ì›Œ)3ì¸µ 305í˜¸
                     </p>
                 </div>
                 <div>
@@ -280,7 +312,7 @@
                     <p>COPYRIGHT AJAAJA,ALL RIGHTS RESERVED.</p>
                 </div>
             </div>
-            <!-- Q&A µî ÇÏÀÌÆÛ¸µÅ© -->
+            <!-- Q&A ë“± í•˜ì´í¼ë§í¬ -->
             <div id="footerMainRight">
                 <div>
                     <a href=""><p>Q&A</p></a>
@@ -298,7 +330,7 @@
                     <a href=""><p>NOTICE</p></a>
                 </div>
             </div>
-        </div>  <!-- <div id="footerMain">´İÈû --> 
+        </div>  <!-- <div id="footerMain">ë‹«í˜ --> 
     </footer>
     <style>
         section{
@@ -365,7 +397,7 @@
             height: 70px;
             display: flex;
         }
-        #prodInfoContainer{
+        .prodInfoContainer{
             margin-top:70px;
             overflow:hidden;
         }
@@ -375,7 +407,7 @@
         .prodInfoRow>td>p{
             width:100px;
         }
-        #prodInfoContainer table *{
+        .prodInfoContainer table *{
             text-align:center;
         }
         .prodInfoScope{
@@ -391,19 +423,19 @@
             height:150px;
             width:150px;
         }
-        #prodContentContainer>p{
+        .prodContentContainer>p{
             width:100px;
             text-align:left;
         }
-        #prodContentContainer>p:first-child{
+        .prodContentContainer>p:first-child{
             margin-top:10px;
             margin-bottom:10px;
         }
-        #prodContentContainer>p:last-child{
+        .prodContentContainer>p:last-child{
             margin-top:10px;
             width:200px;
         }
-        #prodContentContainer{
+        .prodContentContainer{
             width:200px;
         }
         #paymentContainer{
@@ -461,7 +493,7 @@
 		display: flex;
 	}
 	
-	/* ÁÖ¼Ò ÀüÈ­¹øÈ£ µî */
+	/* ì£¼ì†Œ ì „í™”ë²ˆí˜¸ ë“± */
 	#footerMainLeft{
 		/* border: 1px solid orange; */
 		display: flex;
@@ -470,7 +502,7 @@
 		margin-left: 1%;
 	}
 	
-	/* Q&A µî ÇÏÀÌÆÛ¸µÅ© */
+	/* Q&A ë“± í•˜ì´í¼ë§í¬ */
 	#footerMainRight{
 		/* border: 1px solid orange; */
 		width: 30%;
@@ -480,14 +512,14 @@
 		padding-top: 5px; 
 	}
 	
-	/* ¿µ¿ªÅ©±â */
+	/* ì˜ì—­í¬ê¸° */
 	#footerMainRight>div{
 		/* border: 1px solid green; */
 		width: 45%;
 		height: 20%;
 	}
 	
-	/* ÆùÆ® Àû¿ë */
+	/* í°íŠ¸ ì ìš© */
 	#footerMainRight a{
 		text-decoration-line: none;
 		font-size: 20px;     
@@ -500,7 +532,7 @@
 		width: 100%;
 	}
 
-	/* ·Î°í */
+	/* ë¡œê³  */
 	#headerLogo{
 		/* border: 1px solid orange; */
 		margin-left: 1%;
@@ -509,7 +541,7 @@
 		width: 10%;
 	}
 
-      /* Á¦Ç°,About */
+      /* ì œí’ˆ,About */
       #headerTitle{
           /* border: 1px solid orange; */
           display: flex;
@@ -519,13 +551,13 @@
           width: 40%;
       }
 
-      /* ÆùÆ®Àû¿ë */
+      /* í°íŠ¸ì ìš© */
       #headerTitle a{
           text-decoration-line: none;
           font-size: 20px;
       }
 
-      /* Àå¹Ù±¸´Ï,¸¶ÀÌÆäÀÌÁö,°Ë»ö,¸Ş´º? */
+      /* ì¥ë°”êµ¬ë‹ˆ,ë§ˆì´í˜ì´ì§€,ê²€ìƒ‰,ë©”ë‰´? */
       #headerMypage{
           /* border: 1px solid orange; */
           display: flex;
@@ -536,81 +568,172 @@
       }
     </style>
 
-    <!-- Ä«Ä«¿À ¿ìÆí¹øÈ£ API script -->
+    <!-- ì¹´ì¹´ì˜¤ ìš°í¸ë²ˆí˜¸ API script -->
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
-    function sample4_execDaumPostcode() {
-        new daum.Postcode({
-            oncomplete: function(data) {
-                // ÆË¾÷¿¡¼­ °Ë»ö°á°ú Ç×¸ñÀ» Å¬¸¯ÇßÀ»¶§ ½ÇÇàÇÒ ÄÚµå¸¦ ÀÛ¼ºÇÏ´Â ºÎºĞ.
-
-                // µµ·Î¸í ÁÖ¼ÒÀÇ ³ëÃâ ±ÔÄ¢¿¡ µû¶ó ÁÖ¼Ò¸¦ Ç¥½ÃÇÑ´Ù.
-                // ³»·Á¿À´Â º¯¼ö°¡ °ªÀÌ ¾ø´Â °æ¿ì¿£ °ø¹é('')°ªÀ» °¡Áö¹Ç·Î, ÀÌ¸¦ Âü°íÇÏ¿© ºĞ±â ÇÑ´Ù.
-                var roadAddr = data.roadAddress; // µµ·Î¸í ÁÖ¼Ò º¯¼ö
-                var extraRoadAddr = ''; // Âü°í Ç×¸ñ º¯¼ö
-
-                // ¹ıÁ¤µ¿¸íÀÌ ÀÖÀ» °æ¿ì Ãß°¡ÇÑ´Ù. (¹ıÁ¤¸®´Â Á¦¿Ü)
-                // ¹ıÁ¤µ¿ÀÇ °æ¿ì ¸¶Áö¸· ¹®ÀÚ°¡ "µ¿/·Î/°¡"·Î ³¡³­´Ù.
-                if(data.bname !== '' && /[µ¿|·Î|°¡]$/g.test(data.bname)){
-                    extraRoadAddr += data.bname;
-                }
-                // °Ç¹°¸íÀÌ ÀÖ°í, °øµ¿ÁÖÅÃÀÏ °æ¿ì Ãß°¡ÇÑ´Ù.
-                if(data.buildingName !== '' && data.apartment === 'Y'){
-                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-                }
-                // Ç¥½ÃÇÒ Âü°íÇ×¸ñÀÌ ÀÖÀ» °æ¿ì, °ıÈ£±îÁö Ãß°¡ÇÑ ÃÖÁ¾ ¹®ÀÚ¿­À» ¸¸µç´Ù.
-                if(extraRoadAddr !== ''){
-                    extraRoadAddr = ' (' + extraRoadAddr + ')';
-                }
-
-                // ¿ìÆí¹øÈ£¿Í ÁÖ¼Ò Á¤º¸¸¦ ÇØ´ç ÇÊµå¿¡ ³Ö´Â´Ù.
-                document.getElementById('sample4_postcode').value = data.zonecode;
-                document.getElementById("sample4_roadAddress").value = roadAddr;
-                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
-                
-                // Âü°íÇ×¸ñ ¹®ÀÚ¿­ÀÌ ÀÖÀ» °æ¿ì ÇØ´ç ÇÊµå¿¡ ³Ö´Â´Ù.
-                if(roadAddr !== ''){
-                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-                } else {
-                    document.getElementById("sample4_extraAddress").value = '';
-                }
-
-                var guideTextBox = document.getElementById("guide");
-                // »ç¿ëÀÚ°¡ '¼±ÅÃ ¾ÈÇÔ'À» Å¬¸¯ÇÑ °æ¿ì, ¿¹»ó ÁÖ¼Ò¶ó´Â Ç¥½Ã¸¦ ÇØÁØ´Ù.
-                if(data.autoRoadAddress) {
-                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-                    guideTextBox.innerHTML = '(¿¹»ó µµ·Î¸í ÁÖ¼Ò : ' + expRoadAddr + ')';
-                    guideTextBox.style.display = 'block';
-
-                } else if(data.autoJibunAddress) {
-                    var expJibunAddr = data.autoJibunAddress;
-                    guideTextBox.innerHTML = '(¿¹»ó Áö¹ø ÁÖ¼Ò : ' + expJibunAddr + ')';
-                    guideTextBox.style.display = 'block';
-                } else {
-                    guideTextBox.innerHTML = '';
-                    guideTextBox.style.display = 'none';
-                }
-            }
-        }).open();
-    }
+	    //kakao ì£¼ì†Œì§€ ë“±ë¡ë°›ëŠ” api scriptë¡œì§ì…ë‹ˆë‹¤.
+	    function sample4_execDaumPostcode() {
+	        new daum.Postcode({
+	            oncomplete: function(data) {
+	                // íŒì—…ì—ì„œ ê²€ìƒ‰ê²°ê³¼ í•­ëª©ì„ í´ë¦­í–ˆì„ë•Œ ì‹¤í–‰í•  ì½”ë“œë¥¼ ì‘ì„±í•˜ëŠ” ë¶€ë¶„.
+	
+	                // ë„ë¡œëª… ì£¼ì†Œì˜ ë…¸ì¶œ ê·œì¹™ì— ë”°ë¼ ì£¼ì†Œë¥¼ í‘œì‹œí•œë‹¤.
+	                // ë‚´ë ¤ì˜¤ëŠ” ë³€ìˆ˜ê°€ ê°’ì´ ì—†ëŠ” ê²½ìš°ì—” ê³µë°±('')ê°’ì„ ê°€ì§€ë¯€ë¡œ, ì´ë¥¼ ì°¸ê³ í•˜ì—¬ ë¶„ê¸° í•œë‹¤.
+	                var roadAddr = data.roadAddress; // ë„ë¡œëª… ì£¼ì†Œ ë³€ìˆ˜
+	                var extraRoadAddr = ''; // ì°¸ê³  í•­ëª© ë³€ìˆ˜
+	
+	                // ë²•ì •ë™ëª…ì´ ìˆì„ ê²½ìš° ì¶”ê°€í•œë‹¤. (ë²•ì •ë¦¬ëŠ” ì œì™¸)
+	                // ë²•ì •ë™ì˜ ê²½ìš° ë§ˆì§€ë§‰ ë¬¸ìê°€ "ë™/ë¡œ/ê°€"ë¡œ ëë‚œë‹¤.
+	                if(data.bname !== '' && /[ë™|ë¡œ|ê°€]$/g.test(data.bname)){
+	                    extraRoadAddr += data.bname;
+	                }
+	                // ê±´ë¬¼ëª…ì´ ìˆê³ , ê³µë™ì£¼íƒì¼ ê²½ìš° ì¶”ê°€í•œë‹¤.
+	                if(data.buildingName !== '' && data.apartment === 'Y'){
+	                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                }
+	                // í‘œì‹œí•  ì°¸ê³ í•­ëª©ì´ ìˆì„ ê²½ìš°, ê´„í˜¸ê¹Œì§€ ì¶”ê°€í•œ ìµœì¢… ë¬¸ìì—´ì„ ë§Œë“ ë‹¤.
+	                if(extraRoadAddr !== ''){
+	                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+	                }
+	
+	                // ìš°í¸ë²ˆí˜¸ì™€ ì£¼ì†Œ ì •ë³´ë¥¼ í•´ë‹¹ í•„ë“œì— ë„£ëŠ”ë‹¤.
+	                document.getElementById('sample4_postcode').value = data.zonecode;
+	                document.getElementById("sample4_roadAddress").value = roadAddr;
+	                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+	                
+	                // ì°¸ê³ í•­ëª© ë¬¸ìì—´ì´ ìˆì„ ê²½ìš° í•´ë‹¹ í•„ë“œì— ë„£ëŠ”ë‹¤.
+	                if(roadAddr !== ''){
+	                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+	                } else {
+	                    document.getElementById("sample4_extraAddress").value = '';
+	                }
+	
+	                var guideTextBox = document.getElementById("guide");
+	                // ì‚¬ìš©ìê°€ 'ì„ íƒ ì•ˆí•¨'ì„ í´ë¦­í•œ ê²½ìš°, ì˜ˆìƒ ì£¼ì†Œë¼ëŠ” í‘œì‹œë¥¼ í•´ì¤€ë‹¤.
+	                if(data.autoRoadAddress) {
+	                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+	                    guideTextBox.innerHTML = '(ì˜ˆìƒ ë„ë¡œëª… ì£¼ì†Œ : ' + expRoadAddr + ')';
+	                    guideTextBox.style.display = 'block';
+	
+	                } else if(data.autoJibunAddress) {
+	                    var expJibunAddr = data.autoJibunAddress;
+	                    guideTextBox.innerHTML = '(ì˜ˆìƒ ì§€ë²ˆ ì£¼ì†Œ : ' + expJibunAddr + ')';
+	                    guideTextBox.style.display = 'block';
+	                } else {
+	                    guideTextBox.innerHTML = '';
+	                    guideTextBox.style.display = 'none';
+	                }
+	            }
+	        }).open();
+	    }
+	 	 //ì‚¬ìš©ìê°€ ê¸°ë³¸ìœ¼ë¡œ ì„¤ì •í•œ ë°°ì†¡ì§€ê°€ ì—†ì„ ê²½ìš° ê¸°ì¡´ë°°ì†¡ì§€ë¥¼ ì„ íƒí•  ìˆ˜ ì—†ê²Œí•˜ê³  ì‹ ê·œë°°ì†¡ì§€ë¥¼ ì…ë ¥í•˜ë„ë¡ í•˜ëŠ”ë¡œì§ì…ë‹ˆë‹¤.
+	 	 //elseë¬¸ì— ë¹ ì§€ë©´ ê°€ì ¸ì˜¨ ë°°ì†¡ì§€ ì •ë³´ë¥¼ inputíƒœê·¸ ì•ˆì— valueê°’ìœ¼ë¡œ ë„£ì–´ì¤ë‹ˆë‹¤.
+	    <%if(defaultAddressInfo == null) {%>
+	    	alert("ê¸°ë³¸ìœ¼ë¡œ ì„¤ì •ëœ ë°°ì†¡ì§€ê°€ ì—†ìŠµë‹ˆë‹¤. ì‹ ê·œ ë°°ì†¡ì§€ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”!!");
+	    	const inputNewRadio = document.querySelector("input[value='ì‹ ê·œ ë°°ì†¡ì§€']");
+	    	inputNewRadio.checked = true;
+	    	document.querySelector("input[value='ê¸°ì¡´ ë°°ì†¡ì§€']").addEventListener("click", e => {
+	    		e.target.disabled = true;
+	    		alert("ê¸°ì¡´ ë°°ì†¡ì§€ë¥¼ ì„ íƒí•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ê¸°ë³¸ ë°°ì†¡ì§€ë¥¼ ì„¤ì •í•˜ê³  ì´ìš©í•´ì£¼ì„¸ìš”. ê¸°ë³¸ ë°°ì†¡ì§€ëŠ” ë§ˆì´í˜ì´ì§€ì—ì„œ ì„¤ì • ê°€ëŠ¥í•©ë‹ˆë‹¤.");
+	    		inputNewRadio.checked = true;
+	    	})
+	    <%} else {%>
+	    	document.querySelector("input[value='ê¸°ì¡´ ë°°ì†¡ì§€']").checked = true;
+	    	//document.querySelector("input[name='receptionAddName']").value = "<%= defaultAddressInfo.getAddrName() %>"; ë°°ì†¡ì§€ëª… ex) ì§‘, íšŒì‚¬, ëˆ„êµ¬ì˜ì§‘ 
+	    	document.querySelector("input[name='receptionName']").value = "<%= defaultAddressInfo.getAddrName() %>";
+	    	document.querySelector("input[name='receptionPhoneNum1']").value = "<%=defaultAddressInfo.getAddrPhone() %>";
+	    	document.querySelector("input[id='sample4_postcode']").value = "<%=defaultAddressInfo.getAddrPostcode()%>";
+	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
+	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress ë„ë¡œëª…ì£¼ì†Œ dbëŠ” ìˆ˜ë ¹ì¸ ì£¼ì†Œ
+	    <%}%>
+	    
+	    //ë°°ì†¡ ë©”ì„¸ì§€ selectíƒœê·¸ ì•ˆì—ì„œ ì§ì ‘ ì…ë ¥í•˜ê¸°ë¥¼ ì„ íƒí–ˆì„ë•Œ ì…ë ¥ë°›ëŠ” inputíƒœê·¸ë¥¼ ë‚˜ì˜¤ê²Œ í•˜ëŠ” ë¡œì§ì…ë‹ˆë‹¤.
+	    document.querySelector("select").addEventListener("change", e => {
+	    	if(e.target.options[e.target.selectedIndex].innerHTML == 'ì§ì ‘ ì…ë ¥í•˜ê¸°') {
+	    		document.querySelector("input[name='deliveryRequestMessage']").hidden = false;
+	    	} else {
+	    		document.querySelector("input[name='deliveryRequestMessage']").hidden = true;
+	    	}
+	    })
+	    
+	    
+	    
+		let totalPay = 0;
+	    let totalQuantity = 0;
+	    let totalProdName = "";
+	    //ê²°ì œí•  ì´ ê¸ˆì•¡ ì •ë³´ë¥¼ ë‹´ì•„ì¤„ ì´ ìˆ˜ëŸ‰, ê¸ˆì•¡ ë“±ë“±...ì„ êµ¬í•˜ê³  listíƒœê·¸ì˜ ìì‹íƒœê·¸ì¸ spaníƒœê·¸ì— ê°’ì„ ë„£ì–´ì£¼ëŠ” ë¡œì§ì…ë‹ˆë‹¤.
+	    //ë‹¤ë¥¸ ì •ë³´ë“¤ì€ ì¹´ì¹´ì˜¤apiê²°ì œ requestì— í•„ìš”í•œ body dataë¥¼ ì „ë‹¬í•˜ê¸°ìœ„í•œ ë¡œì§ì…ë‹ˆë‹¤.
+	    <%
+		    int totalPay = 0; //ì´ ê¸ˆì•¡
+	    	int totalQuantity = 0; //ì´ ìˆ˜ëŸ‰
+	    	String totalProdName = "";//ì´ ìƒí’ˆëª… ì´ë¦„
+	    	int count = 1;
+	    	for(ProductInfo p : cartInfo) {
+	    		//
+	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity();
+	    		totalQuantity += p.getCartQuantity();
+	    		//ìƒí’ˆëª…ì´ ë„ˆë¬´ ê¸¸ì–´ì§€ë©´ ì¹´ì¹´ì˜¤í˜ì´ ê²°ì œì—ì„œ ë³´ê¸° ì•ˆì¢‹ìœ¼ë¯€ë¡œ ì¥ë°”êµ¬ë‹ˆì˜ ìƒí’ˆì´ 3ê°œì´ìƒì´ë©´ 4ë²ˆì§¸ ìƒí’ˆëª… ë¶€í„°ëŠ” ... ìœ¼ë¡œ ëŒ€ì²´í•©ë‹ˆë‹¤.
+	    		if(cartInfo.size() <= 3) {
+		    		if(cartInfo.size() == count) {
+		    			totalProdName += p.getProdName();
+		    			count++;
+		    		} else {
+		    			totalProdName += p.getProdName() + ", ";
+		    			count++;
+		    		}
+	    		} else {
+	    			if(3 > count) {
+		    			totalProdName += p.getProdName() + ", ";
+		    			count++;
+		    		} else if(count == 3){
+		    			totalProdName += p.getProdName() + "...";
+		    			count++;
+		    		}
+	    		}
+	    	}
+	    	System.out.println(totalProdName);
+    	%>
+    	
+    	totalPay = <%= totalPay %>;
+    	totalQuantity = <%= totalQuantity %>;
+    	totalProdName = "<%= totalProdName %>";
+    	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
+    	
+    	<% if(coupons != null) { %>
+   			const couponSelect = document.querySelector("#choiceCoupon");
+   			console.log(couponSelect);
+   			let num = 0;
+   			for(let i = 1; i < couponSelect.length; i++) {
+   				if(num < couponSelect[i].value) {
+   					num = couponSelect[i].value;
+   				}
+   			}
+   			
+   			for(let i = 1; i < couponSelect.length; i++) {
+   				if(couponSelect[i].value == num) {
+   					couponSelect[i].selected = true;
+   				}
+   			}
+    	<% } %>
+    	
     </script>
 
-    <!-- Ä«Ä«¿ÀÆäÀÌ °áÁ¦ API script -->
+    <!-- ì¹´ì¹´ì˜¤í˜ì´ ê²°ì œ API script -->
     <script>
         document.querySelector("#payButton").addEventListener("click",e => {
-        	fetch("<%=request.getContextPath()%>/member/kakaopay.do", {
+        	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
-                //»óÇ°Á¤º¸¿Í »óÇ°°áÁ¦/½ÇÆĞ/¼º°ø/Ãë¼Ò·Î ÀÌµ¿ÇÒ ÁÖ¼Òµîµî À» body¿¡ ´ã¾Æ¼­ ³Ñ°ÜÁİ´Ï´Ù
+                //ìƒí’ˆì •ë³´ì™€ ìƒí’ˆê²°ì œ/ì‹¤íŒ¨/ì„±ê³µ/ì·¨ì†Œë¡œ ì´ë™í•  ì£¼ì†Œë“±ë“± ì„ bodyì— ë‹´ì•„ì„œ ë„˜ê²¨ì¤ë‹ˆë‹¤
                 body: JSON.stringify({
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
                     "partner_user_id": "partner_user_id",
-                    "item_name": "chocopie",
-                    "quantity": "1",
-                    "total_amount": "2200",
+                    "item_name": totalProdName,
+                    "quantity": totalQuantity,
+                    "total_amount": totalPay,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
                     "approval_url": "http://localhost:8080/testproject/success",
@@ -621,7 +744,7 @@
             .then(response => response.json())
             .then(data => {
             	console.log(data);
-            	//data.next_redirect_pc_urlÀÇ ¹®ÀÚ¿­ÀÌ Á¸ÀçÇÏ¸é if¹®¿¡ ºüÁö¸ç Á¸ÀçÇÏÁö ¾ÊÀ»°æ¿ì else¹®À¸·Î ºüÁı´Ï´Ù.
+            	//data.next_redirect_pc_urlì˜ ë¬¸ìì—´ì´ ì¡´ì¬í•˜ë©´ ifë¬¸ì— ë¹ ì§€ë©° ì¡´ì¬í•˜ì§€ ì•Šì„ê²½ìš° elseë¬¸ìœ¼ë¡œ ë¹ ì§‘ë‹ˆë‹¤.
             	if (data.next_redirect_pc_url) {
                     window.location.href = data.next_redirect_pc_url;
                 } else {
@@ -629,8 +752,8 @@
                 }
             })
             .catch(error => console.error('Error:', error)); 
-        	//error¸Ş¼¼Áö´Â ¿äÃ»À» º¸³ÂÀ»¶§ response·Î ¿Â ¿¡·¯¸Ş¼¼Áö¸¦ consoleÃ¢¿¡ Ãâ·ÂÇÕ´Ï´Ù
-        	//response°´Ã¼´Â servlet¿¡¼­ ¹Ş¾ÆÁÖ°í ÀÖ½À´Ï´Ù.
+        	//errorë©”ì„¸ì§€ëŠ” ìš”ì²­ì„ ë³´ëƒˆì„ë•Œ responseë¡œ ì˜¨ ì—ëŸ¬ë©”ì„¸ì§€ë¥¼ consoleì°½ì— ì¶œë ¥í•©ë‹ˆë‹¤
+        	//responseê°ì²´ëŠ” servletì—ì„œ ë°›ì•„ì£¼ê³  ìˆìŠµë‹ˆë‹¤.
         })
     </script>
 </body>

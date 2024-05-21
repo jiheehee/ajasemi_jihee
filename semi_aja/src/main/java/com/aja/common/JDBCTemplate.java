@@ -21,11 +21,11 @@ public class JDBCTemplate {
 			Properties driver = new Properties();
 			driver.load(fr);
 			Class.forName(driver.getProperty("driver"));
-			conn = DriverManager.getConnection(driver.getProperty("url"), driver.getProperty("user"), driver.getProperty("pw"));
+			conn = DriverManager.getConnection(driver.getProperty("url"),driver.getProperty("user"),driver.getProperty("pw"));
 			
 			conn.setAutoCommit(false);
 		
-		}catch(ClassNotFoundException |IOException| SQLException e) {
+		}catch(ClassNotFoundException | IOException |SQLException e) {
 			e.printStackTrace();
 		}
 		

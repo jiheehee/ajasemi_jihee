@@ -1,7 +1,6 @@
-package com.aja.notice.controller;
+package com.aja.product.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,20 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.notice.dto.Notice;
-import com.aja.notice.service.NoticeService;
+import com.aja.product.model.dto.Category;
+import com.aja.product.service.CategoryService;
 
 /**
- * Servlet implementation class NoticeListServlet
+ * Servlet implementation class CategoryEnrollServlet
  */
-@WebServlet("/notice/noticelist.do")
-public class NoticeListServlet extends HttpServlet {
+@WebServlet("/product/categoryenroll.do")
+public class CategoryEnrollServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeListServlet() {
+    public CategoryEnrollServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,23 +30,12 @@ public class NoticeListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("cateName");
+		int result = new CategoryService().enrollCategory(name);
 		
-//		int cPage=1;
-//		try {
-//			cPage=Integer.parseInt(request.getParameter("numPerpage"));
-//		}catch(NumberFormatException e) {}
-//		int numPerpage=5;
-//		try{
-//			numPerpage=Integer.parseInt(request.getParameter("numPerpage"));
-//		}catch(NumberFormatException e) {}
-		
-//		List<Notice> noticelist=new NoticeService().selectNotice(cPage,numPerpage);	
-		
-		//저장해온거를 다시 화면에 데이터를 보내는구문
-//		request.setAttribute("noticelist",noticelist);
-		request.getRequestDispatcher("/WEB-INF/views/notice/noticeList.jsp").forward(request, response);
-		
-		int totalData=new NoticeService().selectNoticeCount();
+		request.setAttribute("result", result);
+		request.getRequestDispatcher("/product/categorylist.do").forward(request, response);
+		//msg jsp만들어서 등록 성공/실패나눠서해보기
 	}
 
 	/**

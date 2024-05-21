@@ -1,4 +1,4 @@
-package com.aja.notice.controller;
+package com.aja.product.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,20 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.notice.dto.Notice;
-import com.aja.notice.service.NoticeService;
+import com.aja.product.model.dto.Category;
+import com.aja.product.model.dto.Keyword;
+import com.aja.product.service.CategoryService;
 
 /**
- * Servlet implementation class NoticeListServlet
+ * Servlet implementation class CategoryListServlet
  */
-@WebServlet("/notice/noticelist.do")
-public class NoticeListServlet extends HttpServlet {
+@WebServlet("/product/categorylist.do")
+public class CategoryListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeListServlet() {
+    public CategoryListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,22 +33,12 @@ public class NoticeListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		int cPage=1;
-//		try {
-//			cPage=Integer.parseInt(request.getParameter("numPerpage"));
-//		}catch(NumberFormatException e) {}
-//		int numPerpage=5;
-//		try{
-//			numPerpage=Integer.parseInt(request.getParameter("numPerpage"));
-//		}catch(NumberFormatException e) {}
+		List<Category> categoryList = new CategoryService().searchAllCategory();
+		List<Keyword> keywordList = new CategoryService().searchAllKeyword();
+		request.setAttribute("categoryList", categoryList);
+		request.setAttribute("keywordList", keywordList);
+		request.getRequestDispatcher("/WEB-INF/views/product/categoryEnroll.jsp").forward(request, response);
 		
-//		List<Notice> noticelist=new NoticeService().selectNotice(cPage,numPerpage);	
-		
-		//저장해온거를 다시 화면에 데이터를 보내는구문
-//		request.setAttribute("noticelist",noticelist);
-		request.getRequestDispatcher("/WEB-INF/views/notice/noticeList.jsp").forward(request, response);
-		
-		int totalData=new NoticeService().selectNoticeCount();
 	}
 
 	/**

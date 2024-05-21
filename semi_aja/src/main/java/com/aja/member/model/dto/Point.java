@@ -1,7 +1,5 @@
 package com.aja.member.model.dto;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CouponInfo {
-	private String couponName;
-	private int couponSale;
-	private Date couponDate;
-	private Date couponEnddate;
+public class Point {
 	private String custPoint;
 }

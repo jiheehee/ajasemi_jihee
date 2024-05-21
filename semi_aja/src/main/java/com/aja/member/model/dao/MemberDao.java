@@ -15,6 +15,7 @@ import java.util.Properties;
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
+import com.aja.member.model.dto.Point;
 import com.aja.member.model.dto.ProductInfo;
 
 public class MemberDao {
@@ -149,9 +150,10 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
+											+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
 											+ "WHERE CUST_KEY = ?");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
@@ -160,11 +162,19 @@ public class MemberDao {
 								.couponName(rs.getString("coupon_name"))
 								.couponSale(rs.getInt("coupon_sale"))
 								.couponEnddate(rs.getDate("coupon_enddate"))
+								.custPoint(rs.getString("cust_point"))
 								.build());
 			}
-//			private String couponName;
-//			private int couponSale;
-//			private Date couponDate;
+			
+			if(coupons == null || coupons.isEmpty()) {
+				close(rs);
+				close(pstmt);
+				pstmt = conn.prepareStatement("SELECT CUST_POINT FROM CUSTOMER WHERE CUST_KEY = ?");
+				pstmt.setInt(1, memberNo);
+				rs = pstmt.executeQuery();
+				rs.next();
+				coupons.add(CouponInfo.builder().custPoint(rs.getString("cust_point")).build());
+			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -173,6 +183,8 @@ public class MemberDao {
 		}
 		return coupons;
 	}
+	
+	
 	
 	public static Customer getCustomer(ResultSet rs) throws SQLException{
 		
