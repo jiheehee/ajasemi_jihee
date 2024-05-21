@@ -22,7 +22,7 @@ public class MemberDao {
 	
 	{
 		// 프로펄티즈 파일 내 쿼리문 변경될 때, dao 로직 실행 시 프로펄티즈 파일을 재로드해서 실행하기 때문에 유지보수성 향상됨
-		String path = MemberDao.class.getResource("/member.properties").getPath();
+		String path = MemberDao.class.getResource("/sql/member/sql_member.properties").getPath();
 		try (FileReader fr = new FileReader(path)){
 			
 			prop.load(fr);
@@ -106,6 +106,7 @@ public class MemberDao {
 			close(rs);
 			close(pstmt);
 		}
+		System.out.println(ct+"dao");
 		return ct;
 		
 	}
