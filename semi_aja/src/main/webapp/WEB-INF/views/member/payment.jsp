@@ -6,7 +6,6 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
-	System.out.println("coupons : " + coupons);
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -249,10 +248,12 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="applyableTd"><p id="couponPtag">적용 가능한 쿠폰</p></td>
+                                <td class="applyableTd">
+                                	<p id="couponPtag">적용 가능한 쿠폰</p>
+                                </td>
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
-                                        <% if(coupons == null || coupons.isEmpty()) { %>
+                                        <% if(coupons.get(0).getCouponName() == null) { %>
 											    <option>선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
 										   		<option>쿠폰을 선택해주세요</option>
@@ -262,6 +263,18 @@
 										<% } %>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                            	<td class="applyableTd">
+                            		<p id="mileagePtag">적용 가능한 마일리지</p>
+                            	</td>
+                            		<td>
+                            			<div id="mileageContainer">
+                            				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
+	                                    	<input type="number" name="mileageInput">
+	                                    	<button onclick="applyMileage()">적용하기</button>
+	                                    </div>
+                                	</td>
                             </tr>
                         </tbody>
                     </table>
@@ -452,7 +465,7 @@
         .couponTableTh{
             text-align:center;
         }
-        #applyableTd{
+        .applyableTd{
             align-items:center;
             padding-right:100px;
         }
@@ -468,7 +481,7 @@
         #couponTable{
             margin-left:50px;
         }
-        #couponPtag{
+        .applyableTd>p{
             min-width:150px;
         }
         #executePayContainer{
@@ -487,6 +500,10 @@
         }
         .infoTable>thead>tr>th{
         	text-align:center;
+        }
+        #mileagePtag{
+        	text-overflow:ellipsis;
+            white-space:nowrap;	
         }
 
 
@@ -725,7 +742,7 @@
     	 
     	
     	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰을 option태그에서 select되어 있게하는 로직입니다.
-    	<% if(coupons != null) { %>
+    	<% if(coupons.get(0).getCouponName() != null) { %>
    			const couponSelect = document.querySelector("#choiceCoupon");
    			console.log(couponSelect);
    			let num = 0;
@@ -748,7 +765,15 @@
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
     	<% } %>
     	
-    	
+    	//마일리지 입력할때 보유 마일리지보다 더 많은 수를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
+    	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
+    	const mileageInput = document.querySelector("input[name='mileageInput']");
+    	mileageInput.addEventListener("keyup", e => {
+    		if(havingPoint < e.target.value) {
+    			alert("보유 마일리지 이상 입력할 수 없습니다.");
+    			mileageInput.value = havingPoint;
+    		}
+    	});
     </script>
 
     <!-- 카카오페이 결제 API script -->
