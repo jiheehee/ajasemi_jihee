@@ -1,6 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%
+	// Cookie 가저오기
+	Cookie[] cookies = request.getCookies();
+	String saveId =null;
+	String custEmailId=null;
+	String domainEmail=null;
+	
+	if(cookies != null){
+		for(Cookie c : cookies){
+			if(c.getName().equals("saveId")){
+				saveId = c.getValue();
+				custEmailId=saveId.substring(0,saveId.indexOf("@"));
+				domainEmail=saveId.substring(saveId.indexOf("@"));
+				break;
+			}
+		}
+	}
+%>
     <style>
         .my-element{
             min-width: 800px;
@@ -89,6 +107,7 @@
         }
         #loginEtc p {
             margin: 0 10px;
+           	cursor: pointer;
         }
         button{
             width: 100%;
@@ -178,14 +197,14 @@
         <div class="login-container">
             <h3>Apricot Login</h3>
             <div class="login-box">
-            <form action="<%=request.getContextPath() %>/member/loginend.do" method="POST">
+            <form action="<%=request.getContextPath() %>/member/loginend.do" method="POST" onSubmit ="return isValid()" >
                 <div class="input" id="idBox">
-                    <input type="text" name="custEmailId" placeholder="Email_Id">
-                    <select id="emailDomain">
+                    <input type="text" name="custEmailId" placeholder="Email_Id" value="<%=saveId!=null?custEmailId:"" %>">
+                    <select id="emailDomain" name="emailDomain">
                         <option value="none">이메일선택</option>
-                        <option value="@naver.com"> @ naver.com</option>
-                        <option value="@daum.net"> @ daum.net</option>
-                        <option value="@gmail.com"> @ gmail.com</option>
+                        <option value="@naver.com" <%=saveId!=null&&domainEmail.equals("@naver.com")?"selected":"" %>> @ naver.com</option>
+                        <option value="@daum.net" <%=saveId!=null&&domainEmail.equals("@daum.net")?"selected":"" %>> @ daum.net</option>
+                        <option value="@gmail.com" <%=saveId!=null&&domainEmail.equals("@gmail.com")?"selected":"" %>> @ gmail.com</option>
                     </select>
                 </div>
                 <div id="idValidContainer"></div>
@@ -195,21 +214,21 @@
                 <div id="loginEtc">
                     <div class="saveId" style="margin-left:5px;">
                         <label for="saveId">
-                        <input type="checkbox" name="saveId" id="saveId">
+                        <input type="checkbox" name="saveId" id="saveId" <%=saveId!=null?"checked":""%>>
                         아이디 저장
                         </label>
                     </div>
                     <div style="margin-left:auto;">
                         <p>아이디 찾기</p>
                         <p>비밀번호 찾기</p>
-                        <p>회원가입</p>
+                        <p onclick="signUp();">회원가입</p>
                     </div>
                 </div>
                 <div>
                     <button type="submit" onclick="login();">LOGIN</button>
                 </div>
                 <div id="kakao-login">
-                    <button id="kakao" onclick="loginWithKakao();">KAKAO LOGIN</button>
+                    <button type="button" id="kakao" onclick="loginWithKakao();">KAKAO LOGIN</button>
                 </div>
             </form>
             </div>
@@ -224,24 +243,32 @@
 	</div>
     </section>
     <script>
+    
+    	const signUp =()=>{
+    		location.assign("<%=request.getContextPath()%>/member/signup.do");
+    	};
     	// 로그인 버튼 클릭시 프론트에서 js 로 처리해야 할 것 : 유효성 검사, 사용자에게 간단한 오류알림 등
-        const login = () => {
+        const isValid = () => {
             const custEmailId = $("input[name='custEmailId']").val();
             const emailDomain = $("#emailDomain").val();
             const custPw = $("input[name='custPw']").val();
+           	const custEmail = custEmailId + emailDomain;
             
            	if(custEmailId.trim()==='' || emailDomain === 'none' || custPw.trim()=== '') {
            		// 아이디나 패스워드를 입력하지 않고 로그인 버튼 클릭 시, 자바스크립트로 프론트에서 걸러줌.
            	 	openModal("아이디 또는 패스워드를 입력하세요.");
-           	} /* else {
-           		// 아이디 패스워드 입력 시 로그인 처리할 수 있도록.
-           	} */
+           		return false;
+           	} 
            	
            	if(custEmailId.length<4 || custEmailId.length>12){
-           		
+           		openModal("아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
+           		return false;
            	}
            	
-           	
+        }
+        
+        const loginWithKakao = () => {
+        	// 카카오 간편 로그인 로직 구현
         }
        
      	// 모달 창 열기
