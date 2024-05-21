@@ -19,14 +19,14 @@ import com.aja.notice.dto.Notice;
 public class NoticeDao {
 	
 	// db에서 가져올 자료들 골라서 뽑아오는 역할
-	private Properties sql=new Properties();
+	private Properties prop=new Properties();
 	
 	//sql_notice.properties 파일 읽어오기
 	{
 		String path=NoticeDao.class.getResource("/sql/notice/sql_notice.properties")
 				.getPath();
-		try(FileReader fr=new FileReader(path)){
-			sql.load(fr);
+		try(FileReader fr=new FileReader(path)){ 
+			prop.load(fr);
 		}catch(IOException e){
 			e.printStackTrace();
 		}
@@ -37,11 +37,11 @@ public class NoticeDao {
 		ResultSet rs=null;
 		List<Notice> result=new ArrayList<>();
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("selectNoticeAll"));
+			pstmt=conn.prepareStatement(prop.getProperty("selectNoticeAll"));
 			pstmt.setInt(1,(cPage-1)*numPerpage+1);
 			pstmt.setInt(2,cPage*numPerpage);
 			rs=pstmt.executeQuery();
-			while(rs.next()) result.add(getNotice(rs)); //밑에서 getNotice 만들어줄꺼임
+			while(rs.next()) result.add(getNotice(rs));
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -55,7 +55,7 @@ public class NoticeDao {
 		ResultSet rs=null;
 		int result=0;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("selectNoticeCount"));
+			pstmt=conn.prepareStatement(prop.getProperty("selectNoticeCount"));
 			rs=pstmt.executeQuery();
 			rs.next();
 		}catch(SQLException e) {
@@ -71,7 +71,7 @@ public class NoticeDao {
 		ResultSet rs=null;
 		Notice n=null;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("selectNoticeByNo"));
+			pstmt=conn.prepareStatement(prop.getProperty("selectNoticeByNo"));
 			pstmt.setInt(1, no);
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
@@ -89,7 +89,7 @@ public class NoticeDao {
 		PreparedStatement pstmt=null;
 		int result=0;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("insertNotice"));
+			pstmt=conn.prepareStatement(prop.getProperty("insertNotice"));
 			pstmt.setString(1,n.getNoticeTitle());
 			pstmt.setDate(2,n.getNoticeEnrolldate());			
 		}catch(SQLException e) {
