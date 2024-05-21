@@ -106,7 +106,6 @@ public class MemberDao {
 			close(rs);
 			close(pstmt);
 		}
-		System.out.println(ct+"dao");
 		return ct;
 		
 	}

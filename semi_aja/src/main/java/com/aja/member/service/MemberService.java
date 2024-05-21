@@ -43,6 +43,8 @@ public class MemberService {
 		// 2. pw 가 일치하지 않음
 		if(ct==null || !ct.getCustPw().equals(custPw)) ct = null;
 		
+		System.out.println(ct);
+		
 		return ct;
 	}
 	

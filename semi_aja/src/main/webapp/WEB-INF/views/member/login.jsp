@@ -107,6 +107,7 @@
         }
         #loginEtc p {
             margin: 0 10px;
+           	cursor: pointer;
         }
         button{
             width: 100%;
@@ -198,12 +199,12 @@
             <div class="login-box">
             <form action="<%=request.getContextPath() %>/member/loginend.do" method="POST" onSubmit ="return isValid()" >
                 <div class="input" id="idBox">
-                    <input type="text" name="custEmailId" placeholder="Email_Id" value="<%=saveId!=null?saveId:"" %>">
+                    <input type="text" name="custEmailId" placeholder="Email_Id" value="<%=saveId!=null?custEmailId:"" %>">
                     <select id="emailDomain" name="emailDomain">
                         <option value="none">이메일선택</option>
-                        <option value="@naver.com"> @ naver.com</option>
-                        <option value="@daum.net"> @ daum.net</option>
-                        <option value="@gmail.com"> @ gmail.com</option>
+                        <option value="@naver.com" <%=saveId!=null&&domainEmail.equals("@naver.com")?"selected":"" %>> @ naver.com</option>
+                        <option value="@daum.net" <%=saveId!=null&&domainEmail.equals("@daum.net")?"selected":"" %>> @ daum.net</option>
+                        <option value="@gmail.com" <%=saveId!=null&&domainEmail.equals("@gmail.com")?"selected":"" %>> @ gmail.com</option>
                     </select>
                 </div>
                 <div id="idValidContainer"></div>
@@ -220,14 +221,14 @@
                     <div style="margin-left:auto;">
                         <p>아이디 찾기</p>
                         <p>비밀번호 찾기</p>
-                        <p>회원가입</p>
+                        <p onclick="signUp();">회원가입</p>
                     </div>
                 </div>
                 <div>
                     <button type="submit" onclick="login();">LOGIN</button>
                 </div>
                 <div id="kakao-login">
-                    <button id="kakao" onclick="loginWithKakao();">KAKAO LOGIN</button>
+                    <button type="button" id="kakao" onclick="loginWithKakao();">KAKAO LOGIN</button>
                 </div>
             </form>
             </div>
@@ -242,6 +243,10 @@
 	</div>
     </section>
     <script>
+    
+    	const signUp =()=>{
+    		location.assign("<%=request.getContextPath()%>/member/signup.do");
+    	};
     	// 로그인 버튼 클릭시 프론트에서 js 로 처리해야 할 것 : 유효성 검사, 사용자에게 간단한 오류알림 등
         const isValid = () => {
             const custEmailId = $("input[name='custEmailId']").val();
@@ -260,6 +265,10 @@
            		return false;
            	}
            	
+        }
+        
+        const loginWithKakao = () => {
+        	// 카카오 간편 로그인 로직 구현
         }
        
      	// 모달 창 열기
