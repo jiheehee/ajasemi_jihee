@@ -1,13 +1,18 @@
 package com.aja.member.service;
 
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.commit;
 import static com.aja.common.JDBCTemplate.getConnection;
+import static com.aja.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.aja.member.model.dao.MemberDao;
+import com.aja.member.model.dto.Address;
+import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
-
-import static com.aja.common.JDBCTemplate.*;
+import com.aja.member.model.dto.ProductInfo;
 
 public class MemberService {
 	
@@ -24,6 +29,13 @@ public class MemberService {
 		return result;
 	}
 	
+	public Address getDefaultAddress(int memberNo) {
+		Connection conn = getConnection();
+		Address result = dao.getDefaultAddress(conn, memberNo);
+		close(conn);
+		return result;
+	}
+	
 	public Customer searchMemberById(String custEmail, String custPw) {
 		Connection conn = getConnection();
 		Customer ct = dao.searchMemberById(conn,custEmail);
@@ -32,5 +44,19 @@ public class MemberService {
 		if(ct==null || !ct.getCustPw().equals(custPw)) ct = null;
 		
 		return ct;
+	}
+	
+	public List<ProductInfo> getCartInfo(int memberNo) {
+		Connection conn = getConnection();
+		List<ProductInfo> products = dao.getCartInfo(conn, memberNo);
+		close(conn);
+		return products;
+	}
+	
+	public List<CouponInfo> getCouponInfo(int memberNo) {
+		Connection conn = getConnection();
+		List<CouponInfo> coupons = dao.getCouponInfo(conn, memberNo);
+		close(conn);
+		return coupons;
 	}
 }

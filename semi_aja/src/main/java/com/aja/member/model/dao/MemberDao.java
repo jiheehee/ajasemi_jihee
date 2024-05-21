@@ -8,12 +8,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import com.aja.member.model.dto.Address;
+import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
+import com.aja.member.model.dto.ProductInfo;
 
 public class MemberDao {
-	
 	private Properties prop = new Properties();
 	
 	{
@@ -55,11 +59,37 @@ public class MemberDao {
 		return result;
 	}
 	
+	public Address getDefaultAddress(Connection conn, int memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Address defaultAddress = null;
+		try {
+			pstmt = conn.prepareStatement("SELECT * FROM ADDRESS WHERE CUST_KEY = ? AND ADDR_DEFAULT = 'Y'");
+			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				defaultAddress = Address.builder()
+										.addrName(rs.getString("addr_name"))
+										.addrPostcode(rs.getString("addr_postcode"))
+										.addrAddress(rs.getString("addr_address"))
+										.addrDetail(rs.getString("addr_detail"))
+										.addrPhone(rs.getString("addr_phone"))
+										.addrRequest(rs.getString("addr_request"))
+										.build();
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return defaultAddress;
+	}
+	
 	public Customer searchMemberById(Connection conn, String custEmail) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Customer ct = null;
-//		String sql = "SELECT * FROM CUSTOMER WHERE CUST_EMAIL = ?";
 		try {
 			pstmt = conn.prepareStatement(prop.getProperty("searchMemberById"));
 			pstmt.setString(1, custEmail);
@@ -80,6 +110,71 @@ public class MemberDao {
 		return ct;
 		
 	}
+	
+	public List<ProductInfo> getCartInfo(Connection conn, int memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
+		try {
+			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY "
+												+ "FROM CART "
+												+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
+												+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY) "
+												+ "LEFT JOIN PRODUCT USING(PROD_KEY) "
+												+ "WHERE CUST_KEY = ?");
+			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				productInCart.add(ProductInfo.builder()
+										.prodImage(rs.getString("prod_image"))
+										.prodName(rs.getString("prod_name"))
+										.prodContent(rs.getString("prod_content"))
+										.optionFlavor(rs.getString("option_flavor"))
+										.optionSize(rs.getString("option_size"))
+										.optionPrice(rs.getInt("option_price"))
+										.prodPrice(rs.getInt("prod_price"))
+										.cartQuantity(rs.getInt("cart_Quantity"))
+										.build());
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return productInCart;
+	}
+	
+	public List<CouponInfo> getCouponInfo(Connection conn, int memberNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
+		try {
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE "
+											+ "FROM DETAILCOUPON "
+											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
+											+ "WHERE CUST_KEY = ?");
+			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				coupons.add(CouponInfo.builder()
+								.couponName(rs.getString("coupon_name"))
+								.couponSale(rs.getInt("coupon_sale"))
+								.couponEnddate(rs.getDate("coupon_enddate"))
+								.build());
+			}
+//			private String couponName;
+//			private int couponSale;
+//			private Date couponDate;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return coupons;
+	}
+	
 	public static Customer getCustomer(ResultSet rs) throws SQLException{
 		
 		return Customer.builder()
