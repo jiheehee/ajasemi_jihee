@@ -254,7 +254,7 @@
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
                                         <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
-											    <option disabled>선택 가능한 쿠폰이 없습니다.</option>
+											    <option>선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
 										   		<option disabled>쿠폰을 선택해주세요</option>
 										   		<option value="0">선택안함</option>
@@ -273,8 +273,10 @@
                             		<td>
                             			<div id="mileageContainer">
                             				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
+                            				<span id="afterApplySpan">적용후 마일리지 : <%= coupons.get(0).getCustPoint() %></span><br>
 	                                    	<input type="number" name="mileageInput">
-	                                    	<button id="applyMileage">적용하기</button>
+	                                    	<button id="applyMileage">적용</button>
+	                                    	<button id="cancelApplyMileage">적용취소</button>
 	                                    </div>
                                 	</td>
                             </tr>
@@ -740,6 +742,7 @@
     		let discountPrice = totalPay * (selectCouponDisRate / 100);
     		document.querySelector("#discountPriceSpan").innerText = discountPrice + "원";
     		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice + "원";
+    		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
     	
@@ -759,6 +762,7 @@
    			for(let i = 1; i < couponSelect.length; i++) {
    				if(couponSelect[i].value == num) {
    					couponSelect[i].selected = true;
+   					document.querySelector("#checkUsingCoupon").checked = true;
    				}
    			}
    			
@@ -767,20 +771,51 @@
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
     	<% } %>
     	
-    	//마일리지 입력할때 보유 마일리지보다 더 많은 수를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
+    	//마일리지 입력할때 보유 마일리지보다 더 마일리지를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
     	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
     	const mileageInput = document.querySelector("input[name='mileageInput']");
     	mileageInput.addEventListener("keyup", e => {
     		let checking = document.querySelector("#checkUsingCoupon").checked;
-    		if(checking.checked) {
+    		if(checking) {
 	    		if(havingPoint < e.target.value) {
 	    			alert("보유 마일리지 이상 입력할 수 없습니다.");
 	    			mileageInput.value = havingPoint;
 	    		}
     		} else {
     			alert("쿠폰적용을 먼저해주세요.");
+    			document.querySelector("#choiceCoupon").focus();
+    			document.querySelector("#choiceCoupon").style.border = "1px solid red";
     		}
     	});
+    	
+    	//DOMContent가 전부 load된 후에 실행하는 이벤트함수입니다.
+    	document.addEventListener("DOMContentLoaded", function() {
+    		
+    		//마일리지 적용한것을 취소하는 로직입니다.
+	    	document.querySelector("#cancelApplyMileage").addEventListener("click", e => {
+	    		const appliedContentTag = document.querySelector("#mileageApplySpan");
+	    		const oriFinalPrice = document.querySelector("#finalPriceSpan");
+	    		const appliedPoint = appliedContentTag.innerText;
+	    		appliedContentTag.innerText = "0point";
+	    		oriFinalPrice.innerText = parseInt(oriFinalPrice.innerText) + parseInt(appliedPoint) + "원";
+	    		document.querySelector("#afterApplySpan").innerText = "적용후 포인트 : " + havingPoint;
+	    		document.querySelector("#applyMileage").disabled = false;
+	    	})
+	    	
+	    	//마일리지 적용하는 로직입니다.
+	    	document.querySelector("#applyMileage").addEventListener("click", e => {
+	    		const wantApplyPoint = e.target.previousElementSibling.value;
+	   			document.querySelector("#mileageApplySpan").innerText = e.target.previousElementSibling.value + "point";
+	   			const originPrice = document.querySelector("#finalPriceSpan");
+	   			originPrice.innerText = parseInt(originPrice.innerText) - parseInt(e.target.previousElementSibling.value) + "원";
+	   			const afterApply = document.querySelector("#afterApplySpan");
+	   			afterApply.innerText = "적용후 포인트 : " + (havingPoint - wantApplyPoint);
+	   			e.target.disabled = true;
+	    	})
+	    	
+	    	
+    	})
+    	
     </script>
 
     <!-- 카카오페이 결제 API script -->
