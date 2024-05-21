@@ -40,9 +40,14 @@ public class NoticeListServlet extends HttpServlet {
 		try{
 			numPerpage=Integer.parseInt(request.getParameter("numPerpage"));
 		}catch(NumberFormatException e) {}
-		List<Notice> noticelist=new NoticeService().selectNotice(cPage,numPerpage);
 		
-			
+		List<Notice> noticelist=new NoticeService().selectNotice(cPage,numPerpage);	
+		
+		//저장해온거를 다시 화면에 데이터를 보내는구문
+		request.setAttribute("noticelist",noticelist);
+		request.getRequestDispatcher("/WEB-INF/views/notice/noticeList.jsp").forward(request, response);
+		
+		int totalData=new NoticeService().selectNoticeCount();
 	}
 
 	/**
