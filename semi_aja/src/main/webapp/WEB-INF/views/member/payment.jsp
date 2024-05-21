@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "com.aja.member.model.dto.Address, java.util.List, com.aja.member.model.dto.ProductInfo" %>
+<%@ page import = "com.aja.member.model.dto.Address, java.util.List, com.aja.member.model.dto.ProductInfo
+, com.aja.member.model.dto.CouponInfo" %>
 <%
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
+	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -210,7 +212,7 @@
 	                        <tr>
 	                            <td>
 	                                <div class="prodImgContainer">
-	                                    <img src="<%= p.getProdImage() %>" alt="" wdith="100px" height="100px">
+	                                    <img src="<%= p.getProdImage() %>" alt="" width="100px" height="100px">
 	                                </div>
 	                                <div class="prodContentContainer">
 	                                    <p><%= p.getProdName() %></p>
@@ -246,15 +248,35 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="applyableTd"><p id="couponPtag">적용 가능한 쿠폰</p></td>
-                                <td>
-                                    <select name="choiceCoupont" id="choiceCoupon">
-                                        <option>적용가능한 쿠폰이 없습니다.</option>
-                                        <option>생일쿠폰 10%</option>
-                                        <option>멤버십 쿠폰 10%</option>
-                                        <option>멤버십 쿠폰 20%</option>
-                                    </select>
+                                <td class="applyableTd">
+                                	<p id="couponPtag">적용 가능한 쿠폰</p>
                                 </td>
+                                <td>
+                                    <select name="choiceCoupon" id="choiceCoupon">
+                                        <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
+											    <option disabled>선택 가능한 쿠폰이 없습니다.</option>
+										<% } else { %>
+										   		<option disabled>쿠폰을 선택해주세요</option>
+										   		<option value="0">선택안함</option>
+											<% for(CouponInfo c : coupons) { %>
+											    	<option value="<%= c.getCouponSale() %>">쿠폰명 : <%= c.getCouponName() %> <%= c.getCouponSale() %>%</option>
+											<% } %>
+										<% } %>
+                                    </select>
+                                    <input type="checkbox" id="checkUsingCoupon" disabled>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td class="applyableTd">
+                            		<p id="mileagePtag">적용 가능한 마일리지</p>
+                            	</td>
+                            		<td>
+                            			<div id="mileageContainer">
+                            				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
+	                                    	<input type="number" name="mileageInput">
+	                                    	<button id="applyMileage">적용하기</button>
+	                                    </div>
+                                	</td>
                             </tr>
                         </tbody>
                     </table>
@@ -267,15 +289,15 @@
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
-                            <span>5000원</span>
+                            <span id="discountPriceSpan">5000원</span>
                         </li>
                         <li>
-                            <span>총 배송비</span>
-                            <span>3500원</span>
+                            <span>적용 마일리지</span>
+                            <span id="mileageApplySpan">0</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
-                            <span>51500</span>
+                            <span id="finalPriceSpan">51500</span>
                         </li>
                         <li>
                             <button id="payButton">결제하기</button>
@@ -445,7 +467,7 @@
         .couponTableTh{
             text-align:center;
         }
-        #applyableTd{
+        .applyableTd{
             align-items:center;
             padding-right:100px;
         }
@@ -453,10 +475,15 @@
             padding-left:100px;
             padding-right:100px;
         }
+        .numtd>p{
+        	text-align:center;
+        	text-overflow:ellipsis;
+            white-space:nowrap;
+        }
         #couponTable{
             margin-left:50px;
         }
-        #couponPtag{
+        .applyableTd>p{
             min-width:150px;
         }
         #executePayContainer{
@@ -472,6 +499,13 @@
         }
         .addressInput{
             width:300px;
+        }
+        .infoTable>thead>tr>th{
+        	text-align:center;
+        }
+        #mileagePtag{
+        	text-overflow:ellipsis;
+            white-space:nowrap;	
         }
 
 
@@ -627,7 +661,7 @@
 	    	inputNewRadio.checked = true;
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click", e => {
 	    		e.target.disabled = true;
-	    		alert("기존 배송지를 선택할 수 없습니다. 기본 배송지를 설정하고 이용해주세요. 기본 배송지는 마이페이지에서 설정 가능합니다.");
+	    		alert("기본 배송지를 선택할 수 없습니다. 기본 배송지를 설정하고 이용해주세요. 기본 배송지는 마이페이지에서 설정 가능합니다.");
 	    		inputNewRadio.checked = true;
 	    	})
 	    <%} else {%>
@@ -649,12 +683,22 @@
 	    	}
 	    })
 	    
+	    //기존 배송지가 있던 사람이 신규 배송지를 선택하면 input태그 안의 기본 배송지 value를 다 비워줍니다.
+	    document.querySelector("input[value='신규 배송지']").addEventListener("click", e => {
+	    	document.querySelectorAll("#addressContainer>input[type='text']").forEach(input => {
+	    		input.value = "";
+	    	})
+	    	document.querySelector("input[name='receptionName']").value = "";
+    		document.querySelector("input[name='receptionPhoneNum1']").value = "";
+    		document.querySelector("input[name='receptionPhoneNum2']").value = "";
+	    })
 	    
-	    
+	    //변수문제로 보수 필요 ******************************
 		let totalPay = 0;
 	    let totalQuantity = 0;
 	    let totalProdName = "";
-	    //결제할 총 금액 정보를 담아줄 총 수량, 금액 등등...을 구하고 list의 span태그에 값을 넣어주는 로직입니다.
+	    
+	    //결제할 총 금액 정보를 담아줄 총 수량, 금액 등등...을 구하고 list태그의 자식태그인 span태그에 값을 넣어주는 로직입니다.
 	    //다른 정보들은 카카오api결제 request에 필요한 body data를 전달하기위한 로직입니다.
 	    <%
 		    int totalPay = 0; //총 금액
@@ -665,7 +709,7 @@
 	    		//
 	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity();
 	    		totalQuantity += p.getCartQuantity();
-	    		//상품명이 너무 길어지면 카카오페이 결제에서 보기 안좋으므로 상품명이 3개가 넘어가면 ... 으로 대체합니다.
+	    		//상품명이 너무 길어지면 카카오페이 결제에서 보기 안좋으므로 장바구니의 상품이 3개이상이면 4번째 상품명 부터는 ... 으로 대체합니다.
 	    		if(cartInfo.size() <= 3) {
 		    		if(cartInfo.size() == count) {
 		    			totalProdName += p.getProdName();
@@ -684,19 +728,68 @@
 		    		}
 	    		}
 	    	}
-	    	System.out.println(totalProdName);
     	%>
-    	console.log(<%= count %>);
+    	
     	totalPay = <%= totalPay %>;
     	totalQuantity = <%= totalQuantity %>;
     	totalProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
+    	
+    	document.querySelector("#choiceCoupon").addEventListener("change", e => {
+    		let selectCouponDisRate = e.target.value;
+    		let discountPrice = totalPay * (selectCouponDisRate / 100);
+    		document.querySelector("#discountPriceSpan").innerText = discountPrice + "원";
+    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice + "원";
+    	})
+    	 
+    	
+    	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰을 option태그에서 select되어 있게하는 로직입니다.
+    	<% if(coupons.get(0).getCouponName() != null) { %>
+   			const couponSelect = document.querySelector("#choiceCoupon");
+   			console.log(couponSelect);
+   			let num = 0;
+   			//쿠폰중 가장높은 할인율을 변수 num에 저장합니다.
+   			for(let i = 1; i < couponSelect.length; i++) {
+   				if(num < couponSelect[i].value) {
+   					num = couponSelect[i].value;
+   				}
+   			}
+   			
+   			//가장높은 할인율을 가지고있는 쿠폰을 select 합니다.
+   			for(let i = 1; i < couponSelect.length; i++) {
+   				if(couponSelect[i].value == num) {
+   					couponSelect[i].selected = true;
+   				}
+   			}
+   			
+   			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
+   			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100) + "원";
+   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
+    	<% } %>
+    	
+    	//마일리지 입력할때 보유 마일리지보다 더 많은 수를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
+    	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
+    	const mileageInput = document.querySelector("input[name='mileageInput']");
+    	mileageInput.addEventListener("keyup", e => {
+    		let checking = document.querySelector("#checkUsingCoupon").checked;
+    		if(checking.checked) {
+	    		if(havingPoint < e.target.value) {
+	    			alert("보유 마일리지 이상 입력할 수 없습니다.");
+	    			mileageInput.value = havingPoint;
+	    		}
+    		} else {
+    			alert("쿠폰적용을 먼저해주세요.");
+    		}
+    	});
     </script>
 
     <!-- 카카오페이 결제 API script -->
     <script>
         document.querySelector("#payButton").addEventListener("click",e => {
-        	fetch("<%=request.getContextPath()%>/member/kakaopay.do", {
+        		const finalPriceStr = document.querySelector("#finalPriceSpan").innerText;
+        		console.log(finalPriceStr);
+        		const finalPrice = finalPriceStr.substring(0,finalPriceStr.length - 1);
+        	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -708,7 +801,7 @@
                     "partner_user_id": "partner_user_id",
                     "item_name": totalProdName,
                     "quantity": totalQuantity,
-                    "total_amount": totalPay,
+                    "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
                     "approval_url": "http://localhost:8080/testproject/success",
