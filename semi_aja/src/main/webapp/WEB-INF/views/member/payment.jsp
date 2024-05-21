@@ -212,7 +212,7 @@
 	                        <tr>
 	                            <td>
 	                                <div class="prodImgContainer">
-	                                    <img src="<%= p.getProdImage() %>" alt="" wdith="100px" height="100px">
+	                                    <img src="<%= p.getProdImage() %>" alt="" width="100px" height="100px">
 	                                </div>
 	                                <div class="prodContentContainer">
 	                                    <p><%= p.getProdName() %></p>
@@ -253,15 +253,17 @@
                                 </td>
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
-                                        <% if(coupons.get(0).getCouponName() == null) { %>
-											    <option>선택 가능한 쿠폰이 없습니다.</option>
+                                        <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
+											    <option disabled>선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
-										   		<option>쿠폰을 선택해주세요</option>
+										   		<option disabled>쿠폰을 선택해주세요</option>
+										   		<option value="0">선택안함</option>
 											<% for(CouponInfo c : coupons) { %>
 											    	<option value="<%= c.getCouponSale() %>">쿠폰명 : <%= c.getCouponName() %> <%= c.getCouponSale() %>%</option>
 											<% } %>
 										<% } %>
                                     </select>
+                                    <input type="checkbox" id="checkUsingCoupon" disabled>
                                 </td>
                             </tr>
                             <tr>
@@ -272,7 +274,7 @@
                             			<div id="mileageContainer">
                             				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
 	                                    	<input type="number" name="mileageInput">
-	                                    	<button onclick="applyMileage()">적용하기</button>
+	                                    	<button id="applyMileage">적용하기</button>
 	                                    </div>
                                 	</td>
                             </tr>
@@ -290,8 +292,8 @@
                             <span id="discountPriceSpan">5000원</span>
                         </li>
                         <li>
-                            <span>총 배송비</span>
-                            <span>3500원</span>
+                            <span>적용 마일리지</span>
+                            <span id="mileageApplySpan">0</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
@@ -659,7 +661,7 @@
 	    	inputNewRadio.checked = true;
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click", e => {
 	    		e.target.disabled = true;
-	    		alert("기존 배송지를 선택할 수 없습니다. 기본 배송지를 설정하고 이용해주세요. 기본 배송지는 마이페이지에서 설정 가능합니다.");
+	    		alert("기본 배송지를 선택할 수 없습니다. 기본 배송지를 설정하고 이용해주세요. 기본 배송지는 마이페이지에서 설정 가능합니다.");
 	    		inputNewRadio.checked = true;
 	    	})
 	    <%} else {%>
@@ -760,7 +762,7 @@
    				}
    			}
    			
-   			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.
+   			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100) + "원";
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
     	<% } %>
@@ -769,9 +771,14 @@
     	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
     	const mileageInput = document.querySelector("input[name='mileageInput']");
     	mileageInput.addEventListener("keyup", e => {
-    		if(havingPoint < e.target.value) {
-    			alert("보유 마일리지 이상 입력할 수 없습니다.");
-    			mileageInput.value = havingPoint;
+    		let checking = document.querySelector("#checkUsingCoupon").checked;
+    		if(checking.checked) {
+	    		if(havingPoint < e.target.value) {
+	    			alert("보유 마일리지 이상 입력할 수 없습니다.");
+	    			mileageInput.value = havingPoint;
+	    		}
+    		} else {
+    			alert("쿠폰적용을 먼저해주세요.");
     		}
     	});
     </script>
