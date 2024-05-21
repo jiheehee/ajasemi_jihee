@@ -17,12 +17,21 @@
 		</thead>
 		<tbody>
 			<tr>
-				<td>1</td>
-				<td>제목이 어쩌구 저쩌구</td>
-				<td>2024.05.21</td>
+				<td id=num></td>
+				<td id=title></td>
+				<td id=content></td>				
 			</tr>
 		</tbody>
 	</table>
 </section>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+	var tdElements=document.querySelectorAll("td#num"); //td의 num요소 가져오기
+	tdElements.forEach((td,index)=>{
+		td.textContent=index+1;
+	});	
+});
+</script>
+
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
