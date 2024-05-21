@@ -105,6 +105,12 @@
 	            </div>
 	        </div>
 	        <div class="info">
+	            <label for="">이름</label><br>
+	            <div>
+	                <input type="text" name="custName">
+	            </div>
+	        </div>
+	        <div class="info">
 	            <label for="custNickname">닉네임</label><br>
 	            <div>
 	                <input type="text" name="custNickname">

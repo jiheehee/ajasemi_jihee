@@ -15,6 +15,7 @@ public class Customer {
 	private int custKey;
 	private String custEmail;
 	private String custPw;
+	private String custName;
 	private String custNickname;
 	private String custPhone;
 	private String custGender;
