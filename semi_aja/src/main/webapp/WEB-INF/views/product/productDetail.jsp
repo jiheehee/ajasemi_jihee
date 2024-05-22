@@ -40,6 +40,10 @@
         text-decoration-line: none;
         padding-left: 0.5%;
     }
+    
+    #product-footer-move>p{
+    	margin-bottom: 0;
+    }
 
     #product-main-content-div{
         margin: 0% 20% 0px 20%;
