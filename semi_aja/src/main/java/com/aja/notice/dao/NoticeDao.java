@@ -18,7 +18,7 @@ public class NoticeDao {
 		ResultSet rs=null;
 		List<Notice> result=new ArrayList<>();
 		try{
-			pstmt=conn.prepareStatement("SELECT * FROM NOTICE");
+			pstmt=conn.prepareStatement("SELECT * FROM NOTICE WHERE ");
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				Notice n=Notice.builder()
