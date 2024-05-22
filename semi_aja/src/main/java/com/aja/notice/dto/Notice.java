@@ -14,6 +14,5 @@ public class Notice {
 	private String noticeTitle;
 	private String noticeImage;
 	private String noticeContent;
-	private Date noticeEnrolldate;	
-	
+	private Date noticeEnrolldate;		
 }
