@@ -272,11 +272,12 @@
                             	</td>
                             		<td>
                             			<div id="mileageContainer">
-                            				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
-                            				<span id="afterApplySpan">적용후 마일리지 : <%= coupons.get(0).getCustPoint() %></span><br>
-	                                    	<input type="number" name="mileageInput">
-	                                    	<button id="applyMileage">적용</button>
-	                                    	<button id="cancelApplyMileage">적용취소</button>
+                            				<span>보유 포인트 : </span><span id="havingPointSpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span><br>
+                            				<span>적용후 포인트 : </span><span id="afterApplySpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span>
+	                                    	<input type="text" name="pointInput" placeholder="숫자만 입력해주세요">
+	                                    	<button id="applyPoint">포인트사용</button>
+	                                    	<button id="allPointApply">모든포인트사용</button>
+	                                    	<button id="cancelApplyPoint">포인트사용취소</button>
 	                                    </div>
                                 	</td>
                             </tr>
@@ -287,19 +288,19 @@
                     <ul>
                         <li>
                             <span>총 상품금액</span>
-                            <span id="totalPaySpan">60000원</span>
+                            <span id="totalPaySpan">60000</span><span>원</span>
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
-                            <span id="discountPriceSpan">5000원</span>
+                            <span id="discountPriceSpan">5000</span><span>원</span>
                         </li>
                         <li>
-                            <span>적용 마일리지</span>
-                            <span id="mileageApplySpan">0</span>
+                            <span>적용 포인트</span>
+                            <span id="pointApplySpan">0</span><span>포인트</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
-                            <span id="finalPriceSpan">51500</span>
+                            <span id="finalPriceSpan">51500</span><span>원</span>
                         </li>
                         <li>
                             <button id="payButton">결제하기</button>
@@ -740,8 +741,8 @@
     	document.querySelector("#choiceCoupon").addEventListener("change", e => {
     		let selectCouponDisRate = e.target.value;
     		let discountPrice = totalPay * (selectCouponDisRate / 100);
-    		document.querySelector("#discountPriceSpan").innerText = discountPrice + "원";
-    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice + "원";
+    		document.querySelector("#discountPriceSpan").innerText = discountPrice;
+    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice;
     		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
@@ -767,11 +768,67 @@
    			}
    			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
-   			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100) + "원";
-   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
+   			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
+   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
     	<% } %>
     	
-    	//마일리지 입력할때 보유 마일리지보다 더 마일리지를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
+    	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
+    	document.querySelector("input[name='pointInput']").addEventListener("keyup", e => {
+    		const numberingPoint = Number(document.querySelector("input[name='pointInput']").value);
+    		const pointInput = document.querySelector("input[name='pointInput']");
+    		let oriText = document.querySelector("input[name='pointInput']").value;
+    		const oriTextArr = Array.from(oriText);
+    		if(isNaN(numberingPoint)) {
+    			alert("숫자만 입력해주세요");
+    			for(let i = 0; i < oriTextArr.length; i++) {
+    				if(isNaN(oriTextArr[i])) {
+    					pointInput.value = oriText.substring(0, i);
+    					return;
+    				}
+    			}
+    		}
+    	})
+    	
+    	//마일리지를 적용하는 로직입니다.
+    	document.getElementById("applyPoint").addEventListener("click", e => {
+    		const afterApplySpan = document.getElementById("afterApplySpan");
+    		const wantUsingPointInput = document.querySelector("input[name='pointInput']");
+    		const wantUsingPoint = wantUsingPointInput.value;
+    		const pointApplySpan = document.getElementById("pointApplySpan");
+    		const afterApplyPoint = afterApplySpan.innerText;
+    		const finalPriceSpan = document.getElementById("finalPriceSpan");
+    		console.log(wantUsingPoint);
+    		console.log(afterApplyPoint);
+    		//보유포인트보다 더 많은값을 입력하면 막는 로직입니다.
+    		if(wantUsingPoint > afterApplyPoint) {
+    			alert("보유 마일리지보다 더 큰 값을 입력할 수 없습니다.");
+    			wantUsingPointInput.value = afterApplyPoint;
+    		} else if(wantUsingPoint > 0) {
+    			pointApplySpan.innerText = wantUsingPoint;
+    			finalPriceSpan.innerText -= wantUsingPoint;
+    			afterApplySpan.innerText -= wantUsingPoint;
+    			wantUsingPointInput.value = "";
+    		}
+    	})
+    	
+    	//포인트 전체적용 로직입니다.
+    	document.getElementById("allPointApply").addEventListener("click", e => {
+    		const marginPoint = Number(document.getElementById("afterApplySpan").innerText);
+    		document.getElementById("afterApplySpan").innerText -= marginPoint;
+    		document.getElementById("pointApplySpan").innerText = Number(document.getElementById("pointApplySpan").innerText) + marginPoint;
+    	})
+    	
+    	//포인트 적용 취소 로직입니다.
+    	document.getElementById("cancelApplyPoint").addEventListener("click", e => {
+    		const applyPoint = Number(document.getElementById("pointApplySpan").innerText);
+    		const afterApplyPoint = Number(document.getElementById("afterApplySpan").innerText);
+    		document.getElementById("pointApplySpan").innerText = 0;
+    		document.getElementById("afterApplySpan").innerText = applyPoint + afterApplyPoint;
+    	})
+    	
+    	
+    	
+    	<%-- <%-- //마일리지 입력할때 보유 마일리지보다 더 마일리지를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
     	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
     	const mileageInput = document.querySelector("input[name='mileageInput']");
     	mileageInput.addEventListener("keyup", e => {
@@ -790,6 +847,7 @@
     	
     	//DOMContent가 전부 load된 후에 실행하는 이벤트함수입니다.
     	document.addEventListener("DOMContentLoaded", function() {
+    		let havingPoint = <%= coupons.get(0).getCustPoint() %>;
     		
     		//마일리지 적용한것을 취소하는 로직입니다.
 	    	document.querySelector("#cancelApplyMileage").addEventListener("click", e => {
@@ -810,11 +868,13 @@
 	   			originPrice.innerText = parseInt(originPrice.innerText) - parseInt(e.target.previousElementSibling.value) + "원";
 	   			const afterApply = document.querySelector("#afterApplySpan");
 	   			afterApply.innerText = "적용후 포인트 : " + (havingPoint - wantApplyPoint);
+	   			//havingPoint = havingPoint - wantApplyPoint;
+	   			//console.log(havingPoint);
 	   			e.target.disabled = true;
-	    	})
+	    	}) --%>
 	    	
 	    	
-    	})
+    	//}) --%>
     	
     </script>
 
