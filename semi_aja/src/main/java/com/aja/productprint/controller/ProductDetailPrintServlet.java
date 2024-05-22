@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ProductListPrintServelt
+ * Servlet implementation class ProductDetailPrintServlet
  */
-@WebServlet("/product/productlistprint.do")
-public class ProductListPrintServelt extends HttpServlet {
+@WebServlet("/product/productdetailprint.do")
+public class ProductDetailPrintServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductListPrintServelt() {
+    public ProductDetailPrintServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,10 +27,8 @@ public class ProductListPrintServelt extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
 		
-		
-		
-		request.getRequestDispatcher("/WEB-INF/views/product/productList.jsp").forward(request, response);
 		
 	}
 

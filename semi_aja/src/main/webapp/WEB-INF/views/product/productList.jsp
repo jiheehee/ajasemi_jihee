@@ -134,7 +134,7 @@
             </div>
             <div id="product-wrap"> <!-- wrap 일정범위 넘어가면 아래줄로 넘김 -->
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
+                    <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                         <div class="product-img">
                             <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
                              alt="상품이미지" width="100%" height="100%">
@@ -142,12 +142,12 @@
                     </a>
                     <div class="product-msg">
                         <div class="product-msg-name">
-                            <a href="">
+                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                                 <div>
                                     <p>상품이름</p>
                                     <p>키워드</p>
                                 </div>
-                                <div >
+                                <div>
                                     <span>가격333</span>
                                     <span class="product-msg-option">옵션</span>
                                 </div>
@@ -175,7 +175,7 @@
                                     <p>상품이름</p>
                                     <p>키워드</p>
                                 </div>
-                                <div >
+                                <div>
                                     <span>가격333</span>
                                     <span class="product-msg-option">옵션</span>
                                 </div>
