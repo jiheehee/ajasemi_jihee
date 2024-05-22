@@ -9,6 +9,8 @@
 	         <tr>
 		        <td>상품번호</td>
 		        <td>상품명</td>
+		        <td>카테고리명</td>
+		        <td>키워드명</td>
 		        <td>향(옵션)</td>
 		        <td>사이즈(옵션)</td>
 		        <td>가격(옵션추가가격)</td>
@@ -24,12 +26,15 @@
        	    <tr>
        	    	<td><%=p2.getProdKey() %></td>
        	    	<td><%=p2.getProdName() %></td>
+       	    	<td><%=p2.getCateName() %></td>
+       	    	<td><%=p2.getKeywordName() %></td>
        	    	<td><%=p2.getOptionFlavor() %></td>
        	    	<td><%=p2.getOptionSize() %></td>
        	    	<td><%=p2.getOptionPrice()+p2.getProdPrice() %></td>
        	    	<td><%=p2.getProdStock()%></td>
        	    	<td><%=p2.getProdContent() %></td>
        	    	<td><%=p2.getProdDetailCon() %></td>
+       	    	<td><%=p2.getProdComponent() %></td>
        	    	<td><%=p2.getProdEnrollDate() %></td>
        	    	<td><%=p2.isProdDeleted()%></td>
        	    	<td>
