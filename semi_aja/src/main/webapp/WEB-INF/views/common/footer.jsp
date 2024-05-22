@@ -3,7 +3,6 @@
 
     <footer>
         <div id="footerMain">
-
             
             <!-- 주소 전화번호 등 -->
             <div id="footerMainLeft">
@@ -37,10 +36,10 @@
                     <a href=""><p>FAQ</p></a>
                 </div>
                 <div>
-                    <a href=""><p>INSTARGRAM</p></a>
+                    <a href="https://www.instagram.com/mango_ili/"><p>INSTARGRAM</p></a>
                 </div>
                 <div>
-                    <a href=""><p>NOTICE</p></a>
+                    <a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>NOTICE</p></a>
                 </div>
             </div>
 

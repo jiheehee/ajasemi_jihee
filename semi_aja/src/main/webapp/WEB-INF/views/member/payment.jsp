@@ -7,6 +7,7 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
+	
 %>
     <section>
         <div id="totalPaymentContainer">
@@ -628,6 +629,19 @@
 	    	document.querySelector("input[id='sample4_postcode']").value = "<%=defaultAddressInfo.getAddrPostcode()%>";
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
+	    	
+	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
+	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
+	    			method : "GET",
+	    			headers : {
+	    				"Content-type" : "application/json;charset=utf-8"
+	    			},
+	    		})
+	    		.then(response => response.text())
+	    		.then(data => {
+	    			console.log(data);
+	    		});
+	    	})
 	    <%}%>
 	    
 	    //배송 메세지 select태그 안에서 직접 입력하기를 선택했을때 입력받는 input태그를 나오게 하는 로직입니다.
@@ -786,53 +800,7 @@
     	
     	
     	
-    	<%-- <%-- //마일리지 입력할때 보유 마일리지보다 더 마일리지를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
-    	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
-    	const mileageInput = document.querySelector("input[name='mileageInput']");
-    	mileageInput.addEventListener("keyup", e => {
-    		let checking = document.querySelector("#checkUsingCoupon").checked;
-    		if(checking) {
-	    		if(havingPoint < e.target.value) {
-	    			alert("보유 마일리지 이상 입력할 수 없습니다.");
-	    			mileageInput.value = havingPoint;
-	    		}
-    		} else {
-    			alert("쿠폰적용을 먼저해주세요.");
-    			document.querySelector("#choiceCoupon").focus();
-    			document.querySelector("#choiceCoupon").style.border = "1px solid red";
-    		}
-    	});
     	
-    	//DOMContent가 전부 load된 후에 실행하는 이벤트함수입니다.
-    	document.addEventListener("DOMContentLoaded", function() {
-    		let havingPoint = <%= coupons.get(0).getCustPoint() %>;
-    		
-    		//마일리지 적용한것을 취소하는 로직입니다.
-	    	document.querySelector("#cancelApplyMileage").addEventListener("click", e => {
-	    		const appliedContentTag = document.querySelector("#mileageApplySpan");
-	    		const oriFinalPrice = document.querySelector("#finalPriceSpan");
-	    		const appliedPoint = appliedContentTag.innerText;
-	    		appliedContentTag.innerText = "0point";
-	    		oriFinalPrice.innerText = parseInt(oriFinalPrice.innerText) + parseInt(appliedPoint) + "원";
-	    		document.querySelector("#afterApplySpan").innerText = "적용후 포인트 : " + havingPoint;
-	    		document.querySelector("#applyMileage").disabled = false;
-	    	})
-	    	
-	    	//마일리지 적용하는 로직입니다.
-	    	document.querySelector("#applyMileage").addEventListener("click", e => {
-	    		const wantApplyPoint = e.target.previousElementSibling.value;
-	   			document.querySelector("#mileageApplySpan").innerText = e.target.previousElementSibling.value + "point";
-	   			const originPrice = document.querySelector("#finalPriceSpan");
-	   			originPrice.innerText = parseInt(originPrice.innerText) - parseInt(e.target.previousElementSibling.value) + "원";
-	   			const afterApply = document.querySelector("#afterApplySpan");
-	   			afterApply.innerText = "적용후 포인트 : " + (havingPoint - wantApplyPoint);
-	   			//havingPoint = havingPoint - wantApplyPoint;
-	   			//console.log(havingPoint);
-	   			e.target.disabled = true;
-	    	}) --%>
-	    	
-	    	
-    	//}) --%>
     	
     </script>
 
