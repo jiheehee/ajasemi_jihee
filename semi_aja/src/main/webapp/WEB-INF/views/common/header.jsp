@@ -94,8 +94,8 @@
 	                    <a href=""><p>Body</p></a>
 	                </div>
 	                <div>
-	                    <a href=""><p>About</p></a>
-	                </div>
+                   		<a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>Help</p></a>
+                	</div>
 	            </div>
 	
 	
