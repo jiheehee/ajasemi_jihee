@@ -33,7 +33,7 @@ public class ProductEnrollEndServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = getServletContext().getRealPath("/upload/product");
 		File dir = new File(path);
-		if(!dir.exists()) dir.mkdirs();
+		if(!dir.exists()) dir.mkdirs();	
 		int maxSize = 1024*1024*10;
 		String encode = "UTF-8";
 		
@@ -51,7 +51,7 @@ public class ProductEnrollEndServlet extends HttpServlet {
 		String component = mr.getParameter("prodComponent");
 		System.out.println(oriname);
 		System.out.println(rename);
-	
+		
 	}
 
 	/**

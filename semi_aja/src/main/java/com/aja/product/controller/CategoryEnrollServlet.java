@@ -33,9 +33,17 @@ public class CategoryEnrollServlet extends HttpServlet {
 		String name = request.getParameter("cateName");
 		int result = new CategoryService().enrollCategory(name);
 		
-		request.setAttribute("result", result);
-		request.getRequestDispatcher("/product/categorylist.do").forward(request, response);
-		//msg jsp만들어서 등록 성공/실패나눠서해보기
+		String msg="", loc="";
+		if(result>0) {
+			msg="등록 성공했습니다. :)";
+			loc = "/";
+		}else {
+			msg = "등록 실패했습니다. :(";
+			loc = "/";
+		}
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc",loc);
+		request.getRequestDispatcher("/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**

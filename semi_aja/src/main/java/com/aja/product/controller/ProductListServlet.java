@@ -33,7 +33,7 @@ public class ProductListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		List<Product2> list = new ProductService().searchAllProduct();
 		request.setAttribute("productList",list);
-		request.getRequestDispatcher("/WEB-INF/views/product/productList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/productList.jsp").forward(request, response);
 	}
 
 	/**

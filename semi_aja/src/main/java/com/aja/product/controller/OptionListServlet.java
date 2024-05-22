@@ -34,7 +34,7 @@ public class OptionListServlet extends HttpServlet {
 		List<ProdOption> list = new OptionService().searchAllOption();
 		
 		request.setAttribute("optionList", list);
-		request.getRequestDispatcher("/WEB-INF/views/product/optionEnroll.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/optionEnroll.jsp").forward(request, response);
 	}
 
 	/**
