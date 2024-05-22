@@ -81,6 +81,7 @@
       #headerTitle a{
           text-decoration-line: none;
           font-size: 20px;
+          color:black;
       }
 
       /* 장바구니,마이페이지,검색,메뉴? */

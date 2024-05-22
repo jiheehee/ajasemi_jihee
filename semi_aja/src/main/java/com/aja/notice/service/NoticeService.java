@@ -3,7 +3,7 @@ package com.aja.notice.service;
 import java.sql.Connection;
 import java.util.List;
 
-import com.aja.notice.dao.NoticeDao;
+import com.aja.notice.dao.NoticeDao2;
 import com.aja.notice.dto.Notice;
 
 import static com.aja.common.JDBCTemplate.close;
@@ -14,7 +14,7 @@ import static com.aja.common.JDBCTemplate.rollback;
 
 public class NoticeService {
 	
-	private NoticeDao dao=new NoticeDao();
+	private NoticeDao2 dao=new NoticeDao2();
 	public List<Notice> selectNotice(int cPage, int numPerPage) {
 		
 	//1. 공지사항 목록 조회
