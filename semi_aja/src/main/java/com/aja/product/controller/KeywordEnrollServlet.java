@@ -32,7 +32,7 @@ public class KeywordEnrollServlet extends HttpServlet {
 		int result = new CategoryService().enrollKeyword(name);
 		
 		request.setAttribute("result", result);
-		request.getRequestDispatcher("/product/categorylist.do").forward(request, response);
+		request.getRequestDispatcher("/admin/product/categorylist.do").forward(request, response);
 	}
 
 	/**

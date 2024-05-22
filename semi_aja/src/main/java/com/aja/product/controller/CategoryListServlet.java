@@ -37,7 +37,7 @@ public class CategoryListServlet extends HttpServlet {
 		List<Keyword> keywordList = new CategoryService().searchAllKeyword();
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("keywordList", keywordList);
-		request.getRequestDispatcher("/WEB-INF/views/product/categoryEnroll.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/categoryEnroll.jsp").forward(request, response);
 		
 	}
 

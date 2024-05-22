@@ -1,4 +1,4 @@
-package com.aja.product.model.dao;
+package com.aja.product.controller;
 
 import java.io.IOException;
 
