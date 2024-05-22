@@ -1,4 +1,4 @@
-package com.aja.productlist.controller;
+package com.aja.productprint.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

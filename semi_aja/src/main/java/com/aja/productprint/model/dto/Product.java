@@ -1,4 +1,4 @@
-package com.aja.productlist.model.dto;
+package com.aja.productprint.model.dto;
 
 import java.sql.Date;
 

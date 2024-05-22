@@ -1,4 +1,4 @@
-package com.aja.productlist.model.dao;
+package com.aja.productprint.model.dao;
 
 import java.io.FileReader;
 import java.io.IOException;

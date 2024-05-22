@@ -1,7 +1,8 @@
-package com.aja.productlist.service;
+package com.aja.productprint.service;
 
-import com.aja.productlist.model.dao.ProductListDao;
 import static com.aja.common.JDBCTemplate.*;
+
+import com.aja.productprint.model.dao.ProductListDao;
 
 public class ProductListService {
 
