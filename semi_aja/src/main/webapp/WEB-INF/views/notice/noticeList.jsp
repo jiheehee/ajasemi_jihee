@@ -2,9 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List,com.aja.notice.dto.Notice,java.text.SimpleDateFormat" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%
+<%-- <%
 	List<Notice> notices=(List<Notice>)request.getAttribute("notices");
-%>
+%> --%>
 <section id="notice-container">
 	<h2>공지사항</h2>
 	<table class="table table-striped">
@@ -16,22 +16,39 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
+		<%
+			List<Notice> notices=(List<Notice>)request.getAttribute("notices");
+			if(notices !=null){
+				for(int i=0; i<notices.size(); i++){
+					Notice notice=notices.get(i);
+		%>
+		<tr>
+			<td><%=(i+1)%></td>
+			<td><%= notice.getNoticeTitle()%></td>
+			<td><%= notice.getNoticeEnrolldate() %></td>
+		</tr>
+		<%
+				}
+			}
+		%>
+		
+		
+<!-- 			<tr>
 				<td id=num></td>
 				<td id=title></td>
 				<td id=content></td>				
-			</tr>
+			</tr> -->
 		</tbody>
 	</table>
 </section>
-<script>
+<!-- <script>
 document.addEventListener("DOMContentLoaded",function(){
 	var tdElements=document.querySelectorAll("td#num"); //td의 num요소 가져오기
 	tdElements.forEach((td,index)=>{
 		td.textContent=index+1;
 	});	
 });
-</script>
+</script> -->
 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
