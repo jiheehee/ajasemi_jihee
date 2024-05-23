@@ -5,9 +5,8 @@
 	
 	<style>
   	
-  	.hide{
-  		display:none;
-  	
+  	div.hide{
+  		display:none !important;
   	}	
   		
     .signup-form {
@@ -123,24 +122,32 @@
 		            <div>
 		                <input type="text" name="custName">
 		            </div>
+		            <div class="name-message hide">이름을 입력해주세요</div>
+		            
 		        </div>
 		        <div class="info">
 		            <label for="custNickname">닉네임</label><br>
 		            <div>
 		                <input type="text" name="custNickname">
 		            </div>
+		            <div class="nickname-message hide">닉네임을 입력해주세요</div>
+		          
 		        </div>
 		        <div class="info">
 		            <label for="custPhone">전화번호</label><br>
 		            <div>
 		                <input type="text" name="custPhone">
-		            </div>        
+		            </div>       
+		            <div class="phone-message hide">유효한 전화번호를 입력해주세요</div>
+		             
 		        </div>
 		        <div class="info">
 		            <label for="custBirth">생년월일</label><br>
 		            <div>
 		                <input type="text" name="custBirth">
 		            </div>
+		            <div class="birth-message hide">생년월일은 8자리로 입력해주세요</div>
+		            
 		        </div>
 		        <div class="info">
 		            <label for="custGender">성별</label><br>
@@ -150,6 +157,8 @@
 		                <input type="radio" name="custGender" id="M" value="M">
 		                <label for="M">남</label>
 		            </div>
+		            <div class="gender-message hide">성별을 선택해주세요</div>
+		            
 		        </div>
 		        <div class="info">
 		            <label for="sample6_postcode">주소</label><br>
@@ -160,6 +169,10 @@
 		                <input type="text" id="sample6_detailAddress" name="custDetailAddress" placeholder="상세주소">
 		                <input type="text" id="sample6_extraAddress" placeholder="참고항목">
 		            </div>
+		            <div class="address-message hide">주소를 입력해주세요</div>
+		        </div>
+		        <div>
+		        	<button type="submit">회원가입</button>
 		        </div>
 		    </div>
 		</div>
@@ -202,6 +215,8 @@
 	    }
 	</script>
 	<script>
+		// 유효성 검사 javascript
+		
 		// 아이디 정보 가져오기
 		const elInputId = document.querySelector("input[name='custEmailId']");
 		const elInputEmail = document.querySelector("select[name='emailDomain']");
@@ -216,9 +231,24 @@
 		const elMismatchMessage = document.querySelector(".mismatch-message");
 		const elStrongPasswordMessage = document.querySelector(".strongPassword-message")
 		
-		// 유효성 검사 javascript
+		// 이름 닉네임 전화번호 생년월일 성별 주소 가져오기
+		const elInputName = document.querySelector("input[name='custName']");
+	    const elNameMessage = document.querySelector(".name-message");
+	    const elInputNickname = document.querySelector("input[name='custNickname']");
+	    const elNicknameMessage = document.querySelector(".nickname-message");
+	    const elInputPhone = document.querySelector("input[name='custPhone']");
+	    const elPhoneMessage = document.querySelector(".phone-message");
+	    const elInputBirth = document.querySelector("input[name='custBirth']");
+	    const elBirthMessage = document.querySelector(".birth-message");
+	    const elInputGender = document.querySelectorAll("input[name='custGender']");
+	    const elGenderMessage = document.querySelector(".gender-message");
+	    const elInputPostcode = document.getElementById("sample6_postcode");
+	    const elInputAddress = document.getElementById("sample6_address");
+	    const elAddressMessage = document.querySelector(".address-message");
+
+	
 		function idLength(value) {
-  			return value.length >= 4 && value.length <= 12
+				return value.length >= 4 && value.length <= 12
 		}
 		
 		function onlyNumberAndEnglish(str) {
@@ -233,58 +263,82 @@
 			return password1 === password2;
 		}
 		
-		
-		console.dir(document.querySelector("input[name='custEmailId']"));
-		
+	
 		document.querySelector("input[name='custEmailId']").addEventListener("keyup",e=>{
 			document.querySelector("select[name='emailDomain']").addEventListener("change",e=>{
 				const emailId = e.target.value;
 				const emailDomain = e.target.value;
 				console.log(emailId);
 				
-				if(email.length>0 && emailDomain != 'none'){
-					if(!onlyNumberAndEnglish(emailId)){
-						elSuccessMessage.classList.add('hide');
-						elFailureMessage.classList.add('hide');
-						elFailureMessageTwo.classList.remove('hide');
-						elFailureMessageThree.classList.add('hide');
-					}
-				}
+				
 			})
 		})
-		 /* function validateEmail() {
-		        const emailId = elInputId.value;
-		        const emailDomain = elInputEmail.value;
+		
+		// 이메일 아이디와 도메인 유효성 검사
+	    elInputId.addEventListener("input", () => {
+	        const emailId = elInputId.value;
+	        const emailDomain = elInputEmail.value;
 
-		        // 이메일 아이디와 도메인이 모두 입력된 경우에만 유효성 검사 수행
-		        if (emailId.length > 0 && emailDomain !== "none") {
-		            // 영어 또는 숫자 외의 값을 입력한 경우
-		            if (!onlyNumberAndEnglish(emailId)) {
-		                elSuccessMessage.classList.add('hide');
-		                elFailureMessage.classList.add('hide');
-		                elFailureMessageTwo.classList.remove('hide');
-		            } else if (!idLength(emailId)) {
-		                elSuccessMessage.classList.add('hide');
-		                elFailureMessage.classList.remove('hide');
-		                elFailureMessageTwo.classList.add('hide');
-		            } else(idLength(elInputId.value)&&onlyNumberAndEnglish(elInputId.value)) {
-		                // 모든 유효성 검사를 통과한 경우
-		                elSuccessMessage.classList.remove('hide');
-		                elFailureMessage.classList.add('hide');
-		                elFailureMessageTwo.classList.add('hide');
-		            } else{
-		            	elSuccessMessage.classList.remove('hide');
-		                elFailureMessage.classList.add('hide');
-		                elFailureMessageTwo.classList.add('hide');
-		            }
-		        } 
-		    }
+	        // 이메일 아이디 길이 검사
+			if (idLength(emailId)) {
+	            elFailureMessage.classList.add('hide');
+	            if (onlyNumberAndEnglish(emailId)) {
+	                elFailureMessageTwo.classList.add('hide');
+	                if (emailDomain !== "none") {
+	                    elFailureMessageThree.classList.add('hide');
+	                    elSuccessMessage.classList.remove('hide');
+	                } else {
+	                    elFailureMessageThree.classList.remove('hide');
+	                    elSuccessMessage.classList.add('hide');
+	                }
+	            } else {
+	                elFailureMessageTwo.classList.remove('hide');
+	                elSuccessMessage.classList.add('hide');
+	            }
+	        } else {
+	            elFailureMessage.classList.remove('hide');
+	            elSuccessMessage.classList.add('hide');
+	        }
+      	});
 
-		    // custEmailId 입력시 유효성 검사
-		    elInputId.onkeyup = validateEmail;
+	    elInputEmail.addEventListener("change", () => {
+	        const emailId = elInputId.value;
+	        const emailDomain = elInputEmail.value;
+	
+	        if (emailDomain !== "none") {
+	            elFailureMessageThree.classList.add('hide');
+	            if (idLength(emailId) && onlyNumberAndEnglish(emailId)) {
+	                elSuccessMessage.classList.remove('hide');
+	            }
+	        } else {
+	            elFailureMessageThree.classList.remove('hide');
+	            elSuccessMessage.classList.add('hide');
+	        }
+	    });
 
-		    // emailDomain 선택 변경시 유효성 검사
-		    elInputEmail.onchange = validateEmail; */
+	    // 비밀번호 유효성 검사
+	    elInputPassword.addEventListener("input", () => {
+        	const password = elInputPassword.value;
+
+	        if (strongPassword(password)) {
+	            elStrongPasswordMessage.classList.add('hide');
+	        } else {
+	            elStrongPasswordMessage.classList.remove('hide');
+	        }
+	    });
+
+	    // 비밀번호 확인 일치 검사
+	    elInputPasswordCheck.addEventListener("input", () => {
+	        const password = elInputPassword.value;
+	        const passwordCheck = elInputPasswordCheck.value;
+	
+	        if (isMatch(password, passwordCheck)) {
+	            elMismatchMessage.classList.add('hide');
+	        } else {
+	            elMismatchMessage.classList.remove('hide');
+	        }
+	    });
+
 	</script>
 
 
