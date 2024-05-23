@@ -17,6 +17,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.aja.payment.model.dto.Order;
+import com.google.gson.Gson;
+
 /**
  * Servlet implementation class KakaoTestServlet
  */
@@ -42,6 +45,10 @@ public class KakaoPayServlet extends HttpServlet {
         
         String jsonData = sb.toString();
         System.out.println(jsonData);
+        
+        Gson orderGson = new Gson();
+        Order orderInfo = orderGson.fromJson(jsonData, Order.class);
+        
       
         JSONParser parser = new JSONParser();
         try {
