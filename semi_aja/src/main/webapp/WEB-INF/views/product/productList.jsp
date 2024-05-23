@@ -184,6 +184,12 @@
 
 
 <script>
+
+	/* console.log(document.getElementById("product-wrap").innerHTML); */
+	console.log(document.getElementsByClassName("products")[0].innerHTML);
+	var copydiv = "<div class='products'>"+document.getElementsByClassName("products")[0].innerText+"</div>";
+
+
 	$(document).ready(function() {
 		var cPage = 1; //현재페이지
 		var loading = false;
@@ -200,7 +206,7 @@
 				success:function(data){
 					/* consloe.log(data) */
 					if(cPage>1){
-					$("#product-wrap").append(data);
+					$("#product-wrap").append(copydiv);
 					console.log(cPage);
 					}
 					loading = false;						
