@@ -21,4 +21,13 @@ public class PaymentService {
 		close(conn);
 		return result;
 	}
+	
+	public int couponStateUpdate(int dcKey, int custKey) {
+		Connection conn = getConnection();
+		int result = dao.couponStateUpdate(conn, dcKey, custKey);
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
+	}
 }

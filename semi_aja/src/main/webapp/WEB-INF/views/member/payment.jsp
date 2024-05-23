@@ -850,7 +850,7 @@
        		let dcKey;
        		const selectCoupon = document.getElementById("choiceCoupon");
 			if(selectCoupon.selectedIndex > 1) {
-				dcKey = document.querySelectorAll("input[name='getDcKey']")[e.target.selectedIndex - 2];
+				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
 			}
 			
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {

@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.aja.payment.model.dto.Order;
 import com.aja.payment.service.PaymentService;
@@ -55,8 +56,15 @@ public class PaymentSuccessServlet extends HttpServlet {
 							.orderPhone(request.getParameter("orderPhone"))
 							.orderRequest(request.getParameter("orderRequest"))
 							.build();
+		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
 		request.setAttribute("orderInfo", orderInfo);
+		HttpSession session = request.getSession();
+		int custKey = (int)session.getAttribute("cust_key");
+		
 		new PaymentService().updatePaymentInfo(orderInfo);
+		new PaymentService().couponStateUpdate(dcKey, custKey);
+		request.getRequestDispatcher(request.getContextPath() + "/WEB-INF/views/payment/paysuccess.jsp").forward(request, response);
+		
 		
 	}
 
