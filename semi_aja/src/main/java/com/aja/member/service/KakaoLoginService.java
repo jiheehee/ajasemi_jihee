@@ -153,6 +153,7 @@ public class KakaoLoginService {
 
 				// email 이 이미 디비에 저장되어 있을 경우 
 			}
+			close(cn);
 			
 		} catch(IOException e) {
 			e.printStackTrace();
