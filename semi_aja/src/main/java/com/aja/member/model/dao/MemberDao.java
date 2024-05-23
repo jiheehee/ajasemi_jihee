@@ -15,7 +15,7 @@ import java.util.Properties;
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
-import com.aja.member.model.dto.Point;
+import com.aja.member.model.dto.KakaoDTO;
 import com.aja.member.model.dto.ProductInfo;
 
 public class MemberDao {
@@ -42,12 +42,34 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(prop.getProperty("signUp"));
 			pstmt.setString(1, ct.getCustEmail());
 			pstmt.setString(2, ct.getCustPw());
-			pstmt.setString(3, ct.getCustNickname());
-			pstmt.setString(4, ct.getCustPhone());
-			pstmt.setString(5, ct.getCustGender());
-			pstmt.setString(6, ct.getCustBirth());
-			pstmt.setString(7, ct.getCustAddress());
-			pstmt.setString(8, ct.getCustDetailAddress());
+			pstmt.setString(3, ct.getCustName());
+			pstmt.setString(4, ct.getCustNickname());
+			pstmt.setString(5, ct.getCustPhone());
+			pstmt.setString(6, ct.getCustGender());
+			pstmt.setString(7, ct.getCustBirth());
+			pstmt.setString(8, ct.getCustAddress());
+			pstmt.setString(9, ct.getCustDetailAddress());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int signUp(Connection conn, KakaoDTO ct) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+//		String sql = "INSERT INTO CUSTOMER(CUST_KEY, CUST_EMAIL, CUST_NICKNAME, CUST_DELETE, CUST_ENROLL_DATE) VALUES (CUST_SEQ.NEXTVAL,?,?,DEFAULT, DEFAULT)";
+		// 리소스파일(프로펄티즈파일) 만들어서 넣기 ~
+		try {
+			pstmt = conn.prepareStatement(prop.getProperty("signUpKakao"));
+			pstmt.setString(1, ct.getCustEmail());
+			pstmt.setString(2, ct.getCustNickname());
 			
 			result = pstmt.executeUpdate();
 			
@@ -78,11 +100,16 @@ public class MemberDao {
 										.addrRequest(rs.getString("addr_request"))
 										.build();
 			}
+			
 		} catch(SQLException e) {
+			
 			e.printStackTrace();
+			
 		} finally {
+			
 			close(rs);
 			close(pstmt);
+			
 		}
 		return defaultAddress;
 	}
@@ -199,6 +226,7 @@ public class MemberDao {
 				.custPhone(rs.getString("cust_phone"))
 				.custPw(rs.getString("cust_pw"))
 				.custDelete(rs.getString("cust_delete"))
+				.custName(rs.getString("cust_name"))
 				.build();
 	}
 }

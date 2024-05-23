@@ -228,7 +228,9 @@
                     <button type="submit" onclick="login();">LOGIN</button>
                 </div>
                 <div id="kakao-login">
-                    <button type="button" id="kakao" onclick="loginWithKakao();">KAKAO LOGIN</button>
+                    <a href="https://kauth.kakao.com/oauth/authorize?client_id=cb27b0d18235587769af0f402ac2e929&redirect_uri=http://localhost:9090/semi_aja/member/kakaologin.do&response_type=code">
+                    	<button type="button">KAKAO LOGIN</button>
+                    </a>
                 </div>
             </form>
             </div>

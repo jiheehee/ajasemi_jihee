@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.CouponInfo;
@@ -34,6 +35,8 @@ public class ChangePayViewServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int memberNo = Integer.parseInt(request.getParameter("memberNo"));
+		HttpSession session = request.getSession();
+		session.setAttribute("cust_key", memberNo);
 		
 		Address defaultAddress = new MemberService().getDefaultAddress(memberNo);
 		System.out.println(defaultAddress);

@@ -1,7 +1,10 @@
 package com.aja.product.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.aja.product.model.dto.Product;
+import com.aja.product.service.ProductService;
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -32,14 +38,11 @@ public class ProductEnrollEndServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = getServletContext().getRealPath("/upload/product");
-		File dir = new File(path);
-		if(!dir.exists()) dir.mkdirs();	
+		System.out.println(path);
 		int maxSize = 1024*1024*10;
 		String encode = "UTF-8";
-		
+			
 		MultipartRequest mr = new MultipartRequest(request, path,maxSize,encode,new DefaultFileRenamePolicy());
-		String oriname = mr.getOriginalFileName("upfiles");
-		String rename = mr.getFilesystemName("upfiles");
 
 		int cateKey = Integer.parseInt(mr.getParameter("prodCategory"));
 		int keywordKey = Integer.parseInt(mr.getParameter("prodKeyword"));
@@ -49,8 +52,57 @@ public class ProductEnrollEndServlet extends HttpServlet {
 		int stock = Integer.parseInt(mr.getParameter("prodStock"));
 		String detailCon = mr.getParameter("prodDetailCon");
 		String component = mr.getParameter("prodComponent");
-		System.out.println(oriname);
-		System.out.println(rename);
+		
+		Product p= Product.builder()
+				.cateKey(cateKey)
+				.keywordKey(keywordKey)
+				.prodName(name)
+				.prodPrice(price)
+				.prodComponent(component)
+				.prodContent(content)
+				.prodDetailCon(detailCon)
+				.prodStock(stock)
+				.build();
+		
+		int[] result = new ProductService().enrollProduct(p); 
+		int fileInsertResult = 0;
+		Enumeration<String>names = mr.getFileNames();
+		List<Map<String,String>> files = new ArrayList();
+		while(names.hasMoreElements()) {
+			String fileName = (String) names.nextElement();
+			String originalFileName = mr.getOriginalFileName(fileName);
+			String fileSystemName = mr.getFilesystemName(fileName);
+			files.add(Map.of("fileName",fileName,"originalFileName",originalFileName));
+			System.out.println(files);
+		}
+		
+		if(result[0]>0) {
+			fileInsertResult = new ProductService().enrollImages(mr,result[1]);
+		}
+			
+		new Gson().toJson(Map.of("result",true),response.getWriter());
+//			String msg="", loc="";
+//			if(fileInsertResult>0) {
+//				msg="상품등록 성공했습니다. :)";
+//				loc = "/";
+//			}else {
+//				msg = "상품이미지등록 실패했습니다. :(";
+//				loc = "/";
+//			}
+//			request.setAttribute("msg", msg);
+//			request.setAttribute("loc",loc);
+//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//		}
+//		else {
+//			String msg="", loc="";
+//				msg = "삭제 실패했습니다. :(";
+//				loc = "/";
+//			request.setAttribute("msg", msg);
+//			request.setAttribute("loc",loc);
+//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//		}
+			
+			
 		
 	}
 
