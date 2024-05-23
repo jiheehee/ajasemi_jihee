@@ -1,25 +1,31 @@
 package com.aja.product.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.aja.product.model.dto.Category;
+import com.aja.product.model.dto.Keyword;
+import com.aja.product.model.dto.Product2;
 import com.aja.product.service.CategoryService;
+import com.aja.product.service.ProductService;
 
 /**
- * Servlet implementation class KeywordEnrollServlet
+ * Servlet implementation class UpdateProductServlet
  */
-@WebServlet("/product/keywordenroll.do")
-public class KeywordEnrollServlet extends HttpServlet {
+@WebServlet("/product/updateproduct.do")
+public class UpdateProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public KeywordEnrollServlet() {
+    public UpdateProductServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,11 +34,14 @@ public class KeywordEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("keywordName");
-		int result = new CategoryService().enrollKeyword(name);
-		
-		request.setAttribute("result", result);
-		request.getRequestDispatcher("/admin/product/categorylist.do").forward(request, response);
+		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
+		Product2 p = new ProductService().selectProduct(prodKey);
+		List<Category> categoryList = new CategoryService().searchAllCategory();
+		List<Keyword> keywordList = new CategoryService().searchAllKeyword();
+		request.setAttribute("categoryList", categoryList);
+		request.setAttribute("keywordList", keywordList);
+		request.setAttribute("Product", p);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/updateProduct.jsp").forward(request, response);
 	}
 
 	/**

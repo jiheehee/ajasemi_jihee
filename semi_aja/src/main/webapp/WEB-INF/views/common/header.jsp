@@ -33,7 +33,7 @@
             <!-- 제품,About -->
             <div id="headerTitle">
                 <div>
-                    <a href=""><p>HandCream</p></a>
+                    <a href="<%=request.getContextPath()%>/product/productlistprint.do"><p>HandCream</p></a>
                 </div>
                 <div>
                     <a href=""><p>Perfume</p></a>
@@ -50,6 +50,9 @@
             <!-- 장바구니,마이페이지,검색,메뉴? -->
             <!-- 수정본 학원캄퓨터에 있음 -->
             <div id="headerMypage">
+            	<div>
+            		<a href="<%=request.getContextPath() %>/product/productlist.do">관</a>
+            	</div>
                 <div>
                     <a href=""><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
                         alt="마이페이지" height="25"></a>
@@ -91,8 +94,8 @@
 	                    <a href=""><p>Body</p></a>
 	                </div>
 	                <div>
-	                    <a href=""><p>About</p></a>
-	                </div>
+                   		<a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>Help</p></a>
+                	</div>
 	            </div>
 	
 	

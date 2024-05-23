@@ -1,60 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/views/common/header.jsp" %>
 <%@ page import = "com.aja.member.model.dto.Address, java.util.List, com.aja.member.model.dto.ProductInfo
 , com.aja.member.model.dto.CouponInfo" %>
 <%
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
+	
 %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>결제창</title>
-</head>
-<body>
-    <header>
-        <div id="headerMain">
-            <div id="headerLogo">
-                <a href=""><img src="data:image/png;base64,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" 
-                    alt="logo" height="50" ></a>
-            </div>
-            <div id="headerTitle">
-                <div>
-                    <a href=""><p>handCream</p></a>
-                </div>
-                <div>
-                    <a href=""><p>Perfume</p></a>
-                </div>
-                <div>
-                    <a href=""><p>Body</p></a>
-                </div>
-                <div>
-                    <a href=""><p>About</p></a>
-                </div>
-            </div>
-            <div id="headerMypage">
-                <div>
-                    <a href=""><img src="https://i.pinimg.com/236x/db/a3/12/dba312c2f4808382c9086f42cfdfcd88.jpg" 
-                        alt="장바구니" height="35"></a>
-                </div>
-                <div>
-                    <a href=""><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
-                        alt="마이페이지" height="35"></a>
-                </div>
-                <div>
-                    <a href=""><img src="https://i.pinimg.com/236x/55/da/93/55da9379cadae5a06c4f4efd06ffffde.jpg" 
-                        alt="검색" height="35"></a>
-                </div>
-                <div>
-                    <a href=""><img src="https://i.pinimg.com/236x/24/d8/9b/24d89b2ebde80c8098f7525f55267686.jpg" 
-                        alt="메뉴?" height="35"></a>
-                </div>
-            </div>
-        </div>
-    </header>
     <section>
         <div id="totalPaymentContainer">
             <div id="deliAddContainer">
@@ -254,7 +208,7 @@
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
                                         <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
-											    <option disabled>선택 가능한 쿠폰이 없습니다.</option>
+											    <option>선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
 										   		<option disabled>쿠폰을 선택해주세요</option>
 										   		<option value="0">선택안함</option>
@@ -272,9 +226,12 @@
                             	</td>
                             		<td>
                             			<div id="mileageContainer">
-                            				<p>보유 마일리지 : <%= coupons.get(0).getCustPoint() %></p>
-	                                    	<input type="number" name="mileageInput">
-	                                    	<button id="applyMileage">적용하기</button>
+                            				<span>보유 포인트 : </span><span id="havingPointSpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span><br>
+                            				<span>적용후 포인트 : </span><span id="afterApplySpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span>
+	                                    	<input type="text" name="pointInput" placeholder="숫자만 입력해주세요">
+	                                    	<button id="applyPoint">포인트사용</button>
+	                                    	<button id="allPointApply">모든포인트사용</button>
+	                                    	<button id="cancelApplyPoint">포인트사용취소</button>
 	                                    </div>
                                 	</td>
                             </tr>
@@ -285,19 +242,19 @@
                     <ul>
                         <li>
                             <span>총 상품금액</span>
-                            <span id="totalPaySpan">60000원</span>
+                            <span id="totalPaySpan">60000</span><span>원</span>
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
-                            <span id="discountPriceSpan">5000원</span>
+                            <span id="discountPriceSpan">5000</span><span>원</span>
                         </li>
                         <li>
-                            <span>적용 마일리지</span>
-                            <span id="mileageApplySpan">0</span>
+                            <span>적용 포인트</span>
+                            <span id="pointApplySpan">0</span><span>포인트</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
-                            <span id="finalPriceSpan">51500</span>
+                            <span id="finalPriceSpan">51500</span><span>원</span>
                         </li>
                         <li>
                             <button id="payButton">결제하기</button>
@@ -672,6 +629,19 @@
 	    	document.querySelector("input[id='sample4_postcode']").value = "<%=defaultAddressInfo.getAddrPostcode()%>";
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
+	    	
+	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
+	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
+	    			method : "GET",
+	    			headers : {
+	    				"Content-type" : "application/json;charset=utf-8"
+	    			},
+	    		})
+	    		.then(response => response.text())
+	    		.then(data => {
+	    			console.log(data);
+	    		});
+	    	})
 	    <%}%>
 	    
 	    //배송 메세지 select태그 안에서 직접 입력하기를 선택했을때 입력받는 input태그를 나오게 하는 로직입니다.
@@ -738,8 +708,9 @@
     	document.querySelector("#choiceCoupon").addEventListener("change", e => {
     		let selectCouponDisRate = e.target.value;
     		let discountPrice = totalPay * (selectCouponDisRate / 100);
-    		document.querySelector("#discountPriceSpan").innerText = discountPrice + "원";
-    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice + "원";
+    		document.querySelector("#discountPriceSpan").innerText = discountPrice;
+    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice;
+    		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
     	
@@ -759,28 +730,78 @@
    			for(let i = 1; i < couponSelect.length; i++) {
    				if(couponSelect[i].value == num) {
    					couponSelect[i].selected = true;
+   					document.querySelector("#checkUsingCoupon").checked = true;
    				}
    			}
    			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
-   			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100) + "원";
-   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + "원";
+   			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
+   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
     	<% } %>
     	
-    	//마일리지 입력할때 보유 마일리지보다 더 많은 수를 입력했을경우 alert로 알려주고 마일리지 입력란에 보유 마일리지의 최대치를 입력해줍니다.
-    	const havingPoint = <%= coupons.get(0).getCustPoint() %>;
-    	const mileageInput = document.querySelector("input[name='mileageInput']");
-    	mileageInput.addEventListener("keyup", e => {
-    		let checking = document.querySelector("#checkUsingCoupon").checked;
-    		if(checking.checked) {
-	    		if(havingPoint < e.target.value) {
-	    			alert("보유 마일리지 이상 입력할 수 없습니다.");
-	    			mileageInput.value = havingPoint;
-	    		}
-    		} else {
-    			alert("쿠폰적용을 먼저해주세요.");
+    	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
+    	document.querySelector("input[name='pointInput']").addEventListener("keyup", e => {
+    		const numberingPoint = Number(document.querySelector("input[name='pointInput']").value);
+    		const pointInput = document.querySelector("input[name='pointInput']");
+    		let oriText = document.querySelector("input[name='pointInput']").value;
+    		const oriTextArr = Array.from(oriText);
+    		if(isNaN(numberingPoint)) {
+    			alert("숫자만 입력해주세요");
+    			for(let i = 0; i < oriTextArr.length; i++) {
+    				if(isNaN(oriTextArr[i])) {
+    					pointInput.value = oriText.substring(0, i);
+    					return;
+    				}
+    			}
     		}
-    	});
+    	})
+    	
+    	//마일리지를 적용하는 로직입니다.
+    	document.getElementById("applyPoint").addEventListener("click", e => {
+    		const afterApplySpan = document.getElementById("afterApplySpan");
+    		const wantUsingPointInput = document.querySelector("input[name='pointInput']");
+    		const wantUsingPoint = wantUsingPointInput.value;
+    		const pointApplySpan = document.getElementById("pointApplySpan");
+    		const afterApplyPoint = afterApplySpan.innerText;
+    		const finalPriceSpan = document.getElementById("finalPriceSpan");
+    		console.log(wantUsingPoint);
+    		console.log(afterApplyPoint);
+    		//보유포인트보다 더 많은값을 입력하면 막는 로직입니다.
+    		if(wantUsingPoint > afterApplyPoint) {
+    			alert("보유 마일리지보다 더 큰 값을 입력할 수 없습니다.");
+    			wantUsingPointInput.value = afterApplyPoint;
+    			if(afterApplyPoint == 0) {
+    				wantUsingPointInput.value = "";
+    			}
+    		} else if(wantUsingPoint > 0) {
+    			pointApplySpan.innerText = wantUsingPoint;
+    			finalPriceSpan.innerText -= wantUsingPoint;
+    			afterApplySpan.innerText -= wantUsingPoint;
+    			wantUsingPointInput.value = "";
+    		}
+    	})
+    	
+    	//포인트 전체적용 로직입니다.
+    	document.getElementById("allPointApply").addEventListener("click", e => {
+    		const marginPoint = Number(document.getElementById("afterApplySpan").innerText);
+    		document.getElementById("afterApplySpan").innerText -= marginPoint;
+    		document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) - marginPoint;
+    		document.getElementById("pointApplySpan").innerText = Number(document.getElementById("pointApplySpan").innerText) + marginPoint;
+    	})
+    	
+    	//포인트 적용 취소 로직입니다.
+    	document.getElementById("cancelApplyPoint").addEventListener("click", e => {
+    		const applyPoint = Number(document.getElementById("pointApplySpan").innerText);
+    		const afterApplyPoint = Number(document.getElementById("afterApplySpan").innerText);
+    		document.getElementById("pointApplySpan").innerText = 0;
+    		document.getElementById("afterApplySpan").innerText = applyPoint + afterApplyPoint;
+    		document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) + applyPoint; 
+    	})
+    	
+    	
+    	
+    	
+    	
     </script>
 
     <!-- 카카오페이 결제 API script -->

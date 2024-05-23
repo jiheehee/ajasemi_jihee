@@ -40,7 +40,8 @@ public class ProductEnrollServlet extends HttpServlet {
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("keywordList", keywordList);
 		request.setAttribute("optionList", optionList);
-		request.getRequestDispatcher("/WEB-INF/views/product/productEnroll.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/productEnroll.jsp").forward(request, response);
+		
 	}
 
 	/**
