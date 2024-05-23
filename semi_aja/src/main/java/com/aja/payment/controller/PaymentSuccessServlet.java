@@ -30,19 +30,19 @@ public class PaymentSuccessServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("결제성공");
-		System.out.println(request.getParameter("orderInfo"));
-		String custKey = request.getParameter("custKey");
-		int orderPrice = Integer.parseInt(request.getParameter("orderPrice"));
-		int orderSale = Integer.parseInt(request.getParameter("orderSale"));
-		String orderPayoption = request.getParameter("orderPayoption");
-		String orderName = request.getParameter("orderName");
-		String orderPostcode = request.getParameter("orderPostcode");
-		String orderAddress = request.getParameter("orderAddress");
-		String orderDetailaddr = request.getParameter("orderDetailaddr");
-		String orderPhone = request.getParameter("orderPhone");
-		String orderRequest = request.getParameter("orderRequest");
-		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
+//		System.out.println("결제성공");
+//		System.out.println(request.getParameter("orderInfo"));
+//		String custKey = request.getParameter("custKey");
+//		int orderPrice = Integer.parseInt(request.getParameter("orderPrice"));
+//		int orderSale = Integer.parseInt(request.getParameter("orderSale"));
+//		String orderPayoption = request.getParameter("orderPayoption");
+//		String orderName = request.getParameter("orderName");
+//		String orderPostcode = request.getParameter("orderPostcode");
+//		String orderAddress = request.getParameter("orderAddress");
+//		String orderDetailaddr = request.getParameter("orderDetailaddr");
+//		String orderPhone = request.getParameter("orderPhone");
+//		String orderRequest = request.getParameter("orderRequest");
+//		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
 		Order orderInfo = Order.builder()
 							.custKey(Integer.parseInt(request.getParameter("custKey")))
 							.orderPrice(Integer.parseInt(request.getParameter("orderPrice")))
@@ -55,6 +55,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 							.orderPhone(request.getParameter("orderPhone"))
 							.orderRequest(request.getParameter("orderRequest"))
 							.build();
+		request.setAttribute("orderInfo", orderInfo);
 		new PaymentService().updatePaymentInfo(orderInfo);
 		
 	}
