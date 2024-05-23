@@ -177,15 +177,16 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT, DC_KEY "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
-											+ "WHERE CUST_KEY = ?");
+											+ "WHERE CUST_KEY = ? AND COUPON_USED = 'N'");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				coupons.add(CouponInfo.builder()
+								.dcKey(rs.getInt("dc_key"))
 								.couponName(rs.getString("coupon_name"))
 								.couponSale(rs.getInt("coupon_sale"))
 								.couponEnddate(rs.getDate("coupon_enddate"))
