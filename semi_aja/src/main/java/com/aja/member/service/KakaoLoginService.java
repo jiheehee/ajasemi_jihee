@@ -134,7 +134,7 @@ public class KakaoLoginService {
 			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 			
-			Customer customer = new MemberDao().searchMemberById(getConnection(), email);
+			Customer customer = new MemberDao().searchMemberById(cn, email);
 			// 카카오 계정 이메일이 이미 db에 존재하는지 확인 !! 
 			
 			if(customer==null) {
@@ -144,7 +144,7 @@ public class KakaoLoginService {
 				if(rs>0) {
 					commit(cn);
 				} else {
-					rollback(getConnection());
+					rollback(cn);
 				}
 				
 			} else {
