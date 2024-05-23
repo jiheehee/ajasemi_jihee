@@ -1,11 +1,15 @@
 package com.aja.productprint.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.aja.productprint.model.dto.Product;
+import com.aja.productprint.service.ProductDetailService;
 
 /**
  * Servlet implementation class ProductDetailPrintServlet
@@ -27,6 +31,15 @@ public class ProductDetailPrintServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		
+		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
+		System.out.println(prodKey);
+		
+		Product result = new ProductDetailService().selectDetailProduct(prodKey);
+		
+		request.setAttribute("product", result);
+		
+		
 		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
 		
 		

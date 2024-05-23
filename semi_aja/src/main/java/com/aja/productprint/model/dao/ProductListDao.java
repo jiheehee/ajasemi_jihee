@@ -100,7 +100,7 @@ public class ProductListDao {
 				.keywordName(rs.getString("KEYWORD_NAME"))
 				.cateName(rs.getString("CATE_NAME"))
 				.optionFlavor(rs.getString("OPTION_FLAVOR"))
-				.optionSize(rs.getString("OPTION_SIZE"))
+				.optionSize(rs.getInt("OPTION_SIZE"))
 				.optionPrice(rs.getInt("OPTION_PRICE"))
 				.build();
 	}

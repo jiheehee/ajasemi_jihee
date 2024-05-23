@@ -2,7 +2,17 @@
     pageEncoding="UTF-8"%>
 
 <%@ include file = "/WEB-INF/views/common/header.jsp"  %>
-    
+<%@	page import="java.text.DecimalFormat"%>
+<%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
+<%
+	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
+	Product product = (Product)request.getAttribute("product");
+%>
+
+<%
+	DecimalFormat df = new DecimalFormat("###,###"); //숫자 ,표시
+	int price = product.getProdPrice();		//사용하고 싶은거 골라서 넣으삼
+%>
 
 <style>
     body{
@@ -417,17 +427,14 @@
                 <div id="product-main-content-div">
                     <div>  <!-- 상품 정보 -->
                         <div>
-                            <h2>상품 이름</h2>
-                            <p>가격</p>
-                            <p>키워드</p>
+                            <h3><%=product.getProdName()%></h3>
+                            <p>₩ <%=df.format(price)%></p>
+                            <p><%=product.getKeywordName()%></p>
                         </div>
-                        <p>
-                            제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명
-                            제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명제품 설명
-                        </p>
+                        <p><%=product.getProdContent()%></p>
                     </div>
 
-                    <div id="product-main-content-list">  <!-- 관련상품 출력 -->
+                    <div id="product-main-content-list">  <!-- 관련상품 출력 / list받아오면 처리 -->
                         <div class="product-main-content-productlist">
                             <button class="product-main-content-listbtn">
                                 <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
@@ -451,29 +458,34 @@
                         </div>
                     </div>  <!-- 관련상품 닫 -->
                     <hr style="width: 95%;">    
-
+	
                     <div>  <!-- 옵션 -->
                         <div id="product-main-content-menu">
                             <div>
                                 <p>사이즈</p>
                                 <div id="product-main-content-option">
-                                    <button>30mL</button>
-                                    <button>65mL</button>
+                                	<button><%= product.getOptionSize()%>mL</button>  <!-- list받아오면 처리 -->
+                                
+                                	<%-- <%for(int i =0;i<product.getOptionSize();i++){ %>
+                                    	<button><%=product.getOptionSize()%>mL</button>
+                                    <%} %>  --%>
+                                    
+                                     
                                 </div>  
                             </div>
                             <div id="product-main-content-menu-quantity">
                                 <p>수량</p>
                                 <div>
                                     <button onclick="plusnum();">-</button>
-                                    <input type="number" min="1" max="100" value="1">
+                                    <input type="number" min="1" max=<%=product.getProdStock()%> value="1"> <!-- max 재고량 -->
                                     <button onclick="minusnum();">+</button>
                                 </div>
                             </div>
                         </div>
                         <div>
                             <div id="product-main-content-buy"> <!-- 로그인 안헀을때 alert창 띄워주기 -->
-                                <button>장바구니</button>
-                                <button>구매하기</button>
+                                <button>장바구니</button>	<!-- 장바구니로 정보넘김 -->
+                                <button>구매하기</button>	<!-- 결제페이지한테 정보넘김 -->
                                 <button type="button"  onclick="dee(event);">
                                     <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
                                         alt="찜버튼" width="30px" height="30px" >
@@ -485,11 +497,13 @@
             </div>
         </div>
         <div id="product-footer-move"> <!-- 상품footer / 누르면 바로가기 -->
-            <a href="">Home</a>
+            <a href="<%=request.getContextPath()%>">Home</a>
             <p>/</p>
-            <a href="">Hand</a>
+            <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=<%=product.getCateKey()%>">
+            	<%=product.getCateName()%>
+            </a>
             <p>/</p>
-            <a href="">체인 핸드000</a>
+            <a href="#"><%=product.getProdName()%></a>
         </div>
 
         <ul id="product-footer-category">
@@ -503,21 +517,12 @@
                 <h3>제품 상세정보</h3>  
                 <br>
                 <p>
-                    식물성 오일 성분으로 피부 장벽을 강화시키며 빠르게 스며듭니다.
-                     끈적이지 않는 깔끔한 텍스처는 언제든지 손을 사용하기에 
-                     자유로운 상태를 유지해 주며, 벨벳같이 부드러운 피부로 가꾸어 줍니다.
+                    <%=product.getProdDetailCon()%>
                 </p>
                 <br>
                 <h3>전성분</h3>
                 <p>
-                    정제수, 글리세린, 부틸렌글라이콜, 시어버터, 세테아릴알코올, 하이드로제네이티드폴리데센,
-                     1,2-헥산다이올, 카프릴릭/카프릭트라이글리세라이드, 퀸즈랜드넛오일, 베르가모트오일, 광곽향오일,
-                      올리브오일, 단향오일, 라벤더추출물, 오레가노꽃/잎/줄기추출물, 로즈마리추출물, 타임추출물, 다이메티콘,
-                       폴리글리세릴-3메틸글루코오스다이스테아레이트, 합성비즈왁스, 암모늄아크릴로일다이메틸타우레이트/브이피코폴리머,
-                        하이드로제네이티드레시틴, 폴리메틸메타크릴레이트, 하이드록시에틸아크릴레이트/
-                        소듐아크릴로일다이메틸타우레이트코폴리머, 글리세릴스테아레이트, 하이드록시에틸우레아, 카프릴릴글라이콜, 
-                        아크릴레이트/C10-30알킬아크릴레이트크로스폴리머, 에틸헥실글리세린, 트로메타민, 토코페롤, 세틸알코올, 잔탄검,
-                         소듐파이테이트, 리모넨, 리날룰
+                    <%=product.getProdComponent()%>
                 </p>
                 <br>
                 <h3>사용방법</h3>
@@ -529,9 +534,12 @@
                 <h3>사용할 때의 주의사항</h3>
                 <p>
                     1.화장품 사용시 또는 사용후 직사광선에 의하여 사용부위가 붉은반점, 부어오름, 가려움증 등의 이상 증상이나 부작용이 
-                    있는 경우 전문의와 상담할 것 2.상처가 있는 부위 등에는 사용을 자제할 것.
-                    보관 및 취급시의 주의사항 1)어린이의 손에 닿지 않는 곳에 보관할 것 2)직사광선을 피해서 보관할 것 *본 제품은 
-                    공정거래위원회 고시 소비자 분쟁 해결 기준에 의거교환 또는 보상 받을 수 있습니다.
+                    있는 경우 전문의와 상담할 것 <br>
+                    2.상처가 있는 부위 등에는 사용을 자제할 것.	<br><br>
+                    보관 및 취급시의 주의사항 <br>
+                    1)어린이의 손에 닿지 않는 곳에 보관할 것 <br>
+                    2)직사광선을 피해서 보관할 것 <br>
+                    *본 제품은 공정거래위원회 고시 소비자 분쟁 해결 기준에 의거교환 또는 보상 받을 수 있습니다.
                 </p>
                 <br>
                 <h3>사용기한</h3>

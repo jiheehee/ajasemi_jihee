@@ -27,7 +27,7 @@ public class Product {
 	
 	private String keywordName;
 	private String optionFlavor;
-	private String optionSize;
+	private int optionSize;
 	private int optionPrice;
 	private String cateName;
 }
