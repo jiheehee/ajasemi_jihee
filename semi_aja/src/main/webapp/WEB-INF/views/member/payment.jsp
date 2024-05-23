@@ -630,6 +630,7 @@
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
 	    	
+	    	//기본 배송지가 있는 사람이 신규 배송지를 눌렀다 다시 기본 배송지를 체크했을때 데이터를 받아옵니다.
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
 	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
 	    			method : "GET",
@@ -637,9 +638,14 @@
 	    				"Content-type" : "application/json;charset=utf-8"
 	    			},
 	    		})
-	    		.then(response => response.text())
+	    		.then(response => response.json())
 	    		.then(data => {
 	    			console.log(data);
+	    			document.querySelector("input[name='receptionName']").value = data.addrName;
+	    			document.querySelector("input[name='receptionPhoneNum1']").value = data.addrPhone;
+	    			document.getElementById("sample4_postcode").value = data.addrPostcode;
+	    			document.getElementById("sample4_detailAddress").value = data.addrDetail;
+	    			document.getElementById("sample4_roadAddress").value = data.addrAddress;
 	    		});
 	    	})
 	    <%}%>
