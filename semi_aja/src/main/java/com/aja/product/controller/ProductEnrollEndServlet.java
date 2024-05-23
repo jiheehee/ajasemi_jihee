@@ -1,8 +1,10 @@
 package com.aja.product.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.aja.product.model.dto.Product;
 import com.aja.product.service.ProductService;
+import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -36,11 +39,9 @@ public class ProductEnrollEndServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String path = getServletContext().getRealPath("/upload/product");
 		System.out.println(path);
-		File dir = new File(path);
-		if(!dir.exists()) dir.mkdirs();	
 		int maxSize = 1024*1024*10;
 		String encode = "UTF-8";
-		
+			
 		MultipartRequest mr = new MultipartRequest(request, path,maxSize,encode,new DefaultFileRenamePolicy());
 
 		int cateKey = Integer.parseInt(mr.getParameter("prodCategory"));
@@ -65,36 +66,41 @@ public class ProductEnrollEndServlet extends HttpServlet {
 		
 		int[] result = new ProductService().enrollProduct(p); 
 		int fileInsertResult = 0;
-		Enumeration files = mr.getFileNames();
-		while(files.hasMoreElements()) {
-			String fileName = (String) files.nextElement();
+		Enumeration<String>names = mr.getFileNames();
+		List<Map<String,String>> files = new ArrayList();
+		while(names.hasMoreElements()) {
+			String fileName = (String) names.nextElement();
 			String originalFileName = mr.getOriginalFileName(fileName);
 			String fileSystemName = mr.getFilesystemName(fileName);
-			File uploadedFile = mr.getFile(fileName);
+			files.add(Map.of("fileName",fileName,"originalFileName",originalFileName));
+			System.out.println(files);
 		}
+		
 		if(result[0]>0) {
 			fileInsertResult = new ProductService().enrollImages(mr,result[1]);
+		}
 			
-			String msg="", loc="";
-			if(fileInsertResult>0) {
-				msg="상품등록 성공했습니다. :)";
-				loc = "/";
-			}else {
-				msg = "상품이미지등록 실패했습니다. :(";
-				loc = "/";
-			}
-			request.setAttribute("msg", msg);
-			request.setAttribute("loc",loc);
-			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-		}
-		else {
-			String msg="", loc="";
-				msg = "삭제 실패했습니다. :(";
-				loc = "/";
-			request.setAttribute("msg", msg);
-			request.setAttribute("loc",loc);
-			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-		}
+		new Gson().toJson(Map.of("result",true),response.getWriter());
+//			String msg="", loc="";
+//			if(fileInsertResult>0) {
+//				msg="상품등록 성공했습니다. :)";
+//				loc = "/";
+//			}else {
+//				msg = "상품이미지등록 실패했습니다. :(";
+//				loc = "/";
+//			}
+//			request.setAttribute("msg", msg);
+//			request.setAttribute("loc",loc);
+//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//		}
+//		else {
+//			String msg="", loc="";
+//				msg = "삭제 실패했습니다. :(";
+//				loc = "/";
+//			request.setAttribute("msg", msg);
+//			request.setAttribute("loc",loc);
+//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+//		}
 			
 			
 		

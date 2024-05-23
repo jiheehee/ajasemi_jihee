@@ -26,16 +26,34 @@ public class ProductService {
 		close(conn);
 		return result;
 	}
-	public List<Product2> searchAllProduct(){
+	public int selectProductCount() {
+		Connection conn = getConnection();
+		int result = dao.selectProductCount(conn);
+		close(conn);
+		return result;
+	}
+	public List<Product2> searchAllProduct(int cPage, int numPerpage){
 		Connection conn = getConnection();
 		
-		List<Product2> list = dao.searchAllProduct(conn);
+		List<Product2> list = dao.searchAllProduct(conn,cPage,numPerpage);
 		close(conn);
 		return list;
 	}
 	public int deleteProduct(int prodKey) {
 		Connection conn = getConnection();
 		int result = dao.deleteProduct(conn,prodKey);
+		close(conn);
+		return result;
+	}
+	public Product2 selectProduct(int prodKey) {
+		Connection conn = getConnection();
+		Product2 p = dao.selectProduct(conn, prodKey);
+		close(conn);
+		return p;
+	}
+	public int updateProduct(Product p) {
+		Connection conn = getConnection();
+		int result= dao.updateProduct(conn,p);
 		close(conn);
 		return result;
 	}
