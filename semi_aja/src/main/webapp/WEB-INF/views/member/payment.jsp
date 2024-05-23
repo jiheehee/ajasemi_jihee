@@ -217,6 +217,11 @@
 											<% } %>
 										<% } %>
                                     </select>
+                                    <% if(coupons.get(0).getCouponName() != null || !coupons.isEmpty() || coupons != null) { %>
+                                    	<% for(CouponInfo c : coupons) { %>
+                                    		<input type="number" name="getDcKey" value="<%= c.getDcKey() %>" readOnly hidden="true">
+                                    	<% } %>
+                                    <% } %>
                                     <input type="checkbox" id="checkUsingCoupon" disabled>
                                 </td>
                             </tr>
@@ -740,9 +745,36 @@
    				}
    			}
    			
+   			//적용된 쿠폰의 pk값을 받아오기위한 로직입니다.
+   			(function() {
+	  			let dcKey;
+	   			if(document.getElementById("checkUsingCoupon").checked) {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+	   				console.log(selectCoupon.selectedIndex);
+	   				console.log(dcKey);
+	   			}
+	   			
+	   			document.getElementById("choiceCoupon").addEventListener("change", e => {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				if(selectCoupon.selectedIndex > 1) {
+	   					dcKey = document.querySelectorAll("input[name='getDcKey']")[e.target.selectedIndex - 2];
+	   					console.log(selectCoupon.selectedIndex);
+	   					console.log(dcKey);
+	   				}
+	   			})
+   			})()
+   			
+   			
+   			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
+   			
+   			
+   			document.getElementById("choiceCoupon").addEventListener("change", e => {
+   				
+   			})
     	<% } %>
     	
     	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
@@ -813,7 +845,14 @@
     <!-- 카카오페이 결제 API script -->
     <script>
         document.querySelector("#payButton").addEventListener("click",e => {
-        		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
+       		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
+       		
+       		let dcKey;
+       		const selectCoupon = document.getElementById("choiceCoupon");
+			if(selectCoupon.selectedIndex > 1) {
+				dcKey = document.querySelectorAll("input[name='getDcKey']")[e.target.selectedIndex - 2];
+			}
+			
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
@@ -829,20 +868,16 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/testproject/success",
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?custKey=<%= session.getAttribute("cust_key") %>"
+                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText) 
+                    + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
+                    + "&orderPayoption=카카오페이&orderName=<%= defaultAddressInfo.getAddrName() %>"
+                    + "&orderPostcode=<%= defaultAddressInfo.getAddrPostcode() %>&orderAddress=<%= defaultAddressInfo.getAddrAddress() %>"
+                    + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
+                    + "&dcKey=" + dcKey,
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/testproject/cancel",
-                    "custKey" : "<%=session.getAttribute("cust_key")%>",
-                    "orderPrice" : Number(finalPrice),
-                    "orderSale" : Number(document.getElementById("discountPriceSpan").innerText)
-                    					+ Number(document.getElementById("pointApplySpan").innerText),
-                    "orderPayoption" : "카카오페이",
-                    "orderName" :  "<%= defaultAddressInfo.getAddrName() %>",
-                    "orderPostcode" : "<%= defaultAddressInfo.getAddrPostcode() %>",
-                    "orderAddress" : "<%= defaultAddressInfo.getAddrAddress() %>",
-                    "orderDetailaddr" : "<%= defaultAddressInfo.getAddrDetail() %>",
-                    "orderPhone" : "<%= defaultAddressInfo.getAddrPhone() %>",
-                    "orderRequest" : "<%= defaultAddressInfo.getAddrRequest() %>"
+                    "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
+                    
                 })
             })
             .then(response => response.json())
@@ -850,7 +885,7 @@
             	console.log(data);
             	//data.next_redirect_pc_url의 문자열이 존재하면 if문에 빠지며 존재하지 않을경우 else문으로 빠집니다.
             	if (data.next_redirect_pc_url) {
-                    window.location.href = data.next_redirect_pc_url;
+                    window.open(data.next_redirect_pc_url);
                 } else {
                     console.error('next_redirect_pc_url not found in the response.');
                 }

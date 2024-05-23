@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.aja.payment.model.dto.Order;
+import com.aja.payment.service.PaymentService;
 import com.google.gson.Gson;
 
 /**
@@ -48,7 +49,7 @@ public class KakaoPayServlet extends HttpServlet {
         
         Gson orderGson = new Gson();
         Order orderInfo = orderGson.fromJson(jsonData, Order.class);
-        
+        req.setAttribute("orderInfo",orderInfo);
       
         JSONParser parser = new JSONParser();
         try {
