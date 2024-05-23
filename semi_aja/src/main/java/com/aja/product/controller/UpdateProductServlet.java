@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.aja.product.model.dto.Category;
 import com.aja.product.model.dto.Keyword;
-import com.aja.product.model.dto.ProdOption;
+import com.aja.product.model.dto.Product2;
 import com.aja.product.service.CategoryService;
-import com.aja.product.service.OptionService;
+import com.aja.product.service.ProductService;
 
 /**
- * Servlet implementation class ProductEnrollServlet
+ * Servlet implementation class UpdateProductServlet
  */
-@WebServlet("/product/productenroll.do")
-public class ProductEnrollServlet extends HttpServlet {
+@WebServlet("/product/updateproduct.do")
+public class UpdateProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductEnrollServlet() {
+    public UpdateProductServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,14 +34,14 @@ public class ProductEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
+		Product2 p = new ProductService().selectProduct(prodKey);
 		List<Category> categoryList = new CategoryService().searchAllCategory();
 		List<Keyword> keywordList = new CategoryService().searchAllKeyword();
-		List<ProdOption> optionList = new OptionService().searchAllOption();
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("keywordList", keywordList);
-		request.setAttribute("optionList", optionList);
-		request.getRequestDispatcher("/WEB-INF/views/admin/product/productEnroll.jsp").forward(request, response);
-		
+		request.setAttribute("Product", p);
+		request.getRequestDispatcher("/WEB-INF/views/admin/product/updateProduct.jsp").forward(request, response);
 	}
 
 	/**
