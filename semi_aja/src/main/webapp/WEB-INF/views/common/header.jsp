@@ -4,6 +4,8 @@
 <%
 	Customer loginMember = (Customer)session.getAttribute("loginMember");
 %>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +35,7 @@
             <!-- 제품,About -->
             <div id="headerTitle">
                 <div>
-                    <a href="<%=request.getContextPath()%>/product/productlistprint.do"><p>HandCream</p></a>
+                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4001"><p>HandCream</p></a>
                 </div>
                 <div>
                     <a href=""><p>Perfume</p></a>

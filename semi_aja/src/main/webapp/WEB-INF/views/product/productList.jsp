@@ -56,7 +56,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill,minmax(min(500px),1fr)); 
         grid-auto-rows: minmax(150px, auto);
-        grid-gap: 10px;
+        grid-gap: 5px;
         padding: 2px;
         /* margin:0 auto; */
         
@@ -143,8 +143,8 @@
             <div id="product-wrap"> <!-- wrap 일정범위 넘어가면 아래줄로 넘김 -->
             
             
-            
             	<%for(Product p : productlist){ %>
+            
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
                     <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                         <div class="product-img">
@@ -184,9 +184,53 @@
 
 
 <script>
+	$(document).ready(function() {
+		var cPage = 1; //현재페이지
+		var loading = false;
+	
+		function getList(cPage) {
+			$.ajax({
+				type: "get",
+				url : "<%=request.getContextPath()%>/product/productlistprint.do?cateKey=<%=productlist.get(0).getCateKey()%>",
+				data : { cPage : cPage}, //여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
+						 //},	"order" : "view_cnt"
+				beforeSend: function() {
+                	loading = true;
+            	},
+				success:function(data){
+					/* consloe.log(data) */
+					if(cPage>1){
+					$("#product-wrap").append(data);
+					console.log(cPage);
+					}
+					loading = false;						
+				},
+				error: function() {
+	                loading = false;
+	            }
+			});
+		}
+		
+		
+		$(window).scroll(function(){
+			var scrollTop = $(window).scrollTop(); // 위로 스크롤된 길이
+			var windowsHeight = $(window).height(); //웹브라우저의 창의 높이
+			var documentHeight = $(document).height(); // 문서 전체의 높이
+			var isBottom = scrollTop + windowsHeight +10 >= documentHeight;  // 조건 
+			
+			if(isBottom){
+				//만일 마지막 페이지라면
+				if(!loading){
+					cPage++; //현재페이지 1증가
+					getList(cPage); //추가로 받을 리스트 ajax처리				
+				}
+			}
+		});
+		getList(cPage);
+	});
 
-
-
+	
+	
     const dee=(e)=>{
         console.log(e.target);
     }
@@ -194,6 +238,10 @@
     const categorybtn=(e)=>{
         console.log(e.target.value);
     }
+    
+    
+	
+	
 </script>
 
 
