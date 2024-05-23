@@ -63,16 +63,16 @@ public class KakaoLoginServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath()+"/");
 			}
 		} 
-		else {
-			// ct == null -> 해당 이메일 아이디가 이미 존재함. 따라서, 이메일이 중복된다는 메시지 창 띄워주고
-			// login 창 띄워주기 !
-			Customer customer = new KakaoLoginService().searchById(ct.getCustEmail());
-
-			if(customer!=null) {
-				session.setAttribute("loginMember", customer);
-				response.sendRedirect(request.getContextPath()+"/");
-			}
-		}
+//		else {
+//			// ct == null -> 해당 이메일 아이디가 이미 존재함. 따라서, 이메일이 중복된다는 메시지 창 띄워주고
+//			// login 창 띄워주기 !
+//			Customer customer = new KakaoLoginService().searchById(ct.getCustEmail());
+//
+//			if(customer!=null) {
+//				session.setAttribute("loginMember", customer);
+//				response.sendRedirect(request.getContextPath()+"/");
+//			}
+//		}
 		
 		
 	}
