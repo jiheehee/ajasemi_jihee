@@ -39,7 +39,10 @@ public class KakaoPayServlet extends HttpServlet {
                 sb.append(line);
             }
         }
-
+        
+        String jsonData = sb.toString();
+        System.out.println(jsonData);
+      
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());

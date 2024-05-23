@@ -708,7 +708,7 @@
     	
     	totalPay = <%= totalPay %>;
     	totalQuantity = <%= totalQuantity %>;
-    	totalProdName = "<%= totalProdName %>";
+    	sumProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
     	
     	document.querySelector("#choiceCoupon").addEventListener("change", e => {
@@ -813,9 +813,7 @@
     <!-- 카카오페이 결제 API script -->
     <script>
         document.querySelector("#payButton").addEventListener("click",e => {
-        		const finalPriceStr = document.querySelector("#finalPriceSpan").innerText;
-        		console.log(finalPriceStr);
-        		const finalPrice = finalPriceStr.substring(0,finalPriceStr.length - 1);
+        		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
@@ -826,14 +824,25 @@
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
                     "partner_user_id": "partner_user_id",
-                    "item_name": totalProdName,
+                    "item_name": sumProdName,
                     "quantity": totalQuantity,
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
                     "approval_url": "http://localhost:8080/testproject/success",
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/testproject/cancel"
+                    "cancel_url": "http://localhost:8080/testproject/cancel",
+                    "custKey" : "<%=session.getAttribute("cust_key")%>",
+                    "orderPrice" : Number(finalPrice),
+                    "orderSale" : Number(document.getElementById("discountPriceSpan").innerText)
+                    					+ Number(document.getElementById("pointApplySpan").innerText),
+                    "orderPayoption" : "카카오페이",
+                    "orderName" :  "<%= defaultAddressInfo.getAddrName() %>",
+                    "orderPostcode" : "<%= defaultAddressInfo.getAddrPostcode() %>",
+                    "orderAddress" : "<%= defaultAddressInfo.getAddrAddress() %>",
+                    "orderDetailaddr" : "<%= defaultAddressInfo.getAddrDetail() %>",
+                    "orderPhone" : "<%= defaultAddressInfo.getAddrPhone() %>",
+                    "orderRequest" : "<%= defaultAddressInfo.getAddrRequest() %>"
                 })
             })
             .then(response => response.json())
@@ -845,6 +854,7 @@
                 } else {
                     console.error('next_redirect_pc_url not found in the response.');
                 }
+            	
             })
             .catch(error => console.error('Error:', error)); 
         	//error메세지는 요청을 보냈을때 response로 온 에러메세지를 console창에 출력합니다
