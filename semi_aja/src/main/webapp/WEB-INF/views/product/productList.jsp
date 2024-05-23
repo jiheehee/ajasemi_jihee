@@ -2,6 +2,12 @@
     pageEncoding="UTF-8"%>
 
 <%@ include file = "/WEB-INF/views/common/header.jsp"  %>
+<%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
+<%
+	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
+%>
+
+
 
 <style>
     body{
@@ -52,6 +58,8 @@
         grid-auto-rows: minmax(150px, auto);
         grid-gap: 10px;
         padding: 2px;
+        /* margin:0 auto; */
+        
         margin-top: 130px;
         margin-bottom: 200px;
     }
@@ -133,6 +141,10 @@
                 </div> 
             </div>
             <div id="product-wrap"> <!-- wrap 일정범위 넘어가면 아래줄로 넘김 -->
+            
+            
+            
+            	<%for(Product p : productlist){ %>
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
                     <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                         <div class="product-img">
@@ -144,12 +156,12 @@
                         <div class="product-msg-name">
                             <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                                 <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
+                                    <p><%=p.getProdName()%></p>
+                                    <p><%=p.getKeywordName()%></p>
                                 </div>
                                 <div>
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
+                                    <span><%=p.getProdPrice()%></span>
+                                    <span class="product-msg-option"><%=p.getOptionFlavor() %></span>
                                 </div>
                             </a>
                         </div>
@@ -161,181 +173,19 @@
                         </div>
                     </div>
                 </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div>
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div >
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div >
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div >
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div >
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="">
-                                <div>
-                                    <p>상품이름</p>
-                                    <p>키워드</p>
-                                </div>
-                                <div >
-                                    <span>가격333</span>
-                                    <span class="product-msg-option">옵션</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
-                            </button>
-                        </div>
-                    </div>
-                </div> <!-- priducts 닫힘 div -->
+                <%} %> <!-- for문 끝남 --> 
+                
             </div>
         </div>
+        	
+        
     </main>
 </body>
 
 
 <script>
+
+
 
     const dee=(e)=>{
         console.log(e.target);
