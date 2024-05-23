@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <style>
 	#videoSection{
-		border:1px solid orange;
+		/* border:1px solid black; */
 	}
 	#productContainer{
 		display: flex;

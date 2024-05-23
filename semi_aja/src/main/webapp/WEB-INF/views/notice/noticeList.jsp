@@ -2,31 +2,34 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List,com.aja.notice.dto.Notice,java.text.SimpleDateFormat" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%-- <%
+<%
 	List<Notice> notices=(List<Notice>)request.getAttribute("notices");
-%> --%>
+%> 
 
 <style>
-<style>
-    /* 초기에는 모든 팝업을 숨깁니다. */
-    tr#popup {
-        display: none;
+	#popup1{
+		display:none;
+	}
+    /* 초기 모든 팝업 숨김 */
+    .popup {
+       display: none;
     }
 
-    /* 팝업이 보여질 때의 스타일을 지정합니다. */
-    tr#popup.show {
+    /* 팝업 보여질때 */
+   .popup_show {
         display: block;
     }
 
-    /* 팝업 토글 버튼을 스타일링합니다. */
-    tr#titleId {
+    /* 팝업 토글 버튼 스타일 */
+    tr.titleId {
         cursor: pointer;
-        background-color: #f0f0f0; /* 팝업 토글 영역을 강조합니다. */
+        background-color: #f0f0f0; /* 팝업 토글 영역 강조*/
     }
 </style>
 
-
-</style>
+<div>
+    <a href="<%=request.getContextPath()%>/faq/faqlist.do"><p> FAQ </p></a>
+</div>
 
 <section id="notice-container">
 	<h2>공지사항</h2>
@@ -40,17 +43,16 @@
 		</thead>
 		<tbody>
 		<%
-			List<Notice> notices=(List<Notice>)request.getAttribute("notices");
 			if(notices !=null){
 				for(int i=0; i<notices.size(); i++){
 					Notice notice=notices.get(i);
 		%>
-		<tr id=titleId>
+		<tr onclick="pop_up(event);" class="titleId">
 			<td><%=(i+1)%></td>
 			<td><%= notice.getNoticeTitle()%></td>
 			<td><%= notice.getNoticeEnrolldate() %></td>
 		</tr>
-		<tr id=popup>
+		<tr class="popup">
 			<td><%=notice.getNoticeContent() %></td>
 		</tr>
 		<%
@@ -61,25 +63,14 @@
 	</table>
 </section>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all tr elements with the id "titleId"
-    var titleRows = document.querySelectorAll("tr#titleId");
-    
-    // Add click event listeners to each title row
-    titleRows.forEach(function(row) {
-        row.addEventListener("click", function() {
-            // Toggle visibility of elements with id "popup"
-            var popupElements = document.querySelectorAll("#popup");
-            popupElements.forEach(function(popup) {
-                // Check if the popup is currently visible
-                var isVisible = popup.style.display !== "none";
-                
-                // Toggle visibility based on current state
-                popup.style.display = isVisible ? "none" : "block";
-            });
-        });
-    });
-});
+	const pop_up = function(e){
+		const $tr = e.target.parentElement;
+		const $popup = $tr.nextElementSibling;
+		console.log($popup);
+		
+		$popup.classList.toggle("popup");
+		$popup.classList.toggle("popup_show");
+	}
 
 </script>
 

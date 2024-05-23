@@ -50,6 +50,7 @@ public class SignUpEndServlet extends HttpServlet {
 		String custBirth = request.getParameter("custBirth");
 		String custAddress = request.getParameter("custAddress");
 		String custDetailAdress = request.getParameter("custDetailAddress");
+		String custName = request.getParameter("custName");
 		// custDelete -> 탈퇴한회원 X로 표시
 		// custEnrollDate -> sysdate 로 insert
 		
@@ -62,6 +63,7 @@ public class SignUpEndServlet extends HttpServlet {
 					.custBirth(custBirth)
 					.custAddress(custAddress)
 					.custDetailAddress(custDetailAdress)
+					.custName(custName)
 					.build();
 		
 		new MemberService().signUp(ct);

@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Product {
 	private int prodKey;
-//	private int cateKey;
+	private int cateKey;
 	//private int optionKey;
 	//private int keywordKey;
 	private String prodName;
