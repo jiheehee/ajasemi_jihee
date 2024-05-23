@@ -60,7 +60,7 @@
         grid-gap: 5px;
         padding: 2px;
         /* margin:0 auto; */
-        margin-top: 130px;
+        margin-top: 80px;
         margin-bottom: 100px;
     }
 
@@ -157,14 +157,16 @@
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
                     <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
                         <div class="product-img">
+                        	
                             <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
                              alt="상품이미지" width="100%" height="100%">
+                             
                         </div>
                     </a>
                     <div class="product-msg">
                         <div class="product-msg-name">
-                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do">
-                                <div>
+                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do">	
+                                <div>								<!-- 눌렀을때 구분할수 있는 값도 같이 보내기 PROD_KEY -->
                                     <p><%=p.getProdName()%></p>
                                     <p><%=p.getKeywordName()%></p>
                                 </div>

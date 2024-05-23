@@ -38,10 +38,10 @@
                     <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4001"><p>HandCream</p></a>
                 </div>
                 <div>
-                    <a href=""><p>Perfume</p></a>
+                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4002"><p>Perfume</p></a>
                 </div>
                 <div>
-                    <a href=""><p>Body</p></a>
+                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4003"><p>Soap</p></a>
                 </div>
                 <div>
                     <a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>Help</p></a>
@@ -90,10 +90,10 @@
 	                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4001"><p>HandCream</p></a>
 	                </div>
 	                <div>
-	                    <a href=""><p>Perfume</p></a>
+	                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4002"><p>Perfume</p></a>
 	                </div>
 	                <div>
-	                    <a href=""><p>Body</p></a>
+	                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4003"><p>Soap</p></a>
 	                </div>
 	                <div>
                    		<a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>Help</p></a>
