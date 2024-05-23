@@ -80,6 +80,61 @@
     }
 
 </style>
+
+<style>
+	/* 모달 스타일 */
+    .modal {
+        display: none; /* 기본적으로 안 보이게 설정 */
+        position: fixed; /* 화면에 고정 */
+        z-index: 1; /* 다른 요소들보다 위에 위치 */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto; /* 스크롤 가능하게 설정 */
+        background-color: rgba(0, 0, 0, 0.4); /* 반투명 배경 */
+    }
+
+    /* 모달 내용 */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 30% auto; /* 중앙 정렬 */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 60%; /* 모달 너비 */
+    }
+
+    /* 모달 닫기 버튼 스타일 */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+       	cursor: pointer;
+       	margin-left:auto;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+   	input[name='custEmailId']{
+   		width:33.995% !important;
+   	}
+   	select[name='emailDomain']{
+   		margin-right: 15.1px;
+   		width:33.995% !important;
+   	}
+   	button#idcheck{
+   		width:18% !important;
+   		font-size: 12px !important;
+   	}
+</style>
+
+
 <section>	
 	<form action="<%=request.getContextPath() %>/member/signup.do" method="post">
 		<div class="signup-form">
@@ -95,7 +150,9 @@
 		                    <option value="@daum.net">@ daum.net</option>
 		                    <option value="@gmail.com">@ gmail.com</option>
 		                </select>
+		                <button id="idcheck">중복확인</button>
 		            </div>
+		            
 		            <div class="success-message hide">사용할 수 있는 아이디입니다</div>
 		            <div class="failure-message hide">아이디는 4~12글자이어야 합니다</div>
 					<div class="failure-message2 hide">영어소문자 또는 숫자만 가능합니다</div>
@@ -177,6 +234,13 @@
 		    </div>
 		</div>
 	</form>
+	<!-- 모달 HTML -->
+	<div id="myModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        <p id="modalMessage">아이디 또는 패스워드를 입력하세요.</p>
+	    </div>
+	</div>
 </section>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script>
@@ -214,6 +278,10 @@
 	        }).open();
 	    }
 	</script>
+	<script type="text/javascript">
+		/* $("#idcheck").click(function) */
+	
+	</script>
 	<script>
 		// 유효성 검사 javascript
 		
@@ -229,7 +297,7 @@
 		const elInputPassword = document.querySelector("input[name='custPw']");
 		const elInputPasswordCheck = document.querySelector("input[name='custPwCheck']");
 		const elMismatchMessage = document.querySelector(".mismatch-message");
-		const elStrongPasswordMessage = document.querySelector(".strongPassword-message")
+		const elStrongPasswordMessage = document.querySelector(".strongPassword-message");
 		
 		// 이름 닉네임 전화번호 생년월일 성별 주소 가져오기
 		const elInputName = document.querySelector("input[name='custName']");
@@ -244,6 +312,7 @@
 	    const elGenderMessage = document.querySelector(".gender-message");
 	    const elInputPostcode = document.getElementById("sample6_postcode");
 	    const elInputAddress = document.getElementById("sample6_address");
+	    const elInputDetailAddress = document.getElementById("sample6_detailAddress");
 	    const elAddressMessage = document.querySelector(".address-message");
 
 	
@@ -433,17 +502,17 @@
 	    });
 	    
 	    
-	    const elForm = document.querySelector('form');
+	    const elForm = document.querySelector("button[type='submit']");
 
 		 // 폼 제출 시 유효성 검사
-		 elForm.addEventListener('submit', (event) => {
+		 elForm.addEventListener('click', (event) => {
 		     event.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
 	
 		     // 유효성 검사 함수 호출
 		     if (validateForm()) {
 		         elForm.submit(); // 유효성 검사 통과 시 폼 제출
 		     } else {
-		         alert('모든 필수 항목을 입력하세요.'); // 유효성 검사 통과 실패 시 알림
+		         openModal('모든 필수 항목을 입력하세요.'); // 유효성 검사 통과 실패 시 알림
 		     }
 		 });
 
@@ -461,6 +530,35 @@
 		         isGenderSelected() &&
 		         isValidAddress();
 		 }
+		 
+     	// 모달 창 열기
+        function openModal(message) {
+            const modal = document.getElementById("myModal");
+            const modalMessage = document.getElementById("modalMessage");
+            modalMessage.textContent = message; // 모달 내용 설정
+            modal.style.display = "block"; // 모달 보이기
+        }
+
+        // 모달 닫기 버튼 설정
+        const closeBtn = document.getElementsByClassName("close")[0];
+        closeBtn.onclick = function() {
+            const modal = document.getElementById("myModal");
+            modal.style.display = "none"; // 모달 숨기기
+            
+         	// 유효성 검사에 실패한 첫 번째 입력란 찾기
+            const firstErrorInput = document.querySelector('.failure-message:not(.hide), .mismatch-message:not(.hide), .name-message:not(.hide), .nickname-message:not(.hide), .phone-message:not(.hide), .birth-message:not(.hide), .gender-message:not(.hide), .address-message:not(.hide)');
+            
+            // 유효성 검사에 실패한 첫 번째 입력란에 포커스 설정하고 스크롤 이동
+            if (firstErrorInput) {
+                const container = firstErrorInput.closest('.info');
+                const inputField = container.querySelector('input, select');
+                inputField.focus();
+                
+			// 입력란이 위치한 곳으로 스크롤 이동
+			container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+        	}
+        }
 
 	</script>
 
