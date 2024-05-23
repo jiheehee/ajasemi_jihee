@@ -50,7 +50,7 @@ public class KakaoLoginServlet extends HttpServlet {
 				// null 일 수 가 없음 외냐면 없으면 sevice 에서 db 에 저장해주니까 !
 				// 카카오 사용자 이메일이 디비에 없음 -> 최초 로그인 ! 
 				// 해당 사용자 정보를 db 에 저장하고 , session 에 담아쥼 ! 
-				session.setAttribute("loginMember", ct);
+				session.setAttribute("loginMember", customer);
 				
 				response.sendRedirect(request.getContextPath()+"/");
 				// 개인정보 입력창으로 넘겨주기
