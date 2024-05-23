@@ -283,7 +283,7 @@
     }
 
     /* Q&A 헤더 왼쪽 div */
-    #product-footer-main-three-header>div{
+    #product-footer-main-three-header>div{   
         display: flex;
         align-items: center;
         text-overflow: ellipsis;
