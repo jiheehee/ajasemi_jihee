@@ -87,7 +87,7 @@
 	            <!-- 제품,About -->
 	            <div id="headerTitle">
 	                <div>
-	                    <a href=""><p>HandCream</p></a>
+	                    <a href="<%=request.getContextPath()%>/product/productlistprint.do?cateKey=4001"><p>HandCream</p></a>
 	                </div>
 	                <div>
 	                    <a href=""><p>Perfume</p></a>

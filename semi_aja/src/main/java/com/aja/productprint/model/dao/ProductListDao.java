@@ -70,6 +70,7 @@ public class ProductListDao {
 		}finally {
 			close(rs);
 			close(pstmt);
+//			System.out.println(result);
 		}return result;
 	}
 	

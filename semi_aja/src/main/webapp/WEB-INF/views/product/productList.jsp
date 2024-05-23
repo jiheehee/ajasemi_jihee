@@ -5,6 +5,7 @@
 <%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
+	int totalPage =	(int)request.getAttribute("totalPage");
 %>
 
 
@@ -16,7 +17,7 @@
     }
 
     /* 카테고리 css */
-    #category{
+    /* #category{
         height: 60px;
         width: 100%;
         background-color: white;
@@ -24,16 +25,16 @@
         top: 70px;
         display: flex;
         align-items: center;
-    }
+    } */
     /* 상단 왼쪽 상품종류 */
-    #category-header{
+    /* #category-header{
         margin-left: 10px;
         margin-right: 10px;
         align-content: center;
-    }
+    } */
 
     /* 상단 상품상세?종류 */
-    .category-content{
+    /* .category-content{
         align-content: center;
         background-color: lightgray;
         margin: 10px;
@@ -41,15 +42,15 @@
         height: 60%;
         padding-left: 10px;
         padding-right: 10px;
-    }
+    } */
     /* 상품 이름에 버튼 */
-    .category-content-btn{
+    /* .category-content-btn{
         border: 0;
         background-color: transparent;
         height: 100%;
         width: 100%;
         min-width: max-content;
-    }
+    } */
     
     /* 상품리스트 전체 css */
     #product-wrap{
@@ -59,9 +60,8 @@
         grid-gap: 5px;
         padding: 2px;
         /* margin:0 auto; */
-        
         margin-top: 130px;
-        margin-bottom: 200px;
+        margin-bottom: 100px;
     }
 
     /* 상품영역 css */
@@ -118,6 +118,15 @@
     .product-msg-option{
         float: right;
     }
+    
+    #loading{
+    	 text-align: center;
+    	 margin-bottom : 150px;
+    	 font-size : 30px;
+    	 display : none;
+    }
+    
+    
 </style>
 
 
@@ -126,7 +135,7 @@
     
     <main> <!-- 가장 큰 범위로 감싸기 -->
         <div id="div-top"> <!-- 가장 큰 범위로 감싸기 /아래 margin-bottom으로 footer랑 여유공간 -->
-            <div id="category"> <!-- 상단바 느낌 화면을 내려도 고정되어 있어야함. position:fixed -->
+            <!-- <div id="category"> 상단바 느낌 화면을 내려도 고정되어 있어야함. position:fixed
                 <div id="category-header">
                     <h2>handCream</h2>
                 </div>
@@ -139,7 +148,7 @@
                 <div class="category-content">
                     <button class="category-content-btn" onclick="categorybtn(event);" value="소독">손 소독제</button>
                 </div> 
-            </div>
+            </div> -->
             <div id="product-wrap"> <!-- wrap 일정범위 넘어가면 아래줄로 넘김 -->
             
             
@@ -173,9 +182,12 @@
                         </div>
                     </div>
                 </div> <!-- priducts 닫힘 div -->
-                <%} %> <!-- for문 끝남 --> 
                 
-            </div>
+                <%} %> <!-- for문 끝남 --> 
+            </div>	<!-- product 담고있는 div 끝 -->
+            
+            <div id="loading">Loading...</div>
+            
         </div>
         	
         
@@ -186,32 +198,43 @@
 <script>
 
 	/* console.log(document.getElementById("product-wrap").innerHTML); */
-	console.log(document.getElementsByClassName("products")[0].innerHTML);
-	var copydiv = "<div class='products'>"+document.getElementsByClassName("products")[0].innerText+"</div>";
+	/* console.log(document.getElementsByClassName("products")[0]); */
+	/* console.log($("#product-wrap>.products").clone()); */
+	var copydiv = "<div class='products'>"+document.getElementById("product-wrap").innerHTML+"</div>";
 
 
 	$(document).ready(function() {
 		var cPage = 1; //현재페이지
 		var loading = false;
-	
+		
+			
 		function getList(cPage) {
+			if(<%=totalPage%>>cPage){
+				$("#loading").show();
+			}
 			$.ajax({
 				type: "get",
 				url : "<%=request.getContextPath()%>/product/productlistprint.do?cateKey=<%=productlist.get(0).getCateKey()%>",
 				data : { cPage : cPage}, //여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
 						 //},	"order" : "view_cnt"
+				dataType : "html",
 				beforeSend: function() {
+					
                 	loading = true;
             	},
 				success:function(data){
 					/* consloe.log(data) */
 					if(cPage>1){
-					$("#product-wrap").append(copydiv);
-					console.log(cPage);
+						var e = $(data).find(".products");
+						/* console.log(e); */
+						$("#product-wrap").append(e);
+						/* console.log(cPage); */
+						$("#loading").hide();
 					}
 					loading = false;						
 				},
 				error: function() {
+					$("#loading").hide();
 	                loading = false;
 	            }
 			});
@@ -235,15 +258,16 @@
 		getList(cPage);
 	});
 
+		
 	
 	
-    const dee=(e)=>{
+   /*  const dee=(e)=>{
         console.log(e.target);
     }
 
     const categorybtn=(e)=>{
         console.log(e.target.value);
-    }
+    } */
     
     
 	

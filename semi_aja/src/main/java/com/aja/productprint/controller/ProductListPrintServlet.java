@@ -54,6 +54,9 @@ public class ProductListPrintServlet extends HttpServlet {
 		int totalData = new ProductListService().selectAllProductCount(cateKey);
 //		System.out.println(totalData);
 		int totalPage = (int)Math.ceil((double)totalData/numPerpage);
+		
+		request.setAttribute("totalPage", totalPage);
+		
 //		int pageBarSize = 5;
 //		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
 //		int pageEnd = pageNo+pageBarSize-1;

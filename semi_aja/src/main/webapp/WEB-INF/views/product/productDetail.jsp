@@ -18,6 +18,7 @@
     #product-main-img-div{
         flex-grow: 1;
         max-width: 50%;
+        min-width: 200px;
     }
 
     #product-main-content{
@@ -390,6 +391,10 @@
     #product-footer-main-three-content-list>li>div:nth-of-type(2){
         display: none;
         background-color: #fafafab0;
+    }
+    
+    #product-main-content-div::-webkit-scrollbar{
+    	display:none;
     }
 </style>    
    
