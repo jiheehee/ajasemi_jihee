@@ -434,7 +434,7 @@
                         <p><%=product.getProdContent()%></p>
                     </div>
 
-                    <div id="product-main-content-list">  <!-- 관련상품 출력 / list받아오면 처리 -->
+                    <div id="product-main-content-list">  <!-- 관련상품 출력 / list받아오면 처리 카테고리같은애들 다 띄우기 -->
                         <div class="product-main-content-productlist">
                             <button class="product-main-content-listbtn">
                                 <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
@@ -464,7 +464,7 @@
                             <div>
                                 <p>사이즈</p>
                                 <div id="product-main-content-option">
-                                	<button><%= product.getOptionSize()%>mL</button>  <!-- list받아오면 처리 -->
+                                	<button><%= product.getOptionSize()%>mL</button>  <!-- list받아오면 처리/ 상품이름이 같은애 기준? -->
                                 
                                 	<%-- <%for(int i =0;i<product.getOptionSize();i++){ %>
                                     	<button><%=product.getOptionSize()%>mL</button>
@@ -884,11 +884,11 @@
     };
     // 50자리에  상품 재고만큼 걸기
     const minusnum=()=>{
-        if(document.querySelector("#product-main-content-menu-quantity>div>input").value < 50){
+        if(document.querySelector("#product-main-content-menu-quantity>div>input").value < <%=product.getProdStock()%>){
             const num = document.querySelector("#product-main-content-menu-quantity>div>input").value;
             document.querySelector("#product-main-content-menu-quantity>div>input").value = Number(num)+1;
         }else{
-            alert("최대 50개까지만 구매가능합니다.")
+            alert("현재 재고가 "+<%=product.getProdStock()%>+"개 있습니다.")
         }
     };
 
