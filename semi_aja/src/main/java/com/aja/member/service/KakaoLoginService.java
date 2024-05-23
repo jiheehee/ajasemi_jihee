@@ -92,6 +92,8 @@ public class KakaoLoginService {
 	public KakaoDTO getUserInfo(String accessToken) {
 		// accessToken 으로 사용자 정보 가져와서 정보 담아주기 ! !
 		
+		Connection cn = getConnection();
+		
 		System.out.println("-- 사용자 정보 보기 --");
 		System.out.println(accessToken);
 		KakaoDTO ct = null;
@@ -132,17 +134,17 @@ public class KakaoLoginService {
 			String email = kakao_account.getAsJsonObject().get("email").getAsString();
 			String nickname = properties.getAsJsonObject().get("nickname").getAsString();
 			
-			Customer customer = new MemberDao().searchMemberById(getConnection(), email);
+			Customer customer = new MemberDao().searchMemberById(cn, email);
 			// 카카오 계정 이메일이 이미 db에 존재하는지 확인 !! 
 			
 			if(customer==null) {
-				// db에 존재하지 않는다 .
+				// db에 존재하지 않는다 . -> 회원가입 처리 
 				ct = KakaoDTO.builder().custNickname(nickname).custEmail(email).build();
-				int rs = dao.signUp(getConnection(),ct); // db 에 저장 ! 
+				int rs = dao.signUp(cn,ct); // db 에 저장 ! 
 				if(rs>0) {
-					commit(getConnection());
+					commit(cn);
 				} else {
-					rollback(getConnection());
+					rollback(cn);
 				}
 				
 			} else {

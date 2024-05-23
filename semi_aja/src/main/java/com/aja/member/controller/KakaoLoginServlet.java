@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import com.aja.member.model.dto.Customer;
 import com.aja.member.model.dto.KakaoDTO;
@@ -50,7 +49,7 @@ public class KakaoLoginServlet extends HttpServlet {
 				// null 일 수 가 없음 외냐면 없으면 sevice 에서 db 에 저장해주니까 !
 				// 카카오 사용자 이메일이 디비에 없음 -> 최초 로그인 ! 
 				// 해당 사용자 정보를 db 에 저장하고 , session 에 담아쥼 ! 
-				session.setAttribute("loginMember", ct);
+				session.setAttribute("loginMember", customer);
 				
 				response.sendRedirect(request.getContextPath()+"/");
 				// 개인정보 입력창으로 넘겨주기
@@ -63,16 +62,16 @@ public class KakaoLoginServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath()+"/");
 			}
 		} 
-		else {
-			// ct == null -> 해당 이메일 아이디가 이미 존재함. 따라서, 이메일이 중복된다는 메시지 창 띄워주고
-			// login 창 띄워주기 !
-			Customer customer = new KakaoLoginService().searchById(ct.getCustEmail());
-
-			if(customer!=null) {
-				session.setAttribute("loginMember", customer);
-				response.sendRedirect(request.getContextPath()+"/");
-			}
-		}
+//		else {
+//			// ct == null -> 해당 이메일 아이디가 이미 존재함. 따라서, 이메일이 중복된다는 메시지 창 띄워주고
+//			// login 창 띄워주기 !
+//			Customer customer = new KakaoLoginService().searchById(ct.getCustEmail());
+//
+//			if(customer!=null) {
+//				session.setAttribute("loginMember", customer);
+//				response.sendRedirect(request.getContextPath()+"/");
+//			}
+//		}
 		
 		
 	}
