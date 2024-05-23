@@ -120,7 +120,7 @@
 		        <div class="info">
 		            <label for="">이름</label><br>
 		            <div>
-		                <input type="text" name="custName">
+		                <input type="text" name="custName" placeholder="Name">
 		            </div>
 		            <div class="name-message hide">이름을 입력해주세요</div>
 		            
@@ -128,7 +128,7 @@
 		        <div class="info">
 		            <label for="custNickname">닉네임</label><br>
 		            <div>
-		                <input type="text" name="custNickname">
+		                <input type="text" name="custNickname" placeholder = "Nickname">
 		            </div>
 		            <div class="nickname-message hide">닉네임을 입력해주세요</div>
 		          
@@ -136,7 +136,7 @@
 		        <div class="info">
 		            <label for="custPhone">전화번호</label><br>
 		            <div>
-		                <input type="text" name="custPhone">
+		                <input type="text" name="custPhone" placeholder="Phone">
 		            </div>       
 		            <div class="phone-message hide">유효한 전화번호를 입력해주세요</div>
 		             
@@ -144,7 +144,7 @@
 		        <div class="info">
 		            <label for="custBirth">생년월일</label><br>
 		            <div>
-		                <input type="text" name="custBirth">
+		                <input type="text" name="custBirth" placeholder="Birth Day">
 		            </div>
 		            <div class="birth-message hide">생년월일은 8자리로 입력해주세요</div>
 		            
@@ -263,16 +263,27 @@
 			return password1 === password2;
 		}
 		
-	
-		document.querySelector("input[name='custEmailId']").addEventListener("keyup",e=>{
-			document.querySelector("select[name='emailDomain']").addEventListener("change",e=>{
-				const emailId = e.target.value;
-				const emailDomain = e.target.value;
-				console.log(emailId);
-				
-				
-			})
-		})
+		function isValidPhoneNumber(value) {
+	        return /^(010|011|012|013|014|018|019)\d{7,8}$/.test(value);
+	    }
+
+	    function isValidBirthDate(value) {
+	        return /^\d{8}$/.test(value);
+	    }
+
+	    function isValidName(value) {
+	        return /^[가-힣]+$/.test(value);
+	    }
+
+	    function isGenderSelected() {
+	        return document.querySelector('input[name="custGender"]:checked') !== null;
+	    }
+
+	    function isValidAddress() {
+	        return elInputPostcode.value.trim() !== '' && elInputAddress.value.trim() !== '' && elInputDetailAddress.value.trim() !== '';
+	    }
+	    
+	    
 		
 		// 이메일 아이디와 도메인 유효성 검사
 	    elInputId.addEventListener("input", () => {
@@ -338,6 +349,118 @@
 	            elMismatchMessage.classList.remove('hide');
 	        }
 	    });
+	    
+	    // 이름 유효성 검사
+	    elInputName.addEventListener("input", () => {
+	        const name = elInputName.value;
+
+	        if (isValidName(name)) {
+	            elNameMessage.classList.add('hide');
+	        } else {
+	            elNameMessage.classList.remove('hide');
+	        }
+	    });
+
+	   	// 닉네임 유효성 검사
+	    elInputNickname.addEventListener("input", () => {
+	        const nickname = elInputNickname.value;
+
+	        if (nickname.trim() === '') {
+	            elNicknameMessage.classList.remove('hide');
+	        } else {
+	            elNicknameMessage.classList.add('hide');
+	        }
+	    });
+
+	   	// 전화번호 유효성 검사
+	    elInputPhone.addEventListener("input", () => {
+	        const phone = elInputPhone.value;
+
+	        if (isValidPhoneNumber(phone)) {
+	            elPhoneMessage.classList.add('hide');
+	        } else {
+	            elPhoneMessage.classList.remove('hide');
+	        }
+	    });
+
+	   	// 생년월일 유효성 검사
+	    elInputBirth.addEventListener("input", () => {
+	        const birth = elInputBirth.value;
+
+	        if (isValidBirthDate(birth)) {
+	            elBirthMessage.classList.add('hide');
+	        } else {
+	            elBirthMessage.classList.remove('hide');
+	        }
+	    });
+
+	   	// 성별 유효성 검사
+	    elInputGender.forEach(gender => {
+	        gender.addEventListener("change", () => {
+	            if (isGenderSelected()) {
+	                elGenderMessage.classList.add('hide');
+	            } else {
+	                elGenderMessage.classList.remove('hide');
+	            }
+	        });
+	    });
+
+	   	// 우편번호 유효성 검사
+	    elInputPostcode.addEventListener("input", () => {
+	        if (isValidAddress()) {
+	            elAddressMessage.classList.add('hide');
+	        } else {
+	            elAddressMessage.classList.remove('hide');
+	        }
+	    });
+
+	   	// 주소 유효성 검사
+	    elInputAddress.addEventListener("input", () => {
+	        if (isValidAddress()) {
+	            elAddressMessage.classList.add('hide');
+	        } else {
+	            elAddressMessage.classList.remove('hide');
+	        }
+	    });
+
+	   	// 상세주소 유효성 검사
+	    elInputDetailAddress.addEventListener("input", () => {
+	        if (isValidAddress()) {
+	            elAddressMessage.classList.add('hide');
+	        } else {
+	            elAddressMessage.classList.remove('hide');
+	        }
+	    });
+	    
+	    
+	    const elForm = document.querySelector('form');
+
+		 // 폼 제출 시 유효성 검사
+		 elForm.addEventListener('submit', (event) => {
+		     event.preventDefault(); // 폼 제출 이벤트 기본 동작 방지
+	
+		     // 유효성 검사 함수 호출
+		     if (validateForm()) {
+		         elForm.submit(); // 유효성 검사 통과 시 폼 제출
+		     } else {
+		         alert('모든 필수 항목을 입력하세요.'); // 유효성 검사 통과 실패 시 알림
+		     }
+		 });
+
+		 function validateForm() {
+		     // 모든 필수 입력값에 대한 유효성 검사
+		     return idLength(elInputId.value) &&
+		         onlyNumberAndEnglish(elInputId.value) &&
+		         elInputEmail.value !== "none" &&
+		         strongPassword(elInputPassword.value) &&
+		         isMatch(elInputPassword.value, elInputPasswordCheck.value) &&
+		         isValidName(elInputName.value) &&
+		         elInputNickname.value.trim() !== '' &&
+		         isValidPhoneNumber(elInputPhone.value) &&
+		         isValidBirthDate(elInputBirth.value) &&
+		         isGenderSelected() &&
+		         isValidAddress();
+		 }
 
 	</script>
 
