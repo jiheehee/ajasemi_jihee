@@ -82,7 +82,7 @@
 	        <div id="headerMain">
 	            <!-- 로고 -->
 	            <div id="headerLogo">
-	                <a href=""><img src="<%=request.getContextPath()%>/images/logo(apricot).png" 
+	                <a href="<%=request.getContextPath()%>/"><img src="<%=request.getContextPath()%>/images/logo(apricot).png" 
 	                    alt="logo" height="50" ></a>
 	            </div>
 	
