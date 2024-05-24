@@ -81,6 +81,18 @@ public class PaymentDao {
 			pstmt.setInt(1, usingPoint);
 			pstmt.setInt(2, custKey);
 			result = pstmt.executeUpdate();
+			if(result > 0) commit(conn);
+			else rollback(conn);
+			close(pstmt);
+			
+			String usingPointToString = "" + (usingPoint * -1);
+			System.out.println("usingPoint : " + usingPoint);
+			pstmt = conn.prepareStatement("INSERT INTO POINT VALUES(SEQ_POINT.NEXTVAL,?,?,DEFAULT,NULL");
+			pstmt.setInt(1, custKey);
+			pstmt.setString(2, usingPointToString);
+			result = pstmt.executeUpdate();
+			if(result > 0) commit(conn);
+			else rollback(conn);
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
