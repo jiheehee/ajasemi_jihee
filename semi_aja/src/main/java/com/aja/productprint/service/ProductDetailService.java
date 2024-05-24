@@ -1,7 +1,5 @@
 package com.aja.productprint.service;
 
-import static com.aja.common.JDBCTemplate.getConnection;
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -18,6 +16,14 @@ public class ProductDetailService {
 		Product result = dao.selectDetailProduct(conn,prodKey);
 		close(conn);
 		return result;
+	}
+	
+	
+	public List<Product> selectDetailProductList(int cateKey){
+		Connection conn = getConnection();
+		List<Product> list = dao.selectDetailProductList(conn, cateKey);
+		close(conn);
+		return list;
 	}
 	
 	

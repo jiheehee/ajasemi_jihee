@@ -1,6 +1,7 @@
 package com.aja.productprint.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,6 +39,14 @@ public class ProductDetailPrintServlet extends HttpServlet {
 		Product result = new ProductDetailService().selectDetailProduct(prodKey);
 		
 		request.setAttribute("product", result);
+		
+		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
+		System.out.println(cateKey);
+		List<Product> list = new ProductDetailService().selectDetailProductList(cateKey);
+		request.setAttribute("productlist", list);
+		
+		
+		
 		
 		
 		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);

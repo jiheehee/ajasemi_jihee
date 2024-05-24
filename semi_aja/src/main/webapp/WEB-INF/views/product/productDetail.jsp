@@ -2,16 +2,20 @@
     pageEncoding="UTF-8"%>
 
 <%@ include file = "/WEB-INF/views/common/header.jsp"  %>
+
 <%@	page import="java.text.DecimalFormat"%>
 <%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
+<%@ page import="java.util.HashSet" %>
+<%@ page import="java.util.Set" %>
+
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
 	Product product = (Product)request.getAttribute("product");
-%>
 
-<%
+	Set<String> nameFilter = new HashSet<>();
+
 	DecimalFormat df = new DecimalFormat("###,###"); //숫자 ,표시
-	int price = product.getProdPrice();		//사용하고 싶은거 골라서 넣으삼
+	int price = product.getProdPrice()+product.getOptionPrice();		//사용하고 싶은거 골라서 넣으삼
 %>
 
 <style>
@@ -68,23 +72,47 @@
     }
 
     #product-main-content-list{
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+    	/* border : 1px solid red; */
+        /* display: flex;
+        flex-direction : column; */
+       	overflow-y : scroll;
+       	overflow-x : hidden;
+        transform: rotate(-90deg);
+        width : 200px;
+        height: 500px;
+       
+       /*  margin-left: 150px;
+        margin-top:-180px;
+        margin-bottom:-180px; */
+        
+        margin: -180px 200px -180px 150px;
     }
+    
+    #product-main-content-list::-webkit-scrollbar{
+		display:none;
+	}
 
     .product-main-content-productlist{
-        width: 20%;
-        display: flex;
-        flex-direction: column;
+    	/* border : 1px solid red;  */
+        height: 42%;
+        width: 70%;
         text-align: center;
+        transform : rotate(90deg);
+        margin: -70px 10px -60px 25px ;
+        padding: 40px 0px 0px 30px ;
+    }
+    
+    /* 관련 상품에 마우스 올렸을떄 효과 */
+    .product-main-content-productlist>button:hover{
+    	transform : scale(1.1);
+    	transition : transform 0.5s;
     }
 
-    .product-main-content-productlist>p{
+    /* .product-main-content-productlist>p{
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-    }
+    } */
 
     .product-main-content-listbtn{
         border: 0;
@@ -152,7 +180,7 @@
     }
 
     #product-main-content-option>button{
-        border: 0.5px solid black;
+        border: 0.5px solid lightgray;
         border-radius: 18px;
         height: 35px;
         width: 60px;
@@ -406,6 +434,9 @@
     #product-main-content-div::-webkit-scrollbar{
     	display:none;
     }
+    
+   
+    
 </style>    
    
    
@@ -435,28 +466,29 @@
                     </div>
 
                     <div id="product-main-content-list">  <!-- 관련상품 출력 / list받아오면 처리 카테고리같은애들 다 띄우기 -->
-                        <div class="product-main-content-productlist">
-                            <button class="product-main-content-listbtn">
-                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
-                                alt="상품" width="100%">
-                            </button>
-                            <p>상품이름</p>
-                        </div>
-                       <div class="product-main-content-productlist">
-                            <button class="product-main-content-listbtn">
-                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
-                                alt="상품" width="100%">
-                            </button>
-                            <p>상품이름</p>
-                        </div>
-                        <div class="product-main-content-productlist">
-                            <button class="product-main-content-listbtn">
-                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
-                                alt="상품" width="100%">
-                            </button>
-                            <p>상품이름</p>
-                        </div>
+                        <%for(Product p : productlist){ 
+                        	if(! product.getProdName().equals(p.getProdName())){ 
+                        		 if(! nameFilter.contains(p.getProdName())){%>
+			                        <div class="product-main-content-productlist">
+			                            <input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
+			                            <button class="product-main-content-listbtn" onclick="relproduct(event);"> <!-- 밥먹고와서 e.target으로 해서 input태그 내용물 넘기기 -->
+			                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
+			                                alt="상품" width="100%">
+			                            	<p><%=p.getProdName()%></p>
+			                            </button>
+			                        </div>
+			                        <p hidden><%=nameFilter.add(p.getProdName()) %></p>	<!-- 등록된 상품을 Set에 저장시켜 다시 출력안되게 만듦 -->
+	                        	<%}
+                        	} 
+                        }%>
                     </div>  <!-- 관련상품 닫 -->
+                    <!-- <button onclick="retire()">학원탈퇴</button>
+                    <script>
+                    	const retire = () => {
+                    		window.alert("중도철회합니다.")
+                    	}
+                    </script> -->
+                    <br>
                     <hr style="width: 95%;">    
 	
                     <div>  <!-- 옵션 -->
@@ -464,13 +496,18 @@
                             <div>
                                 <p>사이즈</p>
                                 <div id="product-main-content-option">
-                                	<button><%= product.getOptionSize()%>mL</button>  <!-- list받아오면 처리/ 상품이름이 같은애 기준? -->
-                                
-                                	<%-- <%for(int i =0;i<product.getOptionSize();i++){ %>
-                                    	<button><%=product.getOptionSize()%>mL</button>
-                                    <%} %>  --%>
-                                    
-                                     
+                                	  <!-- list받아오면 처리/ 상품이름이 같은애 기준? -->
+                                	  <%for(Product p : productlist){
+                                	  		if(product.getProdName().equals(p.getProdName())){ %>
+                                	  			<input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
+                                	  			<button onclick="relproduct(event);"
+	                                	  			<%if(product.getProdKey()==p.getProdKey()){ %>
+		                                	  				style="border: 1.5px solid black;"
+		                                	  			<%} %>>
+		                                	  			<%=p.getOptionSize()%>mL
+                                	  			</button>
+                                	  	<%}
+                                	  }%>
                                 </div>  
                             </div>
                             <div id="product-main-content-menu-quantity">
@@ -821,6 +858,14 @@
   
   
 <script>
+
+
+	//관련상품 페이지 변경 // 사이즈 눌렀을때 페이지 변경
+	const relproduct=(e)=>{
+		window.location.href = "<%=request.getContextPath()%>/product/productdetailprint.do?"+e.currentTarget.previousElementSibling.value
+	}
+	
+
     const one = document.getElementById("product-footer-main-one");
     const two = document.getElementById("product-footer-main-two");
     const three = document.getElementById("product-footer-main-three");

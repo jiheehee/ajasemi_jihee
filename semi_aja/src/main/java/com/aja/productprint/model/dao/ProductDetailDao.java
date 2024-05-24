@@ -1,15 +1,18 @@
 package com.aja.productprint.model.dao;
 
+import static com.aja.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.aja.productprint.model.dto.Product;
-import static com.aja.common.JDBCTemplate.*;
 
 
 
@@ -47,6 +50,28 @@ public class ProductDetailDao {
 	}
 	
 	
+	public List<Product> selectDetailProductList(Connection conn, int cateKey){
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Product> list = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectDetailProductList"));
+			pstmt.setInt(1, cateKey);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(getProduct(rs));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+//			System.out.println(list);
+		}return list;
+		
+		
+	}
 	
 	
 	
@@ -55,7 +80,9 @@ public class ProductDetailDao {
 	
 	
 	
-	//Product객체
+	
+	
+	//Product객체    // option 상품사진(나중에) 
 		private Product getProduct(ResultSet rs) throws SQLException{
 			return Product.builder()
 					.prodKey(rs.getInt("PROD_KEY"))
@@ -70,6 +97,7 @@ public class ProductDetailDao {
 					.prodComponent(rs.getString("PROD_COMPONENT"))
 					.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))
 					.prodDeleted(rs.getBoolean("PROD_DELETED"))
+					
 					.keywordName(rs.getString("KEYWORD_NAME"))
 					.cateName(rs.getString("CATE_NAME"))
 					.optionFlavor(rs.getString("OPTION_FLAVOR"))
