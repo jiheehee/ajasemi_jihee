@@ -15,7 +15,7 @@ import java.util.Properties;
 import com.aja.member.model.dto.Address;
 import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
-import com.aja.member.model.dto.Point;
+import com.aja.member.model.dto.KakaoDTO;
 import com.aja.member.model.dto.ProductInfo;
 
 public class MemberDao {
@@ -42,12 +42,34 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(prop.getProperty("signUp"));
 			pstmt.setString(1, ct.getCustEmail());
 			pstmt.setString(2, ct.getCustPw());
-			pstmt.setString(3, ct.getCustNickname());
-			pstmt.setString(4, ct.getCustPhone());
-			pstmt.setString(5, ct.getCustGender());
-			pstmt.setString(6, ct.getCustBirth());
-			pstmt.setString(7, ct.getCustAddress());
-			pstmt.setString(8, ct.getCustDetailAddress());
+			pstmt.setString(3, ct.getCustName());
+			pstmt.setString(4, ct.getCustNickname());
+			pstmt.setString(5, ct.getCustPhone());
+			pstmt.setString(6, ct.getCustGender());
+			pstmt.setString(7, ct.getCustBirth());
+			pstmt.setString(8, ct.getCustAddress());
+			pstmt.setString(9, ct.getCustDetailAddress());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int signUp(Connection conn, KakaoDTO ct) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+//		String sql = "INSERT INTO CUSTOMER(CUST_KEY, CUST_EMAIL, CUST_NICKNAME, CUST_DELETE, CUST_ENROLL_DATE) VALUES (CUST_SEQ.NEXTVAL,?,?,DEFAULT, DEFAULT)";
+		// 리소스파일(프로펄티즈파일) 만들어서 넣기 ~
+		try {
+			pstmt = conn.prepareStatement(prop.getProperty("signUpKakao"));
+			pstmt.setString(1, ct.getCustEmail());
+			pstmt.setString(2, ct.getCustNickname());
 			
 			result = pstmt.executeUpdate();
 			
@@ -78,11 +100,16 @@ public class MemberDao {
 										.addrRequest(rs.getString("addr_request"))
 										.build();
 			}
+			
 		} catch(SQLException e) {
+			
 			e.printStackTrace();
+			
 		} finally {
+			
 			close(rs);
 			close(pstmt);
+			
 		}
 		return defaultAddress;
 	}
@@ -150,15 +177,16 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT, DC_KEY "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
-											+ "WHERE CUST_KEY = ?");
+											+ "WHERE CUST_KEY = ? AND COUPON_USED = 'N'");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				coupons.add(CouponInfo.builder()
+								.dcKey(rs.getInt("dc_key"))
 								.couponName(rs.getString("coupon_name"))
 								.couponSale(rs.getInt("coupon_sale"))
 								.couponEnddate(rs.getDate("coupon_enddate"))
@@ -199,6 +227,7 @@ public class MemberDao {
 				.custPhone(rs.getString("cust_phone"))
 				.custPw(rs.getString("cust_pw"))
 				.custDelete(rs.getString("cust_delete"))
+				.custName(rs.getString("cust_name"))
 				.build();
 	}
 }

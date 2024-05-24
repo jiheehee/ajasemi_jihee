@@ -17,6 +17,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.aja.payment.model.dto.Order;
+import com.aja.payment.service.PaymentService;
+import com.google.gson.Gson;
+
 /**
  * Servlet implementation class KakaoTestServlet
  */
@@ -39,7 +43,14 @@ public class KakaoPayServlet extends HttpServlet {
                 sb.append(line);
             }
         }
-
+        
+        String jsonData = sb.toString();
+        System.out.println(jsonData);
+        
+        Gson orderGson = new Gson();
+        Order orderInfo = orderGson.fromJson(jsonData, Order.class);
+        req.setAttribute("orderInfo",orderInfo);
+      
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());

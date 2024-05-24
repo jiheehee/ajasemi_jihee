@@ -27,6 +27,10 @@
     }
 </style>
 
+<div>
+    <a href="<%=request.getContextPath()%>/faq/faqlist.do"><p> FAQ </p></a>
+</div>
+
 <section id="notice-container">
 	<h2>공지사항</h2>
 	<table class="table table-striped">

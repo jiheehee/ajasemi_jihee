@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CouponInfo {
+	private int dcKey;
 	private String couponName;
 	private int couponSale;
 	private Date couponDate;

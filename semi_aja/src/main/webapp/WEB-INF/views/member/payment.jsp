@@ -217,6 +217,11 @@
 											<% } %>
 										<% } %>
                                     </select>
+                                    <% if(coupons.get(0).getCouponName() != null || !coupons.isEmpty() || coupons != null) { %>
+                                    	<% for(CouponInfo c : coupons) { %>
+                                    		<input type="number" name="getDcKey" value="<%= c.getDcKey() %>" readOnly hidden="true">
+                                    	<% } %>
+                                    <% } %>
                                     <input type="checkbox" id="checkUsingCoupon" disabled>
                                 </td>
                             </tr>
@@ -630,6 +635,7 @@
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
 	    	
+	    	//기본 배송지가 있는 사람이 신규 배송지를 눌렀다 다시 기본 배송지를 체크했을때 데이터를 받아옵니다.
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
 	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
 	    			method : "GET",
@@ -637,9 +643,14 @@
 	    				"Content-type" : "application/json;charset=utf-8"
 	    			},
 	    		})
-	    		.then(response => response.text())
+	    		.then(response => response.json())
 	    		.then(data => {
 	    			console.log(data);
+	    			document.querySelector("input[name='receptionName']").value = data.addrName;
+	    			document.querySelector("input[name='receptionPhoneNum1']").value = data.addrPhone;
+	    			document.getElementById("sample4_postcode").value = data.addrPostcode;
+	    			document.getElementById("sample4_detailAddress").value = data.addrDetail;
+	    			document.getElementById("sample4_roadAddress").value = data.addrAddress;
 	    		});
 	    	})
 	    <%}%>
@@ -702,7 +713,7 @@
     	
     	totalPay = <%= totalPay %>;
     	totalQuantity = <%= totalQuantity %>;
-    	totalProdName = "<%= totalProdName %>";
+    	sumProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
     	
     	document.querySelector("#choiceCoupon").addEventListener("change", e => {
@@ -734,9 +745,36 @@
    				}
    			}
    			
+   			//적용된 쿠폰의 pk값을 받아오기위한 로직입니다.
+   			(function() {
+	  			let dcKey;
+	   			if(document.getElementById("checkUsingCoupon").checked) {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+	   				console.log(selectCoupon.selectedIndex);
+	   				console.log(dcKey);
+	   			}
+	   			
+	   			document.getElementById("choiceCoupon").addEventListener("change", e => {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				if(selectCoupon.selectedIndex > 1) {
+	   					dcKey = document.querySelectorAll("input[name='getDcKey']")[e.target.selectedIndex - 2];
+	   					console.log(selectCoupon.selectedIndex);
+	   					console.log(dcKey);
+	   				}
+	   			})
+   			})()
+   			
+   			
+   			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
+   			
+   			
+   			document.getElementById("choiceCoupon").addEventListener("change", e => {
+   				
+   			})
     	<% } %>
     	
     	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
@@ -807,9 +845,14 @@
     <!-- 카카오페이 결제 API script -->
     <script>
         document.querySelector("#payButton").addEventListener("click",e => {
-        		const finalPriceStr = document.querySelector("#finalPriceSpan").innerText;
-        		console.log(finalPriceStr);
-        		const finalPrice = finalPriceStr.substring(0,finalPriceStr.length - 1);
+       		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
+       		
+       		let dcKey;
+       		const selectCoupon = document.getElementById("choiceCoupon");
+			if(selectCoupon.selectedIndex > 1) {
+				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+			}
+			
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
@@ -820,14 +863,21 @@
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
                     "partner_user_id": "partner_user_id",
-                    "item_name": totalProdName,
+                    "item_name": sumProdName,
                     "quantity": totalQuantity,
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/testproject/success",
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?custKey=<%= session.getAttribute("cust_key") %>"
+                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText) 
+                    + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
+                    + "&orderPayoption=카카오페이&orderName=<%= defaultAddressInfo.getAddrName() %>"
+                    + "&orderPostcode=<%= defaultAddressInfo.getAddrPostcode() %>&orderAddress=<%= defaultAddressInfo.getAddrAddress() %>"
+                    + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
+                    + "&dcKey=" + dcKey,
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/testproject/cancel"
+                    "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
+                    
                 })
             })
             .then(response => response.json())
@@ -835,10 +885,11 @@
             	console.log(data);
             	//data.next_redirect_pc_url의 문자열이 존재하면 if문에 빠지며 존재하지 않을경우 else문으로 빠집니다.
             	if (data.next_redirect_pc_url) {
-                    window.location.href = data.next_redirect_pc_url;
+                    window.open(data.next_redirect_pc_url);
                 } else {
                     console.error('next_redirect_pc_url not found in the response.');
                 }
+            	
             })
             .catch(error => console.error('Error:', error)); 
         	//error메세지는 요청을 보냈을때 response로 온 에러메세지를 console창에 출력합니다

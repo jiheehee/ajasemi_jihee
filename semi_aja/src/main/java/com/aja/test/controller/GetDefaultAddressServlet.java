@@ -34,12 +34,15 @@ public class GetDefaultAddressServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int cust_key = Integer.parseInt(request.getParameter("cust_key"));
 		Address defaultAddress = new MemberService().getDefaultAddress(cust_key);
+		System.out.println(defaultAddress);
 		JSONObject addressObject = new JSONObject();
 		addressObject.put("addrName", defaultAddress.getAddrName());
-		addressObject.put("addPostcode", defaultAddress.getAddrPostcode());
+		addressObject.put("addrPostcode", defaultAddress.getAddrPostcode());
 		addressObject.put("addrAddress", defaultAddress.getAddrAddress());
 		addressObject.put("addrDetail", defaultAddress.getAddrDetail());
 		addressObject.put("addrPhone", defaultAddress.getAddrPhone());
+		
+		response.getWriter().print(addressObject);
 	}
 
 	/**

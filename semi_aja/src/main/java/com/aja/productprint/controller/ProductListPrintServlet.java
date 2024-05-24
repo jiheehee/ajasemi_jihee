@@ -1,6 +1,7 @@
 package com.aja.productprint.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -31,9 +32,38 @@ public class ProductListPrintServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		List<Product> result = new ProductListService().selectAllProduct(); 
+		int cPage = 1;
+		try {
+			cPage = Integer.parseInt(request.getParameter("cPage"));
+		}catch(NumberFormatException e) {}
+		
+		int numPerpage = 6;
+		try {
+			numPerpage = Integer.parseInt(request.getParameter("numPerpage"));
+		}catch(NumberFormatException e) {}
+		
+		
+		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
+		
+//		System.out.println(cateKey);
+		List<Product> result = new ProductListService().selectAllProduct(cateKey,cPage,numPerpage);
+		
+//		System.out.println(result);
 		request.setAttribute("productlist", result);
+		
+		int totalData = new ProductListService().selectAllProductCount(cateKey);
+//		System.out.println(totalData);
+		int totalPage = (int)Math.ceil((double)totalData/numPerpage);
+		
+		request.setAttribute("totalPage", totalPage);
+		
+//		int pageBarSize = 5;
+//		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
+//		int pageEnd = pageNo+pageBarSize-1;
+	
+		//System.out.println("됐니?");
+		
+		
 		
 		request.getRequestDispatcher("/WEB-INF/views/product/productList.jsp").forward(request, response);
 		
