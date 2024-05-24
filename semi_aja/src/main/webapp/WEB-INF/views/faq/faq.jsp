@@ -7,21 +7,27 @@
 	List<Faq> faqlist=(List<Faq>)request.getAttribute("faq");
 %>
 <style>
+	table{
+		/* border : 1px solid red; */
+		width: 1000px;
+		margin-left: 250px;
+	}
+	
 	h3{
 		padding-top:50px;
 	}
 	
 	h3,h6 {
-		padding-left:200px;
+		padding-left:250px;
 	}
 	
 	.info{
 		font-size:12px;
-		padding-left:200px;
+		padding-left:250px;
 	}
 
    .search-container {
-		padding-left:200px;
+		padding-left:250px;
         position: relative;
         width: 300px;
     }
@@ -51,7 +57,7 @@
     .search-button i {
     	/* border: 1px solid red; */
         margin-top: 15px;
-        margin-left:130px;
+        margin-left:180px;
         color: #000;
         font-size: 30px;
     }
@@ -68,7 +74,7 @@
 		/* border:1px solid red; */
 	    display: flex;
 	    gap: 20px;
-	    margin-left: 200px;
+	    margin-left: 250px;
 	    margin-bottom: 20px;
 	}
 	
@@ -102,58 +108,57 @@
 </section>
 <span class="info"><strong>찾으시는 답변이 없으면 1:1 문의하기 또는 고객센터 전화(1544-0421)로 문의해주세요.</strong></span><br>
 
-<form id="category-form" method="GET">
+<form id="category-form" action="<%=request.getContextPath()%>/faq/categorysearch.do" method="GET">
 	<input type="hidden" name="category" id="category-input">
 </form>
-<body>
-    <div class="faq-categories">
-        <button class="faq-button" data-category="frequent" onclick="submitCategory(this)">자주찾는 FAQ</button>
-        <button class="faq-button" data-category="shopping">배송</button>
-        <button class="faq-button" data-category="order">주문/결제</button>
-        <button class="faq-button" data-category="cancellation">취소/환불</button>
-        <button class="faq-button" data-category="return">반품/교환</button>
-        <button class="faq-button" data-category="review">리뷰</button>
-    </div>
-</body>
+
+<div class="faq-categories">
+	<button class="faq-button" data-category="frequent" onclick="submitCategory(this)">자주찾는 FAQ</button>
+	<button class="faq-button" data-category="shopping" onclick="submitCategory(this)">배송</button>
+	<button class="faq-button" data-category="order" onclick="submitCategory(this)">주문/결제</button>
+	<button class="faq-button" data-category="cancellation" onclick="submitCategory(this)">취소/환불</button>
+	<button class="faq-button" data-category="return" onclick="submitCategory(this)">반품/교환</button>
+	<button class="faq-button" data-category="review" onclick="submitCategory(this)">리뷰</button>
+</div>
+
 <table>
 <tr>
 	<th>구분</th>
 	<th>제목</th>
 </tr>
-	<%
-		if(faqlist !=null){
-			for(int i=0; i<faqlist.size(); i++){
-				Faq faq=faqlist.get(i);
-	%>
-	<tr onclick="pop_up" class="titleId">
+<%
+	if(faqlist != null) {
+		for(int i = 0; i < faqlist.size(); i++) {
+			Faq faq = faqlist.get(i);
+%>
+<tr onclick="pop_up(event)" class="titleId">
 	<td><%=faq.getFaqCategory() %></td>
 	<td><%=faq.getFaqTitle() %></td>
-	</tr>	
-	<tr class="popup">
-		<td><%=faq.getFaqContent() %></td>		
-	</tr>
-	<%
+</tr>	
+<tr class="popup">
+	<td colspan="2"><%=faq.getFaqContent() %></td>
+</tr>
+<%
 		}
 	}
-	%>	
+%>	
 </table>
-</body>
 
 <script>
-	const pop_up = function(e){
+	const pop_up = function(e) {
 		const $tr = e.target.parentElement;
 		const $popup = $tr.nextElementSibling;
 		console.log($popup);		
 		$popup.classList.toggle("popup");
 		$popup.classList.toggle("popup_show");		
 	}	
-	
-	/* 카테고리 로직 */
-	function submitCategory(button){
-		const category=button.getAttribute('data-category');
-		document.getElementById('category-input').value=category;
+
+	function submitCategory(button) {
+		const category = button.getAttribute('data-category');
+		document.getElementById('category-input').value = category;
 		document.getElementById('category-form').submit();
 	}
+
 	
 </script>
 

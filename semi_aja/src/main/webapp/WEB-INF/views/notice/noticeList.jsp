@@ -7,6 +7,17 @@
 %> 
 
 <style>
+
+	h6{
+		padding-bottom:20px;
+	}
+	
+	section{
+		/* border : 1px solid red;  */
+		width:1000px;
+		margin-left:250px;
+	}
+	
 	#popup1{
 		display:none;
 	}
@@ -32,7 +43,8 @@
 </div>
 
 <section id="notice-container">
-	<h2>공지사항</h2>
+	<h3><strong>NOTICE</strong></h3>
+	<h6><strong>공지사항</strong></h6>
 	<table class="table table-striped">
 		<thead>
 			<tr>

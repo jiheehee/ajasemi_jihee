@@ -61,7 +61,6 @@ public class FaqDao {
 			close(rs);
 			close(pstmt);
 		}
-
 		return result;		
 	}
 
@@ -70,8 +69,22 @@ public class FaqDao {
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		List<Faq> result=new ArrayList<>();
-		String select=submit;
-		
+		String submit=category;
+		try {
+			
+			pstmt=conn.prepareStatement("SELECT * FROM FAQ WHERE FAQ_CATEGORY LIKE ? ");
+			pstmt.setString(1, submit);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				Faq q=Faq.builder()
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
 		
 	}
 	

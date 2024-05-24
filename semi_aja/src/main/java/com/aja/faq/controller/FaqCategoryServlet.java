@@ -15,7 +15,7 @@ import com.aja.faq.service.FaqService;
 /**
  * Servlet implementation class FaqCategoryServlet
  */
-@WebServlet("/faq/faqcategory.do")
+@WebServlet("/faq/categorysearch.do")
 public class FaqCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
