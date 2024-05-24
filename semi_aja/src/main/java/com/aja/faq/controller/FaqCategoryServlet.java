@@ -13,16 +13,16 @@ import com.aja.faq.model.dto.Faq;
 import com.aja.faq.service.FaqService;
 
 /**
- * Servlet implementation class FaqlistServlet
+ * Servlet implementation class FaqCategoryServlet
  */
-@WebServlet("/faq/faqlist.do")
-public class FaqlistServlet extends HttpServlet {
+@WebServlet("/faq/faqcategory.do")
+public class FaqCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FaqlistServlet() {
+    public FaqCategoryServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,16 +30,13 @@ public class FaqlistServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {			
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		//서비스에 있는 화면 가져와서 여기에 뿌려줌
-		List<Faq> faq=new FaqService().faqlist();
+		String category=request.getParameter("submit");
 		
-		// 데이터 저장소 객체에 저장시켜줌
-		request.setAttribute("faq", faq);
+		List<Faq> submit=new FaqService().submitCategory(category);
 		
-		// 어디로 이동시켜줄건지
-		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
+		
 	}
 
 	/**

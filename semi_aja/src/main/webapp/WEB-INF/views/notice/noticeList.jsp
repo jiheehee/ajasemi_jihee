@@ -71,7 +71,6 @@
 		$popup.classList.toggle("popup");
 		$popup.classList.toggle("popup_show");
 	}
-
 </script>
 
 
