@@ -64,7 +64,6 @@ public class PaymentDao {
 				result = pstmt.executeUpdate();
 				if(result > 0) commit(conn);
 				else rollback(conn);
-				close(pstmt);
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
