@@ -42,7 +42,6 @@ public class SignUpEndServlet extends HttpServlet {
 //    }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 다,, input태그로 받아올 거니까.. 파라미터로 가저오기 .. 
-		request.setCharacterEncoding("utf-8");
 		
 		String custEmailId = request.getParameter("custEmailId");
 		String emailDomain = request.getParameter("emailDomain");
@@ -74,10 +73,13 @@ public class SignUpEndServlet extends HttpServlet {
 		
 		int result = new MemberService().signUp(ct);
 		if(result>0) {
-			// 회원가입 성공 시 모달창 띄워주고 로그인 페이지로 이동하고 시픈데 . .  
-			request.getRequestDispatcher("");
+			// 회원가입 성공 시 모달창 띄워주고 로그인 페이지로 이동하고. .  
+			response.sendRedirect(request.getContextPath()+"/member/login.do");
 		} else {
-			// 회원가입 실패 시 회원가입 페이지 그대로 ~ ,, 
+			// 회원가입 실패 시 회원가입 페이지 입력한 데이터 그대로 유지하면서 회원가입창 띄우고싶다.. 
+			// request.setAttribute() 로 입력받은 객체 다시 전달해줘서 .. 그 데이터로 input 태그 설정해죠도 되나 ?
+			// session 에 설정하고 쓰고 나면 . . 지우기 . . . 
+			response.sendRedirect(request.getContextPath()+"/member/signup.do");
 		}
 		
 	}

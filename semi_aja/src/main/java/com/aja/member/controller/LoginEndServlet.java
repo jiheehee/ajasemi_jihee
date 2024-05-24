@@ -56,7 +56,8 @@ public class LoginEndServlet extends HttpServlet {
 			saveIdCookie.setMaxAge(0);
 			saveId = null;
 			response.addCookie(saveIdCookie);
-		}		
+		}	
+		
 		if(custEmail.equals("")||custPw.equals("")) {
 			
 			request.setAttribute("msg", "아이디나 패스워드를 입력하세요.");
