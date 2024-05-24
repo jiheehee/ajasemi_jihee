@@ -56,6 +56,39 @@ public class PaymentDao {
 		return result;
 	}
 	
+	public int deleteCartAfterPay(Connection conn, String cartKies, int custKey) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String[] cartKeyArr = cartKies.split(" ");
+		StringBuffer sql = new StringBuffer("DELETE CART WHERE CART_KEY(");
+		for(int i = 0; i < cartKeyArr.length; i++) {
+			if(i + 1 == cartKeyArr.length) {
+				sql.append("?)");
+			} else {
+				sql.append("?,");
+			}
+		}
+		sql.append(" AND CUST_KEY = ?");
+		System.out.println("sql : " + sql);
+		try {
+			pstmt = conn.prepareStatement(sql.toString());
+			int numForPrepareSt = 1;
+			for(int i = 0; i < cartKeyArr.length; i++) {
+				System.out.println("cartKey : " + cartKeyArr[i]);
+				pstmt.setString(i + 1, cartKeyArr[i]);
+				numForPrepareSt++;
+			}
+			pstmt.setInt(numForPrepareSt, custKey);
+			result = pstmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 	private void setOrder(PreparedStatement pstmt, Order orderInfo) throws SQLException {
 		pstmt.setInt(1, orderInfo.getCustKey());
 		pstmt.setInt(2, orderInfo.getOrderPrice());

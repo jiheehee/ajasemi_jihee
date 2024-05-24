@@ -208,7 +208,7 @@
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
                                         <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
-											    <option>선택 가능한 쿠폰이 없습니다.</option>
+											    <option value="0">선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
 										   		<option disabled>쿠폰을 선택해주세요</option>
 										   		<option value="0">선택안함</option>
@@ -223,6 +223,7 @@
                                     	<% } %>
                                     <% } %>
                                     <input type="checkbox" id="checkUsingCoupon" disabled>
+                                    <input type="checkbox" id="checkUsingPoint" disabled>
                                 </td>
                             </tr>
                             <tr>
@@ -247,11 +248,11 @@
                     <ul>
                         <li>
                             <span>총 상품금액</span>
-                            <span id="totalPaySpan">60000</span><span>원</span>
+                            <span id="totalPaySpan"></span><span>원</span>
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
-                            <span id="discountPriceSpan">5000</span><span>원</span>
+                            <span id="discountPriceSpan">0</span><span>원</span>
                         </li>
                         <li>
                             <span>적용 포인트</span>
@@ -259,7 +260,7 @@
                         </li>
                         <li>
                             <span>총 결제금액</span>
-                            <span id="finalPriceSpan">51500</span><span>원</span>
+                            <span id="finalPriceSpan"></span><span>원</span>
                         </li>
                         <li>
                             <button id="payButton">결제하기</button>
@@ -709,18 +710,20 @@
 		    		}
 	    		}
 	    	}
+	    	System.out.println("전체비용 : " + totalPay);
     	%>
     	
     	totalPay = <%= totalPay %>;
     	totalQuantity = <%= totalQuantity %>;
     	sumProdName = "<%= totalProdName %>";
-    	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
+    	document.querySelector("span[id='totalPaySpan']").innerText = totalPay;
     	
-    	document.querySelector("#choiceCoupon").addEventListener("change", e => {
+    	document.getElementById("choiceCoupon").addEventListener("change", e => {
+    		const applyPoint = document.getElementById("pointApplySpan").innerText;
     		let selectCouponDisRate = e.target.value;
-    		let discountPrice = totalPay * (selectCouponDisRate / 100);
+    		let discountPrice = <%= totalPay %> * (selectCouponDisRate / 100);
     		document.querySelector("#discountPriceSpan").innerText = discountPrice;
-    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice;
+    		document.querySelector("#finalPriceSpan").innerText = <%= totalPay %> - discountPrice - applyPoint;
     		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
@@ -768,13 +771,17 @@
    			
    			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
+   			
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
+   			console.log("쿠폰할인가격 : " + totalPay * (num / 100));
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
    			
    			
    			document.getElementById("choiceCoupon").addEventListener("change", e => {
    				
    			})
+    	<% } else {%>
+	    	document.querySelector("#finalPriceSpan").innerText = totalPay;
     	<% } %>
     	
     	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
@@ -844,14 +851,31 @@
 
     <!-- 카카오페이 결제 API script -->
     <script>
+		
         document.querySelector("#payButton").addEventListener("click",e => {
        		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
-       		
+       		let cartKey;
        		let dcKey;
+       		
        		const selectCoupon = document.getElementById("choiceCoupon");
 			if(selectCoupon.selectedIndex > 1) {
 				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
 			}
+			
+			console.log(dcKey);
+			<% String cartKey = "";
+    		int counts = 1;
+			for(ProductInfo p : cartInfo) { 
+				if(counts == cartInfo.size()) {
+					cartKey += p.getCartKey();
+					counts++;
+				} else {
+					cartKey +=  p.getCartKey() + ",";
+					counts++;
+				}
+			}
+			System.out.println("cartKey : " + cartKey);%>
+			
 			
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
@@ -868,16 +892,28 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?custKey=<%= session.getAttribute("cust_key") %>"
-                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText) 
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do",
+                    <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
+                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
                     + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
                     + "&orderPayoption=카카오페이&orderName=<%= defaultAddressInfo.getAddrName() %>"
                     + "&orderPostcode=<%= defaultAddressInfo.getAddrPostcode() %>&orderAddress=<%= defaultAddressInfo.getAddrAddress() %>"
                     + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
-                    + "&dcKey=" + dcKey,
+                    + "&cartKies=<%= cartKey %>"
+                    + "&dcKey=" + dcKey, --%>
                     "fail_url": "http://localhost:8080/testproject/fail",
                     "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
-                    
+                    "cust_key" : <%= session.getAttribute("cust_key") %>,
+                    "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
+                    "orderSale" : (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText)),
+                    "orderPayoption" : "카카오페이",
+                    "orderName" : "<%= defaultAddressInfo.getAddrName() %>",
+                    "orderPostcode" : document.getElementById("sample4_postcode").innerText,
+                    "orderAddress" : document.getElementById("sample4_roadAddress").innerText,
+                    "orderDetailaddr" : document.getElementById("sample4_detailAddress").innerText,
+                    "orderPhone" : document.querySelector("input[name='receptionPhoneNum1']").value,
+                    "cartKies" : "<%= cartKey %>",
+                    "dcKey" : dcKey
                 })
             })
             .then(response => response.json())

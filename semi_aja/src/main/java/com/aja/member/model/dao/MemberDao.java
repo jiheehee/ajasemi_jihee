@@ -143,7 +143,7 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY "
+			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY, CART_KEY "
 												+ "FROM CART "
 												+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
 												+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY) "
@@ -161,6 +161,7 @@ public class MemberDao {
 										.optionPrice(rs.getInt("option_price"))
 										.prodPrice(rs.getInt("prod_price"))
 										.cartQuantity(rs.getInt("cart_Quantity"))
+										.cartKey(rs.getInt("cart_key"))
 										.build());
 			}
 		} catch(SQLException e) {

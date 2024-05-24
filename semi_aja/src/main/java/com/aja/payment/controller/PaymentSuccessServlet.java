@@ -56,14 +56,19 @@ public class PaymentSuccessServlet extends HttpServlet {
 							.orderPhone(request.getParameter("orderPhone"))
 							.orderRequest(request.getParameter("orderRequest"))
 							.build();
-		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
-		request.setAttribute("orderInfo", orderInfo);
 		HttpSession session = request.getSession();
 		int custKey = (int)session.getAttribute("cust_key");
 		
+		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
+		
+		String cartKies = request.getParameter("cartKies");
+		
+		request.setAttribute("orderInfo", orderInfo);
+		
 		new PaymentService().updatePaymentInfo(orderInfo);
 		new PaymentService().couponStateUpdate(dcKey, custKey);
-		request.getRequestDispatcher(request.getContextPath() + "/WEB-INF/views/payment/paysuccess.jsp").forward(request, response);
+		new PaymentService().deleteCartAfterPay(cartKies, custKey);
+		request.getRequestDispatcher("/WEB-INF/views/payment/paysuccess.jsp").forward(request, response);
 		
 		
 	}

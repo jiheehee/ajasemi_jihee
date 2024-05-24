@@ -62,8 +62,6 @@ public class KakaoPayServlet extends HttpServlet {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             
-            //밑에코드들은 response객체를 가져오는 것 같습니다.
-            //fetch후 response.json()후 response data를 가져오는 로직이고 error메세지가 있다면 error메세지도 가져옵니다.
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = requestJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);

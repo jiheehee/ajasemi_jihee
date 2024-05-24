@@ -30,4 +30,12 @@ public class PaymentService {
 		close(conn);
 		return result;
 	}
+	
+	public int deleteCartAfterPay(String cartKies, int custKey) {
+		Connection conn = getConnection();
+		int result = dao.deleteCartAfterPay(conn, cartKies, custKey);
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		return result;
+	}
 }
