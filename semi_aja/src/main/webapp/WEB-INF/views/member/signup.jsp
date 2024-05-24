@@ -21,6 +21,7 @@
         /* overflow: auto;
         max-height: 90vh; */
     }
+    
     .signup-form h4 {
         text-align: center;
         margin-bottom: 20px;
@@ -132,11 +133,12 @@
    		width:18% !important;
    		font-size: 12px !important;
    	}
+
 </style>
 
 
 <section>	
-	<form action="<%=request.getContextPath() %>/member/signup.do" method="post">
+	<form action="<%=request.getContextPath() %>/member/signupend.do" method="post">
 		<div class="signup-form">
 		    <h4>회원가입</h4>
 		    <div class="signup-content">
@@ -157,12 +159,18 @@
 		            <div class="failure-message hide">아이디는 4~12글자이어야 합니다</div>
 					<div class="failure-message2 hide">영어소문자 또는 숫자만 가능합니다</div>
 					<div class="failure-message3 hide">이메일을 선택해야 합니다.</div>
-		             
+		            <div class="email-taken-message hide">이미 사용 중인 이메일입니다.</div>
+		            
 		        </div>
 		        <div class="info">
 		            <label for="custPw">비밀번호</label><br>
 		            <div>
 		                <input type="password" name="custPw" placeholder="Password">
+		                <!-- 토글 아이콘 -->
+        				<span class="toggle-password" onclick="togglePasswordVisibility()">
+            			<i class="fa fa-eye fa-lg"></i>
+
+            			</span>
 		            </div>
     				<div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
 		        </div>
@@ -170,6 +178,10 @@
 		            <label for="custPwCheck">비밀번호 확인</label><br>
 		            <div>
 		                <input type="password" name="custPwCheck" placeholder="Password">
+		                <!-- 토글 아이콘 -->
+        				<span class="toggle-password" onclick="togglePasswordVisibility()">
+            			<i class="fas fa-eye"></i>
+            			</span>
 		            </div>
 		            <div class="mismatch-message hide">비밀번호가 일치하지 않습니다</div>
 		            
@@ -229,7 +241,7 @@
 		            <div class="address-message hide">주소를 입력해주세요</div>
 		        </div>
 		        <div>
-		        	<button type="submit">회원가입</button>
+		        	<button type="button">회원가입</button>
 		        </div>
 		    </div>
 		</div>
@@ -502,7 +514,8 @@
 	    });
 	    
 	    
-	    const elForm = document.querySelector("button[type='submit']");
+	    const elForm = document.querySelector("button[type='button']");
+	    const signUp = document.querySelector("form");
 
 		 // 폼 제출 시 유효성 검사
 		 elForm.addEventListener('click', (event) => {
@@ -510,7 +523,7 @@
 	
 		     // 유효성 검사 함수 호출
 		     if (validateForm()) {
-		         elForm.submit(); // 유효성 검사 통과 시 폼 제출
+		         signUp.submit(); // 유효성 검사 통과 시 폼 제출
 		     } else {
 		         openModal('모든 필수 항목을 입력하세요.'); // 유효성 검사 통과 실패 시 알림
 		     }
@@ -559,6 +572,31 @@
             
         	}
         }
+        document.getElementById('idcheck').addEventListener('click', function() {
+            const emailId = document.querySelector("input[name='custEmailId']").value;
+            const emailDomain = document.querySelector("select[name='emailDomain']").value;
+            const email = emailId + emailDomain;
+            
+            if (!idLength(emailId) || !onlyNumberAndEnglish(emailId) || emailDomain === 'none') {
+                return; // 유효성 검사 실패 시 중복 확인 요청을 보내지 않음
+            }
+            
+            fetch('<%=request.getContextPath() %>/member/checkEmail.do?email=' + encodeURIComponent(email))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAvailable) {
+                        document.querySelector('.success-message').classList.remove('hide');
+                        document.querySelector('.email-taken-message').classList.add('hide');
+                    } else {
+                        document.querySelector('.success-message').classList.add('hide');
+                        document.querySelector('.email-taken-message').classList.remove('hide');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        	});
+        
 
 	</script>
 
