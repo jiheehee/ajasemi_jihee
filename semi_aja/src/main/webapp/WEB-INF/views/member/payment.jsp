@@ -7,7 +7,7 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
-	
+	System.out.println("jsp에서 받아온 session값 : " + session.getAttribute("cust_key"));
 %>
     <section>
         <div id="totalPaymentContainer">
@@ -65,7 +65,7 @@
                     <tr>
                         <th>배송 메세지</th>
                         <td>
-                            <select name="deliveryMessage" id="">
+                            <select name="deliveryMessage" id="deliveryRequestSelect">
                                 <option value="">문앞에 두고 문자남겨주세요</option>
                                 <option value="">직접 받을게요</option>
                                 <option value="">벨을 누르지 말아주세요</option>
@@ -876,6 +876,13 @@
 			}
 			System.out.println("cartKey : " + cartKey);%>
 			
+			const delRequest = "";
+			const delReqSelect = document.getElementById("deliveryRequestSelect");
+			if(delReqSelect.selectedIndex == 4) {
+				delRequest = document.querySelector("input[name='deliveryRequestMessage']").innerText;
+			} else {
+				delRequest = delReqSelect[delReqSelect.selectedIndex].innerText;
+			}
 			
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
@@ -903,17 +910,19 @@
                     + "&dcKey=" + dcKey, --%>
                     "fail_url": "http://localhost:8080/testproject/fail",
                     "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
-                    "cust_key" : <%= session.getAttribute("cust_key") %>,
+                    "custKey" : "<%= session.getAttribute("cust_key") %>",
                     "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
                     "orderSale" : (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText)),
                     "orderPayoption" : "카카오페이",
                     "orderName" : "<%= defaultAddressInfo.getAddrName() %>",
-                    "orderPostcode" : document.getElementById("sample4_postcode").innerText,
-                    "orderAddress" : document.getElementById("sample4_roadAddress").innerText,
-                    "orderDetailaddr" : document.getElementById("sample4_detailAddress").innerText,
+                    "orderPostcode" : document.getElementById("sample4_postcode").value,
+                    "orderAddress" : document.getElementById("sample4_roadAddress").value,
+                    "orderDetailaddr" : document.getElementById("sample4_detailAddress").value,
                     "orderPhone" : document.querySelector("input[name='receptionPhoneNum1']").value,
+                    "orderRequest" : delRequest,
                     "cartKies" : "<%= cartKey %>",
-                    "dcKey" : dcKey
+                    "dcKey" : dcKey,
+                    "orderState" : "주문"
                 })
             })
             .then(response => response.json())

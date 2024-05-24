@@ -41,6 +41,7 @@ public class ChangePayViewServlet extends HttpServlet {
 		Address defaultAddress = new MemberService().getDefaultAddress(memberNo);
 		System.out.println(defaultAddress);
 		List<ProductInfo> products = new MemberService().getCartInfo(memberNo);
+		session.setAttribute("productInfo", products);
 		products.forEach(System.out::println);
 		List<CouponInfo> coupons = new MemberService().getCouponInfo(memberNo);
 		coupons.forEach(System.out::println);

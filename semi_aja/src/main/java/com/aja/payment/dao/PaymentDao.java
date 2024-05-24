@@ -28,7 +28,7 @@ public class PaymentDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_ORDER.NEXTVAL,?,?,?,DEFAULT,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_ORDER.NEXTVAL,?,?,?,DEFAULT,'주문',null,?,?,?,?,?,?,?)");
 			setOrder(pstmt, orderInfo);
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {

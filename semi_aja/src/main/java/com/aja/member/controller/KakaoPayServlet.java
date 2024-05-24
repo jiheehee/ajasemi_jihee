@@ -12,13 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.aja.payment.model.dto.Order;
-import com.aja.payment.service.PaymentService;
 import com.google.gson.Gson;
 
 /**
@@ -35,6 +35,7 @@ public class KakaoPayServlet extends HttpServlet {
     	
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
 
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = req.getReader()) {
@@ -49,8 +50,7 @@ public class KakaoPayServlet extends HttpServlet {
         
         Gson orderGson = new Gson();
         Order orderInfo = orderGson.fromJson(jsonData, Order.class);
-        req.setAttribute("orderInfo",orderInfo);
-      
+        session.setAttribute("orderInfo", orderInfo);
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());

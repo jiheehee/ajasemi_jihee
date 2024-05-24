@@ -143,7 +143,7 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY, CART_KEY "
+			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY, CART_KEY, OPTION_KEY, PROD_KEY, "
 												+ "FROM CART "
 												+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
 												+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY) "
