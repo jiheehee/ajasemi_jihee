@@ -18,4 +18,7 @@ public class ProductInfo {
 	private int optionPrice;
 	private int prodPrice;
 	private int cartQuantity;
+	private int cartKey;
+	private int optionKey;
+	private int prodKey;
 }

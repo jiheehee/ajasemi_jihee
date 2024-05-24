@@ -12,13 +12,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.aja.payment.model.dto.Order;
-import com.aja.payment.service.PaymentService;
 import com.google.gson.Gson;
 
 /**
@@ -35,6 +35,7 @@ public class KakaoPayServlet extends HttpServlet {
     	
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
 
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = req.getReader()) {
@@ -49,8 +50,7 @@ public class KakaoPayServlet extends HttpServlet {
         
         Gson orderGson = new Gson();
         Order orderInfo = orderGson.fromJson(jsonData, Order.class);
-        req.setAttribute("orderInfo",orderInfo);
-      
+        session.setAttribute("orderInfo", orderInfo);
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());
@@ -62,8 +62,6 @@ public class KakaoPayServlet extends HttpServlet {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             
-            //밑에코드들은 response객체를 가져오는 것 같습니다.
-            //fetch후 response.json()후 response data를 가져오는 로직이고 error메세지가 있다면 error메세지도 가져옵니다.
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = requestJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);
