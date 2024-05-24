@@ -24,9 +24,9 @@ public class PaymentService {
 		return result;
 	}
 	
-	public int updatePointState(int custKey) {
+	public int updatePointState(int custKey, int usingPoint) {
 		Connection conn = getConnection();
-		int result = dao.updatePointState(conn, custKey);
+		int result = dao.updatePointState(conn, custKey, usingPoint);
 		if(result > 0) commit(conn);
 		else rollback(conn);
 		return result;

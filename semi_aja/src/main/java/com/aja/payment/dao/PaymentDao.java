@@ -73,11 +73,14 @@ public class PaymentDao {
 		return result;
 	}
 	
-	public int updatePointState(Connection conn, int custKey) {
+	public int updatePointState(Connection conn, int custKey, int usingPoint) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement("UPDATE CUSTOMER SET CUST_POINT = CUST_POINT - ? WHERE CUST_KEY = ?");
+			pstmt.setInt(1, usingPoint);
+			pstmt.setInt(2, custKey);
+			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {

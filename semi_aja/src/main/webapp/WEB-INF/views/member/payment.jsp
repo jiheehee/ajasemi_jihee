@@ -856,7 +856,7 @@
        		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
        		let cartKey;
        		let dcKey;
-       		
+       		const usingPoint = document.getElementById("pointApplySpan").innerText;
        		const selectCoupon = document.getElementById("choiceCoupon");
 			if(selectCoupon.selectedIndex > 1) {
 				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
@@ -899,7 +899,7 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do",
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint,
                     <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
                     + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
                     + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))

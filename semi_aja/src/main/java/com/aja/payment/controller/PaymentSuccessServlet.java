@@ -49,7 +49,8 @@ public class PaymentSuccessServlet extends HttpServlet {
 		System.out.println("session에서 받아온 orderInfo : " + orderInfo);
 		new PaymentService().updatePaymentInfo(orderInfo, purchaseList, custKey);
 		
-		new PaymentService().updatePointState(custKey);
+		int usingPoint = Integer.parseInt(request.getParameter("usingPoint"));
+		new PaymentService().updatePointState(custKey, usingPoint);
 		
 //		new PaymentService().couponStateUpdate(dcKey, custKey);
 //		new PaymentService().deleteCartAfterPay(cartKies, custKey);
