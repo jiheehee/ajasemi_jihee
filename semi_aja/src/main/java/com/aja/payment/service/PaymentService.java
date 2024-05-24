@@ -1,24 +1,34 @@
 package com.aja.payment.service;
 
 import static com.aja.common.JDBCTemplate.close;
-import static com.aja.common.JDBCTemplate.getConnection;
 import static com.aja.common.JDBCTemplate.commit;
+import static com.aja.common.JDBCTemplate.getConnection;
 import static com.aja.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.List;
 
+import com.aja.member.model.dto.ProductInfo;
 import com.aja.payment.dao.PaymentDao;
 import com.aja.payment.model.dto.Order;
 public class PaymentService {
 	
 	PaymentDao dao = new PaymentDao();	
 	
-	public int updatePaymentInfo(Order orderInfo) {
+	public int updatePaymentInfo(Order orderInfo, List<ProductInfo> purchaseList, int custKey) {
 		Connection conn = getConnection();
-		int result = dao.updatePaymentInfo(conn, orderInfo);
+		int result = dao.updatePaymentInfo(conn, orderInfo, purchaseList, custKey);
 		if(result > 0) commit(conn);
 		else rollback(conn);
 		close(conn);
+		return result;
+	}
+	
+	public int updatePointState(int custKey) {
+		Connection conn = getConnection();
+		int result = dao.updatePointState(conn, custKey);
+		if(result > 0) commit(conn);
+		else rollback(conn);
 		return result;
 	}
 	

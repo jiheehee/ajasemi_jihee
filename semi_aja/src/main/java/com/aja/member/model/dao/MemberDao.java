@@ -143,11 +143,10 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY, CART_KEY, OPTION_KEY, PROD_KEY, "
-												+ "FROM CART "
-												+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
-												+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY) "
-												+ "LEFT JOIN PRODUCT USING(PROD_KEY) "
+			pstmt = conn.prepareStatement("SELECT P.PROD_IMAGE, P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY "
+												+ "FROM CART C "
+												+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
+												+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
 												+ "WHERE CUST_KEY = ?");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
@@ -162,6 +161,8 @@ public class MemberDao {
 										.prodPrice(rs.getInt("prod_price"))
 										.cartQuantity(rs.getInt("cart_Quantity"))
 										.cartKey(rs.getInt("cart_key"))
+										.optionKey(rs.getInt("option_key"))
+										.prodKey(rs.getInt("prod_key"))
 										.build());
 			}
 		} catch(SQLException e) {

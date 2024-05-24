@@ -876,7 +876,7 @@
 			}
 			System.out.println("cartKey : " + cartKey);%>
 			
-			const delRequest = "";
+			let delRequest = "";
 			const delReqSelect = document.getElementById("deliveryRequestSelect");
 			if(delReqSelect.selectedIndex == 4) {
 				delRequest = document.querySelector("input[name='deliveryRequestMessage']").innerText;
