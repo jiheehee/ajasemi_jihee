@@ -35,7 +35,7 @@ public class PaymentDao {
 		int result = 0;
 		int orderKey = 0;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_ORDER.NEXTVAL,?,?,?,DEFAULT,'주문',null,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_ORDER.NEXTVAL,?,?,?,DEFAULT,'결제완료',null,?,?,?,?,?,?,?)");
 			setOrder(pstmt, orderInfo);
 			result = pstmt.executeUpdate();
 			if(result > 0) commit(conn);
@@ -81,6 +81,20 @@ public class PaymentDao {
 			pstmt.setInt(1, usingPoint);
 			pstmt.setInt(2, custKey);
 			result = pstmt.executeUpdate();
+			if(result > 0) commit(conn);
+			else rollback(conn);
+			close(pstmt);
+			
+			if(usingPoint > 0) {
+				String usingPointToString = "" + (usingPoint * -1);
+				System.out.println("usingPoint : " + usingPoint);
+				pstmt = conn.prepareStatement("INSERT INTO POINT VALUES(SEQ_POINT.NEXTVAL,?,?,DEFAULT,NULL)");
+				pstmt.setInt(1, custKey);
+				pstmt.setString(2, usingPointToString);
+				result = pstmt.executeUpdate();
+				if(result > 0) commit(conn);
+				else rollback(conn);
+			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -110,9 +124,11 @@ public class PaymentDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		
-		String[] cartKeyArr = cartKies.split(" ");
-		StringBuffer sql = new StringBuffer("DELETE CART WHERE CART_KEY(");
+		String[] cartKeyArr = cartKies.split(",");
+		
+		StringBuffer sql = new StringBuffer("DELETE CART WHERE CART_KEY IN(");
 		for(int i = 0; i < cartKeyArr.length; i++) {
+			System.out.println(cartKeyArr[i]);
 			if(i + 1 == cartKeyArr.length) {
 				sql.append("?)");
 			} else {

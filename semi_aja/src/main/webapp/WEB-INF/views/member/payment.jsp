@@ -636,6 +636,12 @@
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
 	    	
+	    	document.querySelector("input[name='receptionName']").readOnly = true;
+	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = true;
+	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
+	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
+	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
+	    	
 	    	//기본 배송지가 있는 사람이 신규 배송지를 눌렀다 다시 기본 배송지를 체크했을때 데이터를 받아옵니다.
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
 	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
@@ -647,12 +653,29 @@
 	    		.then(response => response.json())
 	    		.then(data => {
 	    			console.log(data);
+	    			//받아온 데이터를 input태그의 value에 넣어줍니다.
 	    			document.querySelector("input[name='receptionName']").value = data.addrName;
 	    			document.querySelector("input[name='receptionPhoneNum1']").value = data.addrPhone;
 	    			document.getElementById("sample4_postcode").value = data.addrPostcode;
 	    			document.getElementById("sample4_detailAddress").value = data.addrDetail;
 	    			document.getElementById("sample4_roadAddress").value = data.addrAddress;
+	    			
+	    			//기본 주소지 이므로 input태그의 value는 수정할 수 없습니다.
+	    			document.querySelector("input[name='receptionName']").readOnly = true;
+	    	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
 	    		});
+	    	})
+	    	
+	    	//기본 주소지가 있는 사람이 신규 배송지를 입력할때 기본배송지의 readOnly를 false로 해줍니다.
+	    	document.querySelector("input[value='신규 배송지']").addEventListener("click", e => {
+	    		document.querySelector("input[name='receptionName']").readOnly = false;
+    	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_postcode']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = false;
 	    	})
 	    <%}%>
 	    
@@ -688,9 +711,8 @@
 	    	String totalProdName = "";//총 상품명 이름
 	    	int count = 1;
 	    	for(ProductInfo p : cartInfo) {
-	    		//
-	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity();
-	    		totalQuantity += p.getCartQuantity();
+	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity(); //총 금액
+	    		totalQuantity += p.getCartQuantity(); //총 수량
 	    		//상품명이 너무 길어지면 카카오페이 결제에서 보기 안좋으므로 장바구니의 상품이 3개이상이면 4번째 상품명 부터는 ... 으로 대체합니다.
 	    		if(cartInfo.size() <= 3) {
 		    		if(cartInfo.size() == count) {
@@ -718,6 +740,7 @@
     	sumProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerText = totalPay;
     	
+    	//쿠폰을 선택하면 그에맞는 수치들을 수정합니다.(전체금액, 쿠폰 할인금액, 총 결제금액)
     	document.getElementById("choiceCoupon").addEventListener("change", e => {
     		const applyPoint = document.getElementById("pointApplySpan").innerText;
     		let selectCouponDisRate = e.target.value;
@@ -728,7 +751,7 @@
     	})
     	 
     	
-    	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰을 option태그에서 select되어 있게하는 로직입니다.
+    	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰이 선택되어있는 상태로 페이지가 나옵니다.
     	<% if(coupons.get(0).getCouponName() != null) { %>
    			const couponSelect = document.querySelector("#choiceCoupon");
    			console.log(couponSelect);
@@ -771,15 +794,9 @@
    			
    			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
-   			
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
    			console.log("쿠폰할인가격 : " + totalPay * (num / 100));
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
-   			
-   			
-   			document.getElementById("choiceCoupon").addEventListener("change", e => {
-   				
-   			})
     	<% } else {%>
 	    	document.querySelector("#finalPriceSpan").innerText = totalPay;
     	<% } %>
@@ -805,15 +822,17 @@
     	document.getElementById("applyPoint").addEventListener("click", e => {
     		const afterApplySpan = document.getElementById("afterApplySpan");
     		const wantUsingPointInput = document.querySelector("input[name='pointInput']");
-    		const wantUsingPoint = wantUsingPointInput.value;
+    		const wantUsingPoint = Number(wantUsingPointInput.value);
     		const pointApplySpan = document.getElementById("pointApplySpan");
-    		const afterApplyPoint = afterApplySpan.innerText;
+    		const afterApplyPoint = Number(afterApplySpan.innerText);
     		const finalPriceSpan = document.getElementById("finalPriceSpan");
     		console.log(wantUsingPoint);
     		console.log(afterApplyPoint);
     		//보유포인트보다 더 많은값을 입력하면 막는 로직입니다.
     		if(wantUsingPoint > afterApplyPoint) {
     			alert("보유 마일리지보다 더 큰 값을 입력할 수 없습니다.");
+    			console.log("wantUsingPoint : " + wantUsingPoint);
+    			console.log("afterApplyPoint : " + afterApplyPoint);
     			wantUsingPointInput.value = afterApplyPoint;
     			if(afterApplyPoint == 0) {
     				wantUsingPointInput.value = "";
@@ -851,18 +870,22 @@
 
     <!-- 카카오페이 결제 API script -->
     <script>
-		
+		//카카오 api호출 event입니다. (결제버튼 눌렀을때);
         document.querySelector("#payButton").addEventListener("click",e => {
-       		const finalPrice = document.querySelector("#finalPriceSpan").innerText;
-       		let cartKey;
-       		let dcKey;
-       		const usingPoint = document.getElementById("pointApplySpan").innerText;
+       		const finalPrice = document.querySelector("#finalPriceSpan").innerText; // 전체가격
+       		let cartKey; //장바구니 pk값
+       		let dcKey; //쿠폰 pk값
+       		const usingPoint = document.getElementById("pointApplySpan").innerText; //사용한 포인트
        		const selectCoupon = document.getElementById("choiceCoupon");
+       		
+       		//option태그의 index 0, 1 은 쿠폰을 선택안한것과 동일합니다.
 			if(selectCoupon.selectedIndex > 1) {
 				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
 			}
 			
 			console.log(dcKey);
+			
+			//장바구니 pk값을 (,)로 구분해서 초기화 해줍니다.
 			<% String cartKey = "";
     		int counts = 1;
 			for(ProductInfo p : cartInfo) { 
@@ -876,14 +899,20 @@
 			}
 			System.out.println("cartKey : " + cartKey);%>
 			
-			let delRequest = "";
+			let delRequest = ""; //요청주소
 			const delReqSelect = document.getElementById("deliveryRequestSelect");
+			console.log(delRequest);
+			
+			//요청사항 option태그의 index4번은 직접입력하기 입니다.
 			if(delReqSelect.selectedIndex == 4) {
-				delRequest = document.querySelector("input[name='deliveryRequestMessage']").innerText;
+				delRequest = document.querySelector("input[name='deliveryRequestMessage']").value;
+				console.log("직접입력하기 조건문에 들어왔습니다.");
 			} else {
 				delRequest = delReqSelect[delReqSelect.selectedIndex].innerText;
 			}
+			console.log("조건문 완료후 delRequest : " + delRequest);
 			
+			//kakaoapi를 호출할 서블릿주소를 요청합니다..
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
@@ -899,7 +928,8 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint,
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    + "&cartKey=" + "<%= cartKey %>",
                     <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
                     + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
                     + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
