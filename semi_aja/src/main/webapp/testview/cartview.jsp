@@ -12,6 +12,7 @@
 		<input type="submit" value="결제하러가기">
 	</form>
 	<input type="number" name="cust_key" placeholder="회원번호를 입력하세요">
+	<input type="number" name="custKey" placeholder="회원번호를 입력하세요">장바구니페이지로
 	<button onclick="getList()">리스트불러오기</button>
 	<script>
 		const getList = () => {

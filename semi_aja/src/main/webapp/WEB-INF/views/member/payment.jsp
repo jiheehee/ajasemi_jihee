@@ -863,7 +863,39 @@
     	})
     	
     	
-    	
+    	//시간 많으면 쓸 숫자에 ,를 넣어주는 함수
+    	function changNumToStringContainsComma(oriNumber == number) {
+	    	let oriNumber = document.querySelector("p").innerText;
+	        console.log("적용시킬 숫자 : " + oriNumber);
+	        let commaNum; //콤마 갯수
+	        let commaCount = 1; //콤바를 적용시킬 조건문을 위한 count
+	        if(oriNumber.length % 3 == 0) {
+	            commaNum = Math.floor(oriNumber.length / 3 - 1);
+	        } else {
+	            commaNum = Math.floor(oriNumber.length / 3);
+	        }
+	        let roofCount = oriNumber.length + commaNum; //7
+	        let charAtIndex = roofCount - commaNum - 1; //5
+	        let arrForChangeNum = [];
+	        
+	        //죽었다 깨어나도 난 모단다
+	        for(let i = roofCount; i > 0; i--) {
+	            if(commaCount % 4 == 0 && commaCount / 4 != 0) {
+	                arrForChangeNum[i - 1] = ","
+	                commaCount++;
+	            } else {
+	                arrForChangeNum[i - 1] = oriNumber.charAt(charAtIndex);
+	                charAtIndex--;
+	                commaCount++;
+	            }
+	        }
+	        let resultString = "";
+	        for(let j = 0; j < arrForChangeNum.length; j++) {
+	            resultString += arrForChangeNum[j];
+	        }
+	
+	        console.log("변환된 문자열 : " + resultString);
+    	}
     	
     	
     </script>
