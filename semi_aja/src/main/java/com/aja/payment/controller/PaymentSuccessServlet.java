@@ -34,7 +34,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		System.out.println("paySuccessServlet 실행");
 		HttpSession session = request.getSession();
 		int custKey = (int)session.getAttribute("cust_key");
 		System.out.println("session에서 받아온 custKey : " + custKey);
@@ -47,15 +47,23 @@ public class PaymentSuccessServlet extends HttpServlet {
 		request.setAttribute("orderInfo", orderInfo);
 		List<ProductInfo> purchaseList = (List<ProductInfo>)session.getAttribute("productInfo");
 		System.out.println("session에서 받아온 orderInfo : " + orderInfo);
+		//주문 테이블과 주문상세 테이블 업데이트
 		new PaymentService().updatePaymentInfo(orderInfo, purchaseList, custKey);
 		
+		//포인트테이블 업데이트와 CUSTOEMR 포인트 UPDATE
 		int usingPoint = Integer.parseInt(request.getParameter("usingPoint"));
 		new PaymentService().updatePointState(custKey, usingPoint);
 		
-//		new PaymentService().couponStateUpdate(dcKey, custKey);
-//		new PaymentService().deleteCartAfterPay(cartKies, custKey);
-//		request.getRequestDispatcher("/WEB-INF/views/payment/paysuccess.jsp").forward(request, response);
+		//쿠폰 사용시 쿠폰 사용여부 Y로 UPDATE
+		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
+		new PaymentService().couponStateUpdate(dcKey, custKey);
 		
+		//결제 완료시 주문된 상품 DELETE CART TABLE
+		String cartKeyString = request.getParameter("cartKey");
+		System.out.println("cartKeyString : " + cartKeyString);
+		new PaymentService().deleteCartAfterPay(cartKeyString, custKey);
+		
+		session.removeAttribute("productInfo");
 		
 	}
 
