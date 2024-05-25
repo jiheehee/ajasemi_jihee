@@ -81,28 +81,7 @@ public class ProductEnrollEndServlet extends HttpServlet {
 		}
 			
 		new Gson().toJson(Map.of("result",true),response.getWriter());
-//			String msg="", loc="";
-//			if(fileInsertResult>0) {
-//				msg="상품등록 성공했습니다. :)";
-//				loc = "/";
-//			}else {
-//				msg = "상품이미지등록 실패했습니다. :(";
-//				loc = "/";
-//			}
-//			request.setAttribute("msg", msg);
-//			request.setAttribute("loc",loc);
-//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-//		}
-//		else {
-//			String msg="", loc="";
-//				msg = "삭제 실패했습니다. :(";
-//				loc = "/";
-//			request.setAttribute("msg", msg);
-//			request.setAttribute("loc",loc);
-//			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-//		}
-			
-			
+
 		
 	}
 

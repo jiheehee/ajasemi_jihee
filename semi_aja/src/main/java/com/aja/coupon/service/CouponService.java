@@ -42,9 +42,9 @@ public class CouponService {
 		close(conn);
 		return result;
 	}
-	public int birthdayCouponDistribute(int couponKey){
+	public int birthdayCouponDistribute(int custKey,int couponKey){
 		Connection conn = getConnection();
-		int result = dao.birthdayCouponDistribute(conn,couponKey);
+		int result = dao.birthdayCouponDistribute(conn,custKey,couponKey);
 		close(conn);
 		return result;
 	}
