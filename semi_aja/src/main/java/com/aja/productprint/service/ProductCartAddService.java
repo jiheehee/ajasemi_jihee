@@ -14,6 +14,8 @@ public class ProductCartAddService {
 	public int insertProductCartAdd(CartDTO cart) {
 		Connection conn = getConnection();
 		int result = dao.insertProductCartAdd(conn, cart);
+		if(result>0) commit(conn);
+		else rollback(conn);
 		close(conn);
 		return result;
 	}

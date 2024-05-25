@@ -9,7 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.aja.member.model.dto.Customer;
 import com.aja.productprint.model.dto.Product;
 import com.aja.productprint.service.ProductListService;
 
@@ -57,13 +59,19 @@ public class ProductListPrintServlet extends HttpServlet {
 		
 		request.setAttribute("totalPage", totalPage);
 		
-//		int pageBarSize = 5;
-//		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
-//		int pageEnd = pageNo+pageBarSize-1;
-	
-		//System.out.println("됐니?");
+		HttpSession session = request.getSession();
+		Customer loginMember = (Customer)session.getAttribute("loginMember"); //아이디가 session에 있어서 접근 가능
+		
+		int custKey = 0;
+		
+		if(loginMember != null) {
+			custKey = loginMember.getCustKey();			
+		}
+		List<Integer> wishNumber = new ProductListService().selectWishProduct(custKey); 			
 		
 		
+		request.setAttribute("wishNumber", wishNumber);
+				
 		
 		request.getRequestDispatcher("/WEB-INF/views/product/productList.jsp").forward(request, response);
 		
