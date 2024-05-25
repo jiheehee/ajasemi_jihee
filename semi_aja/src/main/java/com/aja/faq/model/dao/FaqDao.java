@@ -69,23 +69,25 @@ public class FaqDao {
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		List<Faq> result=new ArrayList<>();
-		String submit=category;
 		try {
-			
-			pstmt=conn.prepareStatement("SELECT * FROM FAQ WHERE FAQ_CATEGORY LIKE ? ");
-			pstmt.setString(1, submit);
+			pstmt=conn.prepareStatement("SELECT * FROM FAQ WHERE FAQ_CATEGORY = ?");
+			pstmt.setString(1, category);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				Faq q=Faq.builder()
+				.faqCategory(rs.getString("faq_Category"))
+				.faqTitle(rs.getString("faq_Title"))
+				.faqContent(rs.getString("faq_Content"))
+				.build();
+				result.add(q);
 			}
-			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
 			close(rs);
 			close(pstmt);
 		}
-		
+		return result;
 	}
 	
 	

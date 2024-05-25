@@ -16,9 +16,15 @@
 	h3{
 		padding-top:50px;
 	}
-	
+	/* FAQ 자주찾는 질문 태그 스타일 */
 	h3,h6 {
 		padding-left:250px;
+	}
+	
+	/* FAQ 자주찾는 질문 태그 스타일 */
+	a{
+		text-decoration:none;
+		color:black;
 	}
 	
 	.info{
@@ -94,8 +100,8 @@
 	/* 본문 테이블 스타일 */	
 </style>
 
-<h3><strong>FAQ</strong></h3>
-<h6><strong>자주 묻는 질문</strong></h6>
+<h3><strong><a href="<%=request.getContextPath() %>/faq/faqlist.do">FAQ</a></strong></h3>
+<h6><strong><a href="<%=request.getContextPath() %>/faq/faqlist.do">자주 묻는 질문</a></strong></h6>
 <body>
 
 <section id="memberList-container">
@@ -113,12 +119,12 @@
 </form>
 
 <div class="faq-categories">
-	<button class="faq-button" data-category="frequent" onclick="submitCategory(this)">자주찾는 FAQ</button>
-	<button class="faq-button" data-category="shopping" onclick="submitCategory(this)">배송</button>
-	<button class="faq-button" data-category="order" onclick="submitCategory(this)">주문/결제</button>
-	<button class="faq-button" data-category="cancellation" onclick="submitCategory(this)">취소/환불</button>
-	<button class="faq-button" data-category="return" onclick="submitCategory(this)">반품/교환</button>
-	<button class="faq-button" data-category="review" onclick="submitCategory(this)">리뷰</button>
+	<button class="faq-button" data-category="자주찾는 FAQ" onclick="submitCategory(this)">자주찾는 FAQ</button>
+	<button class="faq-button" data-category="배송" onclick="submitCategory(this)">배송</button>
+	<button class="faq-button" data-category="주문결제" onclick="submitCategory(this)">주문/결제</button>
+	<button class="faq-button" data-category="취소/환불" onclick="submitCategory(this)">취소/환불</button>
+	<button class="faq-button" data-category="반품/교환" onclick="submitCategory(this)">반품/교환</button>
+	<button class="faq-button" data-category="리뷰" onclick="submitCategory(this)">리뷰</button>
 </div>
 
 <table>
@@ -152,14 +158,11 @@
 		$popup.classList.toggle("popup");
 		$popup.classList.toggle("popup_show");		
 	}	
-
 	function submitCategory(button) {
 		const category = button.getAttribute('data-category');
 		document.getElementById('category-input').value = category;
 		document.getElementById('category-form').submit();
 	}
-
-	
 </script>
 
 

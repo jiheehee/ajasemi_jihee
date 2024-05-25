@@ -30,13 +30,14 @@ public class FaqService {
 		return faq;		
 	}
 	
-	public List<Faq> submitCategory(String submit){
+	public List<Faq> submitCategory(String category){
 		
 		Connection conn=getConnection();
-		List<Faq> faq=dao.submitCategory(conn,submit);
+		List<Faq> faqCategory=dao.submitCategory(conn,category);
 		close(conn);
-		return faq;	
+		return faqCategory;
 	}
+	
 	
 	
 }

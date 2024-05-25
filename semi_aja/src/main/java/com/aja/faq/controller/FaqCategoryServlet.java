@@ -32,9 +32,13 @@ public class FaqCategoryServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String category=request.getParameter("submit");
+		String category=request.getParameter("category");
+		System.out.println(category);
 		
-		List<Faq> submit=new FaqService().submitCategory(category);
+		List<Faq> faqCategory=new FaqService().submitCategory(category);
+		
+		request.setAttribute("faq", faqCategory);
+		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
 		
 		
 	}

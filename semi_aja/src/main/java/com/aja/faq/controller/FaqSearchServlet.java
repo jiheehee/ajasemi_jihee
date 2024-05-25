@@ -35,10 +35,11 @@ public class FaqSearchServlet extends HttpServlet {
 		String faqsearch=request.getParameter("search"); //jsp에서 검색창의 name값을 search로 설정해둠
 		
 		List<Faq> faq= new FaqService().searchFaqByTitle(faqsearch);
-		System.out.println(faq);
+//		System.out.println(faq);
 		
 		request.setAttribute("faq",faq);
 		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
+		
 	}
 
 	/**
