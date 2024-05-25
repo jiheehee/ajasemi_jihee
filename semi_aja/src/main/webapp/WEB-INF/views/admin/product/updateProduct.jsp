@@ -82,7 +82,7 @@
                                 <%= k.getKeywordName().equals(p.getKeywordName()) ? "selected" : "" %>>
                                 <%= k.getKeywordName() %>
                             </option>
-                        <% } %>
+                        <% } %>	
                     </select>
                 	<% } %>
                 	<input type="hidden" name="prodKey" value="<%=p.getProdKey() %>">

@@ -109,11 +109,14 @@ public class CouponDao {
 		}
 		return result;
 	}
-	public int birthdayCouponDistribute(Connection conn,int couponKey) {
+	public int birthdayCouponDistribute(Connection conn,int custKey,int couponKey) {
 		PreparedStatement pstmt =null;
 		int result=0;
 		try {
-			pstmt = conn.prepareStatement(sql.getProperty("birthdayCouponDistribution"));
+			pstmt = conn.prepareStatement(sql.getProperty("birthdayCouponDistribute"));
+			pstmt.setInt(1, custKey);
+			pstmt.setInt(2, couponKey);
+			result = pstmt.executeUpdate();
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -123,10 +126,13 @@ public class CouponDao {
 	public List selectBirthdayCustomer(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List custKeyList = new ArrayList();
+		List<Integer> custKeyList = new ArrayList();
 		try {
 			pstmt = conn.prepareStatement(sql.getProperty("selectBirthdayCustomer"));
-			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				custKeyList.add(rs.getInt("CUST_KEY"));
+			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
