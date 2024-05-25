@@ -45,7 +45,7 @@ public class ProductDetailDao {
 		}finally {
 			close(rs);
 			close(pstmt);
-			
+//			System.out.println(result);
 		}return result;
 	}
 	
@@ -86,7 +86,7 @@ public class ProductDetailDao {
 		private Product getProduct(ResultSet rs) throws SQLException{
 			return Product.builder()
 					.prodKey(rs.getInt("PROD_KEY"))
-//					.optionKey(rs.getInt("OPTION_KEY"))
+					.optionKey(rs.getInt("OPTION_KEY"))
 					.cateKey(rs.getInt("CATE_KEY"))
 //					.keywordKey(rs.getInt("KEYWORD_KEY"))
 					.prodName(rs.getString("PROD_NAME"))
