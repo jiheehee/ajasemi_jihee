@@ -8,15 +8,19 @@
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Set" %>
 
+
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
-	Product product = (Product)request.getAttribute("product");
+	Product product = (Product)request.getAttribute("product");	
 
 	Set<String> nameFilter = new HashSet<>();
 
+	
 	DecimalFormat df = new DecimalFormat("###,###"); //숫자 ,표시
 	int price = product.getProdPrice()+product.getOptionPrice();		//사용하고 싶은거 골라서 넣으삼
 %>
+
+
 
 <style>
     body{
@@ -471,7 +475,7 @@
                         		 if(! nameFilter.contains(p.getProdName())){%>
 			                        <div class="product-main-content-productlist">
 			                            <input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
-			                            <button class="product-main-content-listbtn" onclick="relproduct(event);"> <!-- 밥먹고와서 e.target으로 해서 input태그 내용물 넘기기 -->
+			                            <button class="product-main-content-listbtn" onclick="relproduct(event);"> 
 			                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
 			                                alt="상품" width="100%">
 			                            	<p><%=p.getProdName()%></p>
@@ -502,7 +506,7 @@
                                 	  			<input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
                                 	  			<button onclick="relproduct(event);"
 	                                	  			<%if(product.getProdKey()==p.getProdKey()){ %>
-		                                	  				style="border: 1.5px solid black;"
+		                                	  				style="border: 2px solid black;"
 		                                	  			<%} %>>
 		                                	  			<%=p.getOptionSize()%>mL
                                 	  			</button>
@@ -521,9 +525,15 @@
                         </div>
                         <div>
                             <div id="product-main-content-buy"> <!-- 로그인 안헀을때 alert창 띄워주기 -->
-                                <button>장바구니</button>	<!-- 장바구니로 정보넘김 -->
-                                <button>구매하기</button>	<!-- 결제페이지한테 정보넘김 -->
-                                <button type="button"  onclick="dee(event);">
+                                <button id="addCart">장바구니</button>	<!-- 장바구니로 정보넘김 -->
+                                <button id="">구매하기</button>	<!-- 결제페이지한테 정보넘김 -->
+                                <button type="button"  onclick="dee(event);">	
+                                <!-- 
+                                	로그인한 회원만 찜가능
+                                	비 로그인상태로 누르면 로그인화면으로 이동
+                                	찜 전,후 다른 UI띄움
+                                	찜한 상태에서 찜버튼을 누르면 찜 취소기능
+                                -->
                                     <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
                                         alt="찜버튼" width="30px" height="30px" >
                                 </button>
@@ -859,6 +869,24 @@
   
 <script>
 
+	
+	//장바구니 버튼	//key:value로 뭐뭐넘길지 생각하기	//회원고유번호, 상품고유번호, 옵션고유번호, 수량 넘겨받아서 DB에 저장하고 장바구니 페이지로 패이지전환
+		<% if(loginMember !=null){%>
+			if(document.querySelector("#product-main-content-menu-quantity>div>input").value>0){
+		  		document.querySelector("#addCart").addEventListener("click",e=>{
+					const productCount = document.querySelector("#product-main-content-menu-quantity>div>input").value;
+					window.location.href = "<%=request.getContextPath()%>/product/productcartadd.do?prodKey=<%=product.getProdKey()%>"
+						+"&optionKey=<%=product.getOptionKey()%>&productCount="+productCount;
+			  	}); 				
+			}
+		<%}else{%>
+			document.querySelector("#addCart").addEventListener("click",e=>{
+				alert("로그인 후 이용 가능합니다.");
+				window.location.href = "<%=request.getContextPath()%>/member/login.do";
+		  	}); 
+			
+		<%}%>
+
 
 	//관련상품 페이지 변경 // 사이즈 눌렀을때 페이지 변경
 	const relproduct=(e)=>{
@@ -913,21 +941,17 @@
     document.getElementsByClassName("star-ratings-fill")[0].style.width = score+"%";
     
 
-
-    const test=()=>{
-        console.log("2");
-    };
-
-    //수량 + -
+    //수량 + 버튼
     const plusnum=()=>{
         if(document.querySelector("#product-main-content-menu-quantity>div>input").value > 1){
             const num = document.querySelector("#product-main-content-menu-quantity>div>input").value;
             document.querySelector("#product-main-content-menu-quantity>div>input").value = Number(num)-1;
         }else{
-            alert("1개 이상부터 구매할 수 있는 상품입니다.")
+            alert("1개 단위로 구매 가능한 상품입니다. 수량을 다시 선택해주세요.")
         }
     };
-    // 50자리에  상품 재고만큼 걸기
+    
+    // 수량 - 버튼
     const minusnum=()=>{
         if(document.querySelector("#product-main-content-menu-quantity>div>input").value < <%=product.getProdStock()%>){
             const num = document.querySelector("#product-main-content-menu-quantity>div>input").value;
@@ -936,7 +960,24 @@
             alert("현재 재고가 "+<%=product.getProdStock()%>+"개 있습니다.")
         }
     };
+    
+    //수량 input태그
+    document.querySelector("#product-main-content-menu-quantity>div>input").addEventListener("blur",e=>{
+    	if(document.querySelector("#product-main-content-menu-quantity>div>input").value > <%=product.getProdStock()%>){
+    		alert("현재 재고가 "+<%=product.getProdStock()%>+"개 있습니다.");
+    		document.querySelector("#product-main-content-menu-quantity>div>input").value = <%=product.getProdStock()%>;
+    	}
+    	
+    	if(document.querySelector("#product-main-content-menu-quantity>div>input").value < 1){
+    		alert("1개 단위로 구매 가능한 상품입니다. 수량을 다시 선택해주세요.");
+    		document.querySelector("#product-main-content-menu-quantity>div>input").value = 1;
+    	}
+    });
+    
+    
+    
 
+    //찜버튼
     const dee=(e)=>{
         console.log(e.target);
     };

@@ -26,4 +26,5 @@ public class Order {
 	private String orderDetailaddr;
 	private String orderPhone;
 	private String orderRequest;
+	private String cartKey;
 }
