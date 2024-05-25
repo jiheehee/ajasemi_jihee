@@ -1,6 +1,7 @@
-package com.aja.productprint.controller;
+package com.aja.coupon.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,20 +10,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.productprint.model.dto.Product;
-import com.aja.productprint.service.ProductDetailService;
+import com.aja.coupon.service.CouponService;
 
 /**
- * Servlet implementation class ProductDetailPrintServlet
+ * Servlet implementation class CouponDistributeServlet
  */
-@WebServlet("/product/productdetailprint.do")
-public class ProductDetailPrintServlet extends HttpServlet {
+@WebServlet("/coupon/distributecoupon.do")
+public class CouponDistributeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductDetailPrintServlet() {
+    public CouponDistributeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,26 +31,22 @@ public class ProductDetailPrintServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
-		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
-		System.out.println(prodKey);
-		
-		Product result = new ProductDetailService().selectDetailProduct(prodKey);
-		
-		request.setAttribute("product", result);
-		
-		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
-		System.out.println(cateKey);
-		List<Product> list = new ProductDetailService().selectDetailProductList(cateKey);
-		request.setAttribute("productlist", list);
+		int couponKey = Integer.parseInt(request.getParameter("couponKey"));
+		String couponName = request.getParameter("couponName");
+		int result = 0;
+		List custKeyList = new ArrayList();
 		
 		
-		
-		
-		
-		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
-		
+		if(couponName!=null ) {
+			if(couponName.contains("생일")) {
+				
+				custKeyList = new CouponService().selectBirthdayCustomer();
+				result = new CouponService().birthdayCouponDistribute(couponKey);
+			}
+			else if(couponName.contains("멤버십")) {
+//				result = new CouponService().membershipCouponDistribute(couponKey);
+			}
+		}
 		
 	}
 

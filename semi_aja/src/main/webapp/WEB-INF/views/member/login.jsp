@@ -268,11 +268,6 @@
            	}
            	
         }
-        
-        const loginWithKakao = () => {
-        	// 카카오 간편 로그인 로직 구현
-        	location.assign("https://kauth.kakao.com/oauth/authorize?client_id={9b0a8207baa9a8b86d4549052fd6647d}&redirect_uri=http://localhost:9090/semi_aja/member/kakaologin.do?cmd=callback&response_type=code")
-        }
        
      	// 모달 창 열기
         function openModal(message) {

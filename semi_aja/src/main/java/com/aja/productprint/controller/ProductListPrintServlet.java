@@ -61,13 +61,7 @@ public class ProductListPrintServlet extends HttpServlet {
 //		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
 //		int pageEnd = pageNo+pageBarSize-1;
 	
-		
-//		PrintWriter out = response.getWriter();
-//		out.println("됐니?");
-		
-		
-		
-		System.out.println("됐니?");
+		//System.out.println("됐니?");
 		
 		
 		

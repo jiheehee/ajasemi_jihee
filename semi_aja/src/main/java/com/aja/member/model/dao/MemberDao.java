@@ -143,11 +143,10 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT PROD_IMAGE, PROD_NAME, PROD_CONTENT, OPTION_FLAVOR, OPTION_SIZE, OPTION_PRICE, PROD_PRICE, CART_QUANTITY "
-												+ "FROM CART "
-												+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
-												+ "LEFT JOIN PROD_OPTION USING(OPTION_KEY) "
-												+ "LEFT JOIN PRODUCT USING(PROD_KEY) "
+			pstmt = conn.prepareStatement("SELECT P.PROD_IMAGE, P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY "
+												+ "FROM CART C "
+												+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
+												+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
 												+ "WHERE CUST_KEY = ?");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
@@ -161,6 +160,9 @@ public class MemberDao {
 										.optionPrice(rs.getInt("option_price"))
 										.prodPrice(rs.getInt("prod_price"))
 										.cartQuantity(rs.getInt("cart_Quantity"))
+										.cartKey(rs.getInt("cart_key"))
+										.optionKey(rs.getInt("option_key"))
+										.prodKey(rs.getInt("prod_key"))
 										.build());
 			}
 		} catch(SQLException e) {
@@ -177,15 +179,16 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT, DC_KEY "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
-											+ "WHERE CUST_KEY = ?");
+											+ "WHERE CUST_KEY = ? AND COUPON_USED = 'N'");
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				coupons.add(CouponInfo.builder()
+								.dcKey(rs.getInt("dc_key"))
 								.couponName(rs.getString("coupon_name"))
 								.couponSale(rs.getInt("coupon_sale"))
 								.couponEnddate(rs.getDate("coupon_enddate"))

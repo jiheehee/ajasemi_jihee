@@ -7,7 +7,7 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
-	
+	System.out.println("jsp에서 받아온 session값 : " + session.getAttribute("cust_key"));
 %>
     <section>
         <div id="totalPaymentContainer">
@@ -65,7 +65,7 @@
                     <tr>
                         <th>배송 메세지</th>
                         <td>
-                            <select name="deliveryMessage" id="">
+                            <select name="deliveryMessage" id="deliveryRequestSelect">
                                 <option value="">문앞에 두고 문자남겨주세요</option>
                                 <option value="">직접 받을게요</option>
                                 <option value="">벨을 누르지 말아주세요</option>
@@ -208,7 +208,7 @@
                                 <td>
                                     <select name="choiceCoupon" id="choiceCoupon">
                                         <% if(coupons.get(0).getCouponName() == null || coupons.isEmpty() || coupons == null) { %>
-											    <option>선택 가능한 쿠폰이 없습니다.</option>
+											    <option value="0">선택 가능한 쿠폰이 없습니다.</option>
 										<% } else { %>
 										   		<option disabled>쿠폰을 선택해주세요</option>
 										   		<option value="0">선택안함</option>
@@ -217,7 +217,13 @@
 											<% } %>
 										<% } %>
                                     </select>
+                                    <% if(coupons.get(0).getCouponName() != null || !coupons.isEmpty() || coupons != null) { %>
+                                    	<% for(CouponInfo c : coupons) { %>
+                                    		<input type="number" name="getDcKey" value="<%= c.getDcKey() %>" readOnly hidden="true">
+                                    	<% } %>
+                                    <% } %>
                                     <input type="checkbox" id="checkUsingCoupon" disabled>
+                                    <input type="checkbox" id="checkUsingPoint" disabled>
                                 </td>
                             </tr>
                             <tr>
@@ -242,11 +248,11 @@
                     <ul>
                         <li>
                             <span>총 상품금액</span>
-                            <span id="totalPaySpan">60000</span><span>원</span>
+                            <span id="totalPaySpan"></span><span>원</span>
                         </li>
                         <li>
                             <span>쿠폰 할인금액</span>
-                            <span id="discountPriceSpan">5000</span><span>원</span>
+                            <span id="discountPriceSpan">0</span><span>원</span>
                         </li>
                         <li>
                             <span>적용 포인트</span>
@@ -254,7 +260,7 @@
                         </li>
                         <li>
                             <span>총 결제금액</span>
-                            <span id="finalPriceSpan">51500</span><span>원</span>
+                            <span id="finalPriceSpan"></span><span>원</span>
                         </li>
                         <li>
                             <button id="payButton">결제하기</button>
@@ -630,6 +636,13 @@
 	    	document.querySelector("input[id='sample4_detailAddress']").value = "<%=defaultAddressInfo.getAddrDetail()%>";
 	    	document.querySelector("input[id='sample4_roadAddress']").value = "<%=defaultAddressInfo.getAddrAddress()%>";//roadAddress 도로명주소 db는 수령인 주소
 	    	
+	    	document.querySelector("input[name='receptionName']").readOnly = true;
+	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = true;
+	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
+	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
+	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
+	    	
+	    	//기본 배송지가 있는 사람이 신규 배송지를 눌렀다 다시 기본 배송지를 체크했을때 데이터를 받아옵니다.
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
 	    		fetch("<%=request.getContextPath()%>/join/defaultaddress.do?cust_key=" + <%= session.getAttribute("cust_key") %>, {
 	    			method : "GET",
@@ -637,10 +650,32 @@
 	    				"Content-type" : "application/json;charset=utf-8"
 	    			},
 	    		})
-	    		.then(response => response.text())
+	    		.then(response => response.json())
 	    		.then(data => {
 	    			console.log(data);
+	    			//받아온 데이터를 input태그의 value에 넣어줍니다.
+	    			document.querySelector("input[name='receptionName']").value = data.addrName;
+	    			document.querySelector("input[name='receptionPhoneNum1']").value = data.addrPhone;
+	    			document.getElementById("sample4_postcode").value = data.addrPostcode;
+	    			document.getElementById("sample4_detailAddress").value = data.addrDetail;
+	    			document.getElementById("sample4_roadAddress").value = data.addrAddress;
+	    			
+	    			//기본 주소지 이므로 input태그의 value는 수정할 수 없습니다.
+	    			document.querySelector("input[name='receptionName']").readOnly = true;
+	    	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
+	    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
 	    		});
+	    	})
+	    	
+	    	//기본 주소지가 있는 사람이 신규 배송지를 입력할때 기본배송지의 readOnly를 false로 해줍니다.
+	    	document.querySelector("input[value='신규 배송지']").addEventListener("click", e => {
+	    		document.querySelector("input[name='receptionName']").readOnly = false;
+    	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_postcode']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = false;
+    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = false;
 	    	})
 	    <%}%>
 	    
@@ -676,9 +711,8 @@
 	    	String totalProdName = "";//총 상품명 이름
 	    	int count = 1;
 	    	for(ProductInfo p : cartInfo) {
-	    		//
-	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity();
-	    		totalQuantity += p.getCartQuantity();
+	    		totalPay += (p.getOptionPrice() + p.getProdPrice()) * p.getCartQuantity(); //총 금액
+	    		totalQuantity += p.getCartQuantity(); //총 수량
 	    		//상품명이 너무 길어지면 카카오페이 결제에서 보기 안좋으므로 장바구니의 상품이 3개이상이면 4번째 상품명 부터는 ... 으로 대체합니다.
 	    		if(cartInfo.size() <= 3) {
 		    		if(cartInfo.size() == count) {
@@ -698,23 +732,26 @@
 		    		}
 	    		}
 	    	}
+	    	System.out.println("전체비용 : " + totalPay);
     	%>
     	
     	totalPay = <%= totalPay %>;
     	totalQuantity = <%= totalQuantity %>;
-    	totalProdName = "<%= totalProdName %>";
-    	document.querySelector("span[id='totalPaySpan']").innerHTML = totalPay;
+    	sumProdName = "<%= totalProdName %>";
+    	document.querySelector("span[id='totalPaySpan']").innerText = totalPay;
     	
-    	document.querySelector("#choiceCoupon").addEventListener("change", e => {
+    	//쿠폰을 선택하면 그에맞는 수치들을 수정합니다.(전체금액, 쿠폰 할인금액, 총 결제금액)
+    	document.getElementById("choiceCoupon").addEventListener("change", e => {
+    		const applyPoint = document.getElementById("pointApplySpan").innerText;
     		let selectCouponDisRate = e.target.value;
-    		let discountPrice = totalPay * (selectCouponDisRate / 100);
+    		let discountPrice = <%= totalPay %> * (selectCouponDisRate / 100);
     		document.querySelector("#discountPriceSpan").innerText = discountPrice;
-    		document.querySelector("#finalPriceSpan").innerText = totalPay - discountPrice;
+    		document.querySelector("#finalPriceSpan").innerText = <%= totalPay %> - discountPrice - applyPoint;
     		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
     	
-    	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰을 option태그에서 select되어 있게하는 로직입니다.
+    	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰이 선택되어있는 상태로 페이지가 나옵니다.
     	<% if(coupons.get(0).getCouponName() != null) { %>
    			const couponSelect = document.querySelector("#choiceCoupon");
    			console.log(couponSelect);
@@ -734,9 +771,34 @@
    				}
    			}
    			
+   			//적용된 쿠폰의 pk값을 받아오기위한 로직입니다.
+   			(function() {
+	  			let dcKey;
+	   			if(document.getElementById("checkUsingCoupon").checked) {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+	   				console.log(selectCoupon.selectedIndex);
+	   				console.log(dcKey);
+	   			}
+	   			
+	   			document.getElementById("choiceCoupon").addEventListener("change", e => {
+	   				const selectCoupon = document.getElementById("choiceCoupon");
+	   				if(selectCoupon.selectedIndex > 1) {
+	   					dcKey = document.querySelectorAll("input[name='getDcKey']")[e.target.selectedIndex - 2];
+	   					console.log(selectCoupon.selectedIndex);
+	   					console.log(dcKey);
+	   				}
+	   			})
+   			})()
+   			
+   			
+   			
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
+   			console.log("쿠폰할인가격 : " + totalPay * (num / 100));
    			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
+    	<% } else {%>
+	    	document.querySelector("#finalPriceSpan").innerText = totalPay;
     	<% } %>
     	
     	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
@@ -760,15 +822,17 @@
     	document.getElementById("applyPoint").addEventListener("click", e => {
     		const afterApplySpan = document.getElementById("afterApplySpan");
     		const wantUsingPointInput = document.querySelector("input[name='pointInput']");
-    		const wantUsingPoint = wantUsingPointInput.value;
+    		const wantUsingPoint = Number(wantUsingPointInput.value);
     		const pointApplySpan = document.getElementById("pointApplySpan");
-    		const afterApplyPoint = afterApplySpan.innerText;
+    		const afterApplyPoint = Number(afterApplySpan.innerText);
     		const finalPriceSpan = document.getElementById("finalPriceSpan");
     		console.log(wantUsingPoint);
     		console.log(afterApplyPoint);
     		//보유포인트보다 더 많은값을 입력하면 막는 로직입니다.
     		if(wantUsingPoint > afterApplyPoint) {
     			alert("보유 마일리지보다 더 큰 값을 입력할 수 없습니다.");
+    			console.log("wantUsingPoint : " + wantUsingPoint);
+    			console.log("afterApplyPoint : " + afterApplyPoint);
     			wantUsingPointInput.value = afterApplyPoint;
     			if(afterApplyPoint == 0) {
     				wantUsingPointInput.value = "";
@@ -806,10 +870,49 @@
 
     <!-- 카카오페이 결제 API script -->
     <script>
+		//카카오 api호출 event입니다. (결제버튼 눌렀을때);
         document.querySelector("#payButton").addEventListener("click",e => {
-        		const finalPriceStr = document.querySelector("#finalPriceSpan").innerText;
-        		console.log(finalPriceStr);
-        		const finalPrice = finalPriceStr.substring(0,finalPriceStr.length - 1);
+       		const finalPrice = document.querySelector("#finalPriceSpan").innerText; // 전체가격
+       		let cartKey; //장바구니 pk값
+       		let dcKey; //쿠폰 pk값
+       		const usingPoint = document.getElementById("pointApplySpan").innerText; //사용한 포인트
+       		const selectCoupon = document.getElementById("choiceCoupon");
+       		
+       		//option태그의 index 0, 1 은 쿠폰을 선택안한것과 동일합니다.
+			if(selectCoupon.selectedIndex > 1) {
+				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+			}
+			
+			console.log(dcKey);
+			
+			//장바구니 pk값을 (,)로 구분해서 초기화 해줍니다.
+			<% String cartKey = "";
+    		int counts = 1;
+			for(ProductInfo p : cartInfo) { 
+				if(counts == cartInfo.size()) {
+					cartKey += p.getCartKey();
+					counts++;
+				} else {
+					cartKey +=  p.getCartKey() + ",";
+					counts++;
+				}
+			}
+			System.out.println("cartKey : " + cartKey);%>
+			
+			let delRequest = ""; //요청주소
+			const delReqSelect = document.getElementById("deliveryRequestSelect");
+			console.log(delRequest);
+			
+			//요청사항 option태그의 index4번은 직접입력하기 입니다.
+			if(delReqSelect.selectedIndex == 4) {
+				delRequest = document.querySelector("input[name='deliveryRequestMessage']").value;
+				console.log("직접입력하기 조건문에 들어왔습니다.");
+			} else {
+				delRequest = delReqSelect[delReqSelect.selectedIndex].innerText;
+			}
+			console.log("조건문 완료후 delRequest : " + delRequest);
+			
+			//kakaoapi를 호출할 서블릿주소를 요청합니다..
         	fetch("<%= request.getContextPath() %>/member/kakaopay.do", {
                 method: 'POST',
                 headers: {
@@ -820,14 +923,36 @@
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
                     "partner_user_id": "partner_user_id",
-                    "item_name": totalProdName,
+                    "item_name": sumProdName,
                     "quantity": totalQuantity,
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/testproject/success",
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    + "&cartKey=" + "<%= cartKey %>",
+                    <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
+                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
+                    + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
+                    + "&orderPayoption=카카오페이&orderName=<%= defaultAddressInfo.getAddrName() %>"
+                    + "&orderPostcode=<%= defaultAddressInfo.getAddrPostcode() %>&orderAddress=<%= defaultAddressInfo.getAddrAddress() %>"
+                    + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
+                    + "&cartKies=<%= cartKey %>"
+                    + "&dcKey=" + dcKey, --%>
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/testproject/cancel"
+                    "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
+                    "custKey" : "<%= session.getAttribute("cust_key") %>",
+                    "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
+                    "orderSale" : (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText)),
+                    "orderPayoption" : "카카오페이",
+                    "orderName" : "<%= defaultAddressInfo.getAddrName() %>",
+                    "orderPostcode" : document.getElementById("sample4_postcode").value,
+                    "orderAddress" : document.getElementById("sample4_roadAddress").value,
+                    "orderDetailaddr" : document.getElementById("sample4_detailAddress").value,
+                    "orderPhone" : document.querySelector("input[name='receptionPhoneNum1']").value,
+                    "orderRequest" : delRequest,
+                    "cartKies" : "<%= cartKey %>",
+                    "dcKey" : dcKey,
+                    "orderState" : "주문"
                 })
             })
             .then(response => response.json())
@@ -835,10 +960,11 @@
             	console.log(data);
             	//data.next_redirect_pc_url의 문자열이 존재하면 if문에 빠지며 존재하지 않을경우 else문으로 빠집니다.
             	if (data.next_redirect_pc_url) {
-                    window.location.href = data.next_redirect_pc_url;
+                    window.open(data.next_redirect_pc_url);
                 } else {
                     console.error('next_redirect_pc_url not found in the response.');
                 }
+            	
             })
             .catch(error => console.error('Error:', error)); 
         	//error메세지는 요청을 보냈을때 response로 온 에러메세지를 console창에 출력합니다

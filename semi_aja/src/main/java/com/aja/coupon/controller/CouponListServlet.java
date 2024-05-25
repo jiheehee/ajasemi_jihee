@@ -1,4 +1,4 @@
-package com.aja.productprint.controller;
+package com.aja.coupon.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,20 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.productprint.model.dto.Product;
-import com.aja.productprint.service.ProductDetailService;
+import com.aja.coupon.model.dto.Coupon;
+import com.aja.coupon.service.CouponService;
 
 /**
- * Servlet implementation class ProductDetailPrintServlet
+ * Servlet implementation class CouponListServlet
  */
-@WebServlet("/product/productdetailprint.do")
-public class ProductDetailPrintServlet extends HttpServlet {
+@WebServlet("/coupon/couponlist.do")
+public class CouponListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductDetailPrintServlet() {
+    public CouponListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,27 +31,10 @@ public class ProductDetailPrintServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		List<Coupon> list = new CouponService().selectCouponAll();
 		
-		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
-		System.out.println(prodKey);
-		
-		Product result = new ProductDetailService().selectDetailProduct(prodKey);
-		
-		request.setAttribute("product", result);
-		
-		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
-		System.out.println(cateKey);
-		List<Product> list = new ProductDetailService().selectDetailProductList(cateKey);
-		request.setAttribute("productlist", list);
-		
-		
-		
-		
-		
-		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
-		
-		
+		request.setAttribute("list",list);
+		request.getRequestDispatcher("/WEB-INF/views/admin/coupon/couponList.jsp").forward(request, response);
 	}
 
 	/**

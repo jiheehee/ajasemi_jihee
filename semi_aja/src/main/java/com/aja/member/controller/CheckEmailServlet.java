@@ -1,7 +1,6 @@
-package com.aja.productprint.controller;
+package com.aja.member.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,20 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.productprint.model.dto.Product;
-import com.aja.productprint.service.ProductDetailService;
+import com.aja.member.model.dto.Customer;
+import com.aja.member.service.KakaoLoginService;
 
 /**
- * Servlet implementation class ProductDetailPrintServlet
+ * Servlet implementation class CheckEmailServlet
  */
-@WebServlet("/product/productdetailprint.do")
-public class ProductDetailPrintServlet extends HttpServlet {
+@WebServlet("/member/checkEmail.do")
+public class CheckEmailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductDetailPrintServlet() {
+    public CheckEmailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,25 +30,18 @@ public class ProductDetailPrintServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		String email = request.getParameter("email");
+		Customer ct = new KakaoLoginService().searchById(email);
+		boolean result = true;
 		
-		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
-		System.out.println(prodKey);
+		if(ct!=null) {
+			// 중복된 아이디 가 있는 것임 ~ , , 
+			result = false;
+		}
 		
-		Product result = new ProductDetailService().selectDetailProduct(prodKey);
-		
-		request.setAttribute("product", result);
-		
-		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
-		System.out.println(cateKey);
-		List<Product> list = new ProductDetailService().selectDetailProductList(cateKey);
-		request.setAttribute("productlist", list);
+		response.setContentType("application/json");
 		
 		
-		
-		
-		
-		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
 		
 		
 	}

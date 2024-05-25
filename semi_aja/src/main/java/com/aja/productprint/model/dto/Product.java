@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Product {
 	private int prodKey;
 	private int cateKey;
-	//private int optionKey;
+	private int optionKey;
 	//private int keywordKey;
 	private String prodName;
 	private int prodPrice;
@@ -27,7 +27,7 @@ public class Product {
 	
 	private String keywordName;
 	private String optionFlavor;
-	private String optionSize;
+	private int optionSize;
 	private int optionPrice;
 	private String cateName;
 }
