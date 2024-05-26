@@ -39,7 +39,6 @@ public class FaqSearchServlet extends HttpServlet {
 		
 		request.setAttribute("faq",faq);
 		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
-		
 	}
 
 	/**
