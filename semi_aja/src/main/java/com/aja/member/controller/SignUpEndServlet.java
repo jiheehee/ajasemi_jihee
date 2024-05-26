@@ -1,6 +1,8 @@
 package com.aja.member.controller;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,6 +53,9 @@ public class SignUpEndServlet extends HttpServlet {
 		String custPhone = request.getParameter("custPhone");
 		String custGender = request.getParameter("custGender");
 		String custBirth = request.getParameter("custBirth");
+		custBirth= custBirth.substring(0,4)+"-"+custBirth.substring(4,6)+"-"+custBirth.substring(6);
+		String custPostcode = request.getParameter("custPostcode");
+		
 		String custAddress = request.getParameter("custAddress");
 		String custDetailAdress = request.getParameter("custDetailAddress");
 		String custName = request.getParameter("custName");
@@ -67,6 +72,7 @@ public class SignUpEndServlet extends HttpServlet {
 					.custAddress(custAddress)
 					.custDetailAddress(custDetailAdress)
 					.custName(custName)
+					.custPostcode(custPostcode)
 					.build();
 		
 		System.out.println(ct);
@@ -77,7 +83,6 @@ public class SignUpEndServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+"/member/login.do");
 		} else {
 			// 회원가입 실패 시 회원가입 페이지 입력한 데이터 그대로 유지하면서 회원가입창 띄우고싶다.. 
-			// request.setAttribute() 로 입력받은 객체 다시 전달해줘서 .. 그 데이터로 input 태그 설정해죠도 되나 ?
 			// session 에 설정하고 쓰고 나면 . . 지우기 . . . 
 			response.sendRedirect(request.getContextPath()+"/member/signup.do");
 		}

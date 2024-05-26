@@ -20,6 +20,7 @@ public class Customer {
 	private String custPhone;
 	private String custGender;
 	private String custBirth;
+	private String custPostcode;
 	private String custAddress;
 	private String custDetailAddress;
 	private String custDelete;

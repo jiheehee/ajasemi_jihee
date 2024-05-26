@@ -1,4 +1,4 @@
-package com.aja.member.controller;
+package com.aja.mypage.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ public class MypageMainServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/member/mypage.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp").forward(request, response);
 	}
 
 	/**
