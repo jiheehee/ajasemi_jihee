@@ -30,7 +30,7 @@ public class ProductCartAddDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		try {
-			//장바구니고유번호, 회원고유번호, 상품고유번호, 옵션고유번호, 수량
+			//장바구니고유번호(시퀸스), 회원고유번호, 상품고유번호, 옵션고유번호, 수량
 			pstmt = conn.prepareStatement(sql.getProperty("insertProductCartAdd"));
 			pstmt.setInt(1, cart.getCustKey());
 			pstmt.setInt(2, cart.getProdKey());

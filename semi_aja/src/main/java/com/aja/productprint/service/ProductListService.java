@@ -28,6 +28,13 @@ public class ProductListService {
 	}
 	
 	
+	public List<Integer> selectWishProduct(int custKey) {
+		Connection conn = getConnection();
+		List<Integer> result = dao.selectWishProduct(conn, custKey);
+		close(conn);
+		return result;
+	}
+	
 	
 	
 	

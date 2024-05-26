@@ -1,5 +1,7 @@
 package com.aja.productprint.model.dao;
 
+import static com.aja.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,7 +13,6 @@ import java.util.List;
 import java.util.Properties;
 
 import com.aja.productprint.model.dto.Product;
-import static com.aja.common.JDBCTemplate.*;
 
 
 
@@ -48,10 +49,6 @@ public class ProductListDao {
 		}finally {
 			close(rs);
 			close(pstmt);
-//			System.out.println(result);
-//			System.out.println(cateKey);
-//			System.out.println((cPage-1)*numPerpage+1);
-//			System.out.println(cPage*numPerpage);
 		}return result;
 	}
 	
@@ -75,6 +72,25 @@ public class ProductListDao {
 	}
 	
 	
+	public List<Integer> selectWishProduct(Connection conn, int custKey) {
+		PreparedStatement pstmt =null;
+		ResultSet rs = null;
+		List<Integer> result = new ArrayList<>();
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("selectWishProduct"));
+			pstmt.setInt(1, custKey);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				result.add(rs.getInt(1));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+//			System.out.println(result);
+		}return result;
+	}
 	
 	
 	
