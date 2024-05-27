@@ -1,4 +1,4 @@
-package com.aja.payment.model.dto;
+package com.aja.mypage.model.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;

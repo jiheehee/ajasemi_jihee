@@ -17,6 +17,7 @@ import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
 import com.aja.member.model.dto.KakaoDTO;
 import com.aja.member.model.dto.ProductInfo;
+import com.aja.payment.model.dto.Order;
 
 public class MemberDao {
 	private Properties prop = new Properties();
@@ -240,8 +241,6 @@ public class MemberDao {
 		}
 		return coupons;
 	}
-	
-	
 	
 	public static Customer getCustomer(ResultSet rs) throws SQLException{
 		

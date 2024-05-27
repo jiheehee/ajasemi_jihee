@@ -8,7 +8,7 @@
  		text-align: center;
  		padding-top:0;
  		margin-top:0;
- 		margin-bottom : 25px;
+ 		margin-bottom : 50px;
  		color: red;
  		
  	}
@@ -115,7 +115,7 @@
     }
     .button-container button {
         margin: 0 10px;
-        font-size : 12px;
+        font-size : 10.5px;
         background-color: black;
         color: rgb(235, 235, 235);
        	
@@ -126,7 +126,7 @@
    		top: 7.0px;
    	}
    	input[type='button']{
-   		font-size: 10px;
+   		font-size: 8px;
    		background-color: black;
    		color: rgb(235, 235, 235);
    		
@@ -313,24 +313,40 @@
     newPasswordCheckInput.addEventListener('input', newPasswordCheckInputChangeHandler);
 
     // 전화번호 유효성 검사 (숫자만 허용, 4자리씩만 입력)
-	    const phoneSecondInput = document.querySelector("input[name='phone-second']");
-	    const phoneLastInput = document.querySelector("input[name='phone-last']");
-	    const phoneMessage = document.getElementById('phoneMessage');
-	
-	    const phoneInputChangeHandler = () => {
-        const phoneSecond = phoneSecondInput.value.trim();
-        const phoneLast = phoneLastInput.value.trim();
-        const phoneRegExp = /^\d{4}$/;
-        if (!phoneRegExp.test(phoneSecond) || !phoneRegExp.test(phoneLast)) {
-            phoneMessage.innerText = "전화번호는 숫자만 입력 가능하며, 각각 4자리씩 입력되어야 합니다.";
-        } else {
-            phoneMessage.innerText = "";
-        }
-    }
+    const phoneSecondInput = document.querySelector("input[name='phone-second']");
+    const phoneLastInput = document.querySelector("input[name='phone-last']");
+    const phoneMessage = document.getElementById('phoneMessage');
 
+    const phoneInputChangeHandler = () => {
+       const phoneSecond = phoneSecondInput.value.trim();
+       const phoneLast = phoneLastInput.value.trim();
+       const phoneRegExp = /^\d{4}$/;
+       if (!phoneRegExp.test(phoneSecond) || !phoneRegExp.test(phoneLast)) {
+           phoneMessage.innerText = "전화번호는 숫자만 입력 가능하며, 각각 4자리씩 입력되어야 합니다.";
+       } else {
+           phoneMessage.innerText = "";
+       }
+    }
+	
     phoneSecondInput.addEventListener('input', phoneInputChangeHandler);
     phoneLastInput.addEventListener('input', phoneInputChangeHandler);
-
+    
+    // 새비밀번호가 헌비밀번호랑 같은지 검사
+    const newCustPwInput = document.querySelector("input[name='custPw']");
+    const newCustPwCheckInput = document.querySelector("input[name='custPwCheck']");
+    
+    const newCustPwChangeHandler = () => {
+    	const newCustPw = newCustPwInput.value.trim();
+    	const newCustPwCheck = newCustPwCheckInput.value.trim();
+    	if(newCustPw=='<%=loginMember.getCustPw()%>'){
+    		passwordCheckMessage.innerText="현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.";
+    	} else {
+    		passwordCheckMessage.innerText="";
+    	}
+    }
+    
+  	newCustPwCheckInput.addEventListener('blur', newCustPwChangeHandler);
+	
 </script>
 <script>
 	
@@ -353,48 +369,57 @@
 	
 		console.log(custPhoneFirst);
 		
-		if(custPw==''){
-			custPw=null;
+		const nameRegExp = /^[가-힣]+$/;
+        const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+        const phoneRegExp = /^\d{4}$/;
+
+		// 이름 유효성, 패스워드 형식 유효성, 패스워드 확인 일치
+		// 새패스워드 확인, 전화번호 유효성 검사 
+		if(nameRegExp.test(custName.value.trim()) && (passwordRegExp.test(custPw.trim())||custPw.trim()=="" )
+				&& custPw.trim()===custPwCheck.trim() && phoneRegExp.test(custPhoneSecond) 
+				&& phoneRegExp.test(custPhoneLast) && custPw.trim()!=='<%=loginMember.getCustPw()%>'){
+				
+			if(custPw==''){
+				custPw=null;
+			}
+			
+			if('<%=loginMember.getCustName()%>'==custName.value && '<%=loginMember.getCustNickname()%>'== custNickname.value
+					&& '<%=loginMember.getCustBirth()%>'== custBirth.value && '<%=loginMember.getCustPhone()%>'==custPhone 
+					&& '<%=loginMember.getCustPostcode()%>'== custPostcode && '<%=loginMember.getCustAddress()%>'== custAddress 
+					&& '<%=loginMember.getCustDetailAddress()%>' == custDetailAddress && custPw==null){
+				alert('변경된 내용이 없습니다.');		
+			} else {
+				const sendData = {  "custEmail":custEmail.value, 
+									"custName":custName.value,
+									"custNickname":custNickname.value,
+									"custBirth":custBirth.value,
+									"custPw":custPw, 
+									"custPostcode":custPostcode,
+									"custAddress":custAddress,
+									"custDetailAddress":custDetailAddress,
+									"custPhone":custPhone};
+				console.log(sendData);
+				$.ajax({
+					url:"<%=request.getContextPath()%>/member/editmember.do",
+					type:"POST",
+					data: {sendData:JSON.stringify(sendData)},
+				    /* contentType: "application/x-www-form-urlencoded; charset=UTF-8",  */
+				    success: function(editedCt) {
+				        console.log(editedCt);
+				        sessionStorage.setItem("loginMember",JSON.stringify(editedCt));
+				        location.reload();
+				    }
+					
+				});
+			}
+		} else {
+			
+			alert("제출된 정보가 유효하지 않습니다.");
 		}
 		
-		if('<%=loginMember.getCustName()%>'==custName.value && '<%=loginMember.getCustNickname()%>'== custNickname.value
-				&& '<%=loginMember.getCustBirth()%>'== custBirth.value && '<%=loginMember.getCustPhone()%>'==custPhone 
-				&& '<%=loginMember.getCustPostcode()%>'== custPostcode && '<%=loginMember.getCustAddress()%>'== custAddress 
-				&& '<%=loginMember.getCustDetailAddress()%>' == custDetailAddress && custPw=='' && custPwCheck==''){
-			alert('변경된 내용이 없습니다.');		
-		} else {
-			const sendData = {  "custEmail":custEmail.value, 
-								"custName":custName.value,
-								"custNickname":custNickname.value,
-								"custBirth":custBirth.value,
-								"custPw":custPw, 
-								"custPostcode":custPostcode,
-								"custAddress":custAddress,
-								"custDetailAddress":custDetailAddress,
-								"custPhone":custPhone};
-			console.log(sendData);
-			$.ajax({
-				url:"<%=request.getContextPath()%>/member/editmember.do",
-				type:"POST",
-				data: JSON.stringify(sendData),
-			    contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-			    success: function(editedCt) {
-			        console.log(editedCt);
-			        sessionStorage.setItem("loginMember",JSON.stringify(editedCt));
-			    }
-				
-			});
-		}
+		
 	}
 	
-	
-	function getLoginMemberFromSession() {
-		return JSON.parse(sessionStorage.getItem("loginMember"));
-    }
-	
-	document.addEventListener("DOMContentLoaded",function(){
-		const loginMember = getLoginMemberFromSession();
-	});
 
 
 </script>

@@ -1,4 +1,4 @@
-package com.aja.productprint.model.dto;
+package com.aja.mypage.model.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -34,4 +34,7 @@ public class Product {
 	private int optionSize;
 	private int optionPrice;
 	private String cateName;
+	
+	private List<ProdImage> prodImages = new ArrayList<>();
+
 }
