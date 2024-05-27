@@ -41,13 +41,27 @@ public class CouponDistributeServlet extends HttpServlet {
 			if(couponName.contains("생일")) {
 				
 				custKeyList = new CouponService().selectBirthdayCustomer();
-				result = new CouponService().birthdayCouponDistribute(couponKey);
+				if(custKeyList.size()>0) {
+					for(int i=0;i<custKeyList.size();i++) {
+						result = new CouponService().birthdayCouponDistribute((int)custKeyList.get(i),couponKey);
+					}
+				}
 			}
 			else if(couponName.contains("멤버십")) {
 //				result = new CouponService().membershipCouponDistribute(couponKey);
 			}
+		} 
+		String msg,loc="";
+		if(result>0) {
+			msg="쿠폰발급 성공했습니다. :)";
+			loc="/coupon/couponlist.do";
+		}else {
+			msg ="쿠폰발급 실패했습니다. :(";
+			loc="/coupon/couponlist.do";
 		}
-		
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc", loc);
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**
