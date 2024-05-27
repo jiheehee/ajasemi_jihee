@@ -48,13 +48,11 @@
                     <tr id="addressInputTr">
                         <th>주소</th>
                         <td id="addressContainer">
-                            <input type="text" id="sample4_postcode" placeholder="우편번호">
+                            <input type="text" id="sample4_postcode" placeholder="우편번호" readonly>
                             <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
-                            <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="도로명주소"><br>
-                            <input type="text" id="sample4_jibunAddress" class="addressInput" placeholder="지번주소"><br>
+                            <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="도로명주소" readonly><br>
                             <span id="guide" style="color:#999;display:none"></span>
-                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소"><br>
-                            <input type="text" id="sample4_extraAddress" class="addressInput" placeholder="참고항목">
+                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소" readonly><br>
                         </td>
                     </tr>
                 </table>
@@ -230,16 +228,16 @@
                             	<td class="applyableTd">
                             		<p id="mileagePtag">적용 가능한 마일리지</p>
                             	</td>
-                            		<td>
-                            			<div id="mileageContainer">
-                            				<span>보유 포인트 : </span><span id="havingPointSpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span><br>
-                            				<span>적용후 포인트 : </span><span id="afterApplySpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span>
-	                                    	<input type="text" name="pointInput" placeholder="숫자만 입력해주세요">
-	                                    	<button id="applyPoint">포인트사용</button>
-	                                    	<button id="allPointApply">모든포인트사용</button>
-	                                    	<button id="cancelApplyPoint">포인트사용취소</button>
-	                                    </div>
-                                	</td>
+                           		<td style="padding-right: 0px; padding-left: 0px;">
+                           			<div id="mileageContainer">
+                           				<span>보유 포인트 : </span><span id="havingPointSpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span><br>
+                           				<span>적용후 포인트 : </span><span id="afterApplySpan"><%= coupons.get(0).getCustPoint() %></span><span>포인트</span>
+                                    	<input type="text" name="pointInput" placeholder="숫자만 입력해주세요">
+                                    	<button id="applyPoint">포인트사용</button>
+                                    	<button id="allPointApply">모든포인트사용</button>
+                                    	<button id="cancelApplyPoint">포인트사용취소</button>
+                                    </div>
+                               	</td>
                             </tr>
                         </tbody>
                     </table>
@@ -257,6 +255,11 @@
                         <li>
                             <span>적용 포인트</span>
                             <span id="pointApplySpan">0</span><span>포인트</span>
+                        </li>
+                        <li>
+                        	<span>배송비</span>
+                        	
+                        	<span id="deliveryPriceSpan">3000</span><span>원</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
@@ -470,6 +473,35 @@
         	text-overflow:ellipsis;
             white-space:nowrap;	
         }
+		#executePayContainer {
+		    display: flex;
+		    flex-direction: column;
+		    height: 100%; /* 컨테이너 높이를 조정 */
+		}
+		
+		#executePayContainer ul {
+		    display: flex;
+		    flex-direction: column;
+		    justify-content: space-around; /* 요소들을 적절히 분배 */
+		    margin: 0;
+		    padding: 0;
+		    list-style: none;
+		    height: 100%;
+		}
+		
+		#executePayContainer li {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+		    padding: 10px 0; /* 패딩을 조정하여 높이 줄이기 */
+		    margin: 0 10px; /* 양쪽에 여백 추가 */
+		    border-bottom:1px solid black;
+		}
+		
+		#executePayContainer li span {
+		    flex: 1;
+		}
+
 
 
 
@@ -589,14 +621,6 @@
 	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
 	                document.getElementById('sample4_postcode').value = data.zonecode;
 	                document.getElementById("sample4_roadAddress").value = roadAddr;
-	                document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
-	                
-	                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-	                if(roadAddr !== ''){
-	                    document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-	                } else {
-	                    document.getElementById("sample4_extraAddress").value = '';
-	                }
 	
 	                var guideTextBox = document.getElementById("guide");
 	                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
@@ -702,7 +726,7 @@
 		let totalPay = 0;
 	    let totalQuantity = 0;
 	    let totalProdName = "";
-	    
+	    let deliveryPrice = Number(document.getElementById("deliveryPriceSpan").innerText);
 	    //결제할 총 금액 정보를 담아줄 총 수량, 금액 등등...을 구하고 list태그의 자식태그인 span태그에 값을 넣어주는 로직입니다.
 	    //다른 정보들은 카카오api결제 request에 필요한 body data를 전달하기위한 로직입니다.
 	    <%
@@ -746,7 +770,7 @@
     		let selectCouponDisRate = e.target.value;
     		let discountPrice = <%= totalPay %> * (selectCouponDisRate / 100);
     		document.querySelector("#discountPriceSpan").innerText = discountPrice;
-    		document.querySelector("#finalPriceSpan").innerText = <%= totalPay %> - discountPrice - applyPoint;
+    		document.querySelector("#finalPriceSpan").innerText = <%= totalPay %> - discountPrice - applyPoint + deliveryPrice;
     		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
@@ -796,9 +820,9 @@
    			//할인 가격과 쿠폰이 적용된 후의 결제 가격을 입력해줍니다.(처음 페이지에 접속했을때)
    			document.querySelector("#discountPriceSpan").innerText = totalPay * (num / 100);
    			console.log("쿠폰할인가격 : " + totalPay * (num / 100));
-   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100);
+   			document.querySelector("#finalPriceSpan").innerText = totalPay * ((100 - num) / 100) + deliveryPrice;
     	<% } else {%>
-	    	document.querySelector("#finalPriceSpan").innerText = totalPay;
+	    	document.querySelector("#finalPriceSpan").innerText = totalPay + deliveryPrice;
     	<% } %>
     	
     	//마일리지 입력란에 숫자형인지 확인해주는 로직입니다.
@@ -819,6 +843,7 @@
     	})
     	
     	//마일리지를 적용하는 로직입니다.
+    	let changeableDeliveryPrice = Number(document.getElementById("deliveryPriceSpan").innerText);
     	document.getElementById("applyPoint").addEventListener("click", e => {
     		const afterApplySpan = document.getElementById("afterApplySpan");
     		const wantUsingPointInput = document.querySelector("input[name='pointInput']");
@@ -826,8 +851,10 @@
     		const pointApplySpan = document.getElementById("pointApplySpan");
     		const afterApplyPoint = Number(afterApplySpan.innerText);
     		const finalPriceSpan = document.getElementById("finalPriceSpan");
+    		const finalPrice = finalPriceSpan.innerText;
     		console.log(wantUsingPoint);
     		console.log(afterApplyPoint);
+    		console.log("finalPrice : " + finalPrice)
     		//보유포인트보다 더 많은값을 입력하면 막는 로직입니다.
     		if(wantUsingPoint > afterApplyPoint) {
     			alert("보유 마일리지보다 더 큰 값을 입력할 수 없습니다.");
@@ -838,19 +865,42 @@
     				wantUsingPointInput.value = "";
     			}
     		} else if(wantUsingPoint > 0) {
-    			pointApplySpan.innerText = wantUsingPoint;
-    			finalPriceSpan.innerText -= wantUsingPoint;
-    			afterApplySpan.innerText -= wantUsingPoint;
-    			wantUsingPointInput.value = "";
+    			if(wantUsingPoint < finalPrice) {
+    				pointApplySpan.innerText = wantUsingPoint;
+    				finalPriceSpan.innerText -= wantUsingPoint;
+    				changeableDeliveryPrice = 0;
+    				afterApplySpan.innerText -= wantUsingPoint;
+    				wantUsingPointInput.value = "";
+    			} else {
+    				pointApplySpan.innerText = finalPrice;
+    				finalPriceSpan.innerText -= pointApplySpan.innerText;
+    				changeableDeliveryPrice = 0;
+    				afterApplySpan.innerText -= pointApplySpan.innerText;
+    				wantUsingPointInput.value = "";
+    			}
     		}
     	})
     	
     	//포인트 전체적용 로직입니다.
     	document.getElementById("allPointApply").addEventListener("click", e => {
+	    	const havingPoint = Number(document.getElementById("afterApplySpan").innerText);
+	    	const finalPrice = Number(document.getElementById("finalPriceSpan").innerText);
     		const marginPoint = Number(document.getElementById("afterApplySpan").innerText);
-    		document.getElementById("afterApplySpan").innerText -= marginPoint;
-    		document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) - marginPoint;
-    		document.getElementById("pointApplySpan").innerText = Number(document.getElementById("pointApplySpan").innerText) + marginPoint;
+    		console.log("전체적용 havingPoint : " + havingPoint);
+    		console.log("전체적용 finalPrice : " + finalPrice);
+    		if(havingPoint > finalPrice) {
+    			console.log("가지고 있는 포인트가 더 많을때")
+    			document.getElementById("afterApplySpan").innerText = havingPoint - finalPrice;
+    			document.getElementById("pointApplySpan").innerText = Number(document.getElementById("havingPointSpan").innerText) 
+    										- Number(document.getElementById("afterApplySpan").innerText); 
+    			document.getElementById("finalPriceSpan").innerText = changeableDeliveryPrice;
+    			changeableDeliveryPrice = 0;
+    		} else {
+    			document.getElementById("afterApplySpan").innerText -= marginPoint;
+    			document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) - marginPoint;
+    			changeableDeliveryPrice = 0;
+    			document.getElementById("pointApplySpan").innerText = Number(document.getElementById("pointApplySpan").innerText) + marginPoint;    			
+    		}
     	})
     	
     	//포인트 적용 취소 로직입니다.
@@ -859,11 +909,12 @@
     		const afterApplyPoint = Number(document.getElementById("afterApplySpan").innerText);
     		document.getElementById("pointApplySpan").innerText = 0;
     		document.getElementById("afterApplySpan").innerText = applyPoint + afterApplyPoint;
-    		document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) + applyPoint; 
+    		document.getElementById("finalPriceSpan").innerText = Number(document.getElementById("finalPriceSpan").innerText) + applyPoint;
+    		changeableDeliveryPrice = Number(document.getElementById("deliveryPriceSpan").innerText);
     	})
     	
     	
-    	//태그 숫자에 ,를 넣어주는 함수(시간 남으면 할게요)
+    	//숫자에 ,(쉼표)를 넣어주는 함수 (시간 남으면 할게요)
     	function changNumToStringContainsComma(oriNumber) {
 	    	//let oriNumber = document.querySelector("p").innerText;
 	        console.log("적용시킬 숫자 : " + oriNumber);
@@ -909,9 +960,37 @@
        		const usingPoint = document.getElementById("pointApplySpan").innerText; //사용한 포인트
        		const selectCoupon = document.getElementById("choiceCoupon");
        		
+       		const receptionName = document.querySelector("input[name='receptionName']").innerText; //수령인 이름
+       		const receptionPhoneNum1 = document.querySelector("input[name='receptionPhoneNum1']").innerText; //수령인 전화번호
+       		const postcode = document.getElementById("sample4_postcode").innerText; //우편번호
+       		const roadAddress = document.getElementById("sample4_roadAddress").innerText;// 도로명 주소
+       		const detailAddress = document.getElementById("sample4_detailAddress").innerText;// 상세 주소
+       		
+       		//필수로 입력되어야 하는 input태그 안에 공란이면 공란인 input태그로 focus되고 결제가 진행되지 않습니다.
+       		if(!receptionName || !receptionPhoneNum1 || !postcode || !roadAddress || detailAddress) {
+       			if(!receptionName) {
+       				document.querySelector("input[name='receptionName']").focus();
+       				return;
+       			} else if(!receptionPhoneNum1) {
+       				document.querySelector("input[name='receptionPhoneNum1']").focus();
+       				return;
+       			} else if(!postcode) {
+       				document.getElementById("sample4_postcode").focus();
+       				return;
+       			} else if(!roadAddress) {
+       				document.getElementById("sample4_roadAddress").focus();
+       				return;
+       			} else if(!detailAddress) {
+       				document.getElementById("sample4_detailAddress").focus();
+       				return;
+       			}
+       		}
+       		
        		//option태그의 index 0, 1 은 쿠폰을 선택안한것과 동일합니다.
 			if(selectCoupon.selectedIndex > 1) {
 				dcKey = document.querySelectorAll("input[name='getDcKey']")[selectCoupon.selectedIndex - 2].value;
+			} else {
+				dcKey = -1;
 			}
 			
 			console.log(dcKey);

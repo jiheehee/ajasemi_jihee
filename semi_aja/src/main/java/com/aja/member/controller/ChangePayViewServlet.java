@@ -38,11 +38,15 @@ public class ChangePayViewServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("cust_key", memberNo);
 		
+		String cartKies = request.getParameter("cartKies");
+		
 		Address defaultAddress = new MemberService().getDefaultAddress(memberNo);
 		System.out.println(defaultAddress);
-		List<ProductInfo> products = new MemberService().getCartInfo(memberNo);
+		
+		List<ProductInfo> products = new MemberService().getCartInfo(memberNo, cartKies);
 		session.setAttribute("productInfo", products);
 		products.forEach(System.out::println);
+		
 		List<CouponInfo> coupons = new MemberService().getCouponInfo(memberNo);
 		coupons.forEach(System.out::println);
 		
