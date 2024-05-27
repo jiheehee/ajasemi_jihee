@@ -193,10 +193,10 @@
 								    if (loginMember != null) {
 								        for (int i = 0; i < wishNumber.size(); i++) {
 								            if (p.getProdKey() == wishNumber.get(i)) {
-								                imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg";
+								            	imgSrc = "https://i.pinimg.com/236x/3b/d1/b3/3bd1b3a93f9bb1857ef51a67b9d6d90c.jpg";
 								                break; // 조건이 맞는 이미지를 찾으면 멈춤
 								            } else {
-								                imgSrc = "https://i.pinimg.com/236x/3b/d1/b3/3bd1b3a93f9bb1857ef51a67b9d6d90c.jpg";
+								            	imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg";
 								            }
 								        }
 								    }

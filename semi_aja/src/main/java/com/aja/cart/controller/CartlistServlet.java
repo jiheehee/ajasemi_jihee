@@ -1,4 +1,4 @@
-package com.aja.faq.controller;
+package com.aja.cart.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,20 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.faq.model.dto.Faq;
-import com.aja.faq.service.FaqService;
+import com.aja.cart.model.dto.Cart;
+import com.aja.cart.service.CartService;
+import com.aja.member.model.dto.Customer;
 
 /**
- * Servlet implementation class FaqSearchServlet
+ * Servlet implementation class CartlistServlet
  */
-@WebServlet("/faq/faqsearch.do")
-public class FaqSearchServlet extends HttpServlet {
+@WebServlet("/cart/cartlist.do")
+public class CartlistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FaqSearchServlet() {
+    public CartlistServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,14 +32,15 @@ public class FaqSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Customer c=(Customer)request.getSession().getAttribute("loginMember");
+		int custKey=c.getCustKey();
 		
-		String faqsearch=request.getParameter("search"); //jsp에서 검색창의 name값을 search로 설정해둠
+		List<Cart> cart=new CartService().getCartList(custKey);
 		
-		List<Faq> faq= new FaqService().searchFaqByTitle(faqsearch);
-//		System.out.println(faq);
+		request.setAttribute("cart", cart);				
 		
-		request.setAttribute("faq",faq);
-		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/cart/cart.jsp").forward(request, response);
+				
 	}
 
 	/**
