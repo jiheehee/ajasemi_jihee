@@ -38,6 +38,8 @@ public class ProductWishAddServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Customer loginMember = (Customer)session.getAttribute("loginMember"); //아이디가 session에 있어서 접근 가능
 		
+		
+		
 		int custKey = loginMember.getCustKey();
 		
 		WishDTO wish  = WishDTO.builder()
@@ -46,27 +48,14 @@ public class ProductWishAddServlet extends HttpServlet {
 				.build();	
 		
 		
-		
-		
-		
-		
 		int result = new ProductWishAddService().insertProductWishAdd(wish);
 		
 		
-		String msg="", loc="";
-		if(result>0) {
-			msg="등록 성공했습니다. :)";
-			loc = "/";
-		}else {
-			msg = "등록 실패했습니다. :(";
-			loc = "/";
-		}
-		request.setAttribute("msg", msg);
-		request.setAttribute("loc",loc);
+		
 		
 		System.out.println("찜 연결");
 		
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+		
 		
 		
 	}

@@ -51,26 +51,33 @@ public class ProductCartAddServlet extends HttpServlet {
 				.productCount(productCount)
 				.build();
 		
-		int result = new ProductCartAddService().insertProductCartAdd(cart);
+		int cartResult = new ProductCartAddService().insertProductCartAdd(cart);
 		
-		String msg="", loc="";
-		if(result>0) {
-			msg="등록 성공했습니다. :)";
-			loc = "/";
+		
+		//ajax 로 result 값 넘겨주기 setAttribute로 넘겨주고 get으로 받아서 그걸 이용해 모달창 띄우기
+		
+		//request.setAttribute("cartResult", cartResult);
+		
+		
+		if(cartResult>0) {
+//			회원번호로 상품번호를 조회했을떄 이미 등록되어 있으면 등록안되게 막고, 이미 장바구니에 있는 상품입니다. 띄우기
+			cartResult = 0;
 		}else {
-			msg = "등록 실패했습니다. :(";
-			loc = "/";
+			cartResult = 1;
 		}
-		request.setAttribute("msg", msg);
-		request.setAttribute("loc",loc);
 		
 		System.out.println("장바구니 연결");
 		
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 		
+		//request.setAttribute("cartResult", cartResult);
+//		System.out.println(cartResult);
+//		response.setContentType("html/text");
+//		response.setCharacterEncoding("utf-8");
 		
+		//ajax 값 넘겨주기 
+		response.getWriter().print(cartResult);
 		
-		
+		//response.getWriter().		
 		
 		
 	}
