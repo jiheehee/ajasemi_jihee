@@ -36,6 +36,61 @@ public class FaqDao {
 			close(rs);
 		}return result;		
 	}
+	
+	public List<Faq> searchFaqByTitle(Connection conn,String search){				
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<Faq> result=new ArrayList<>();
+		String searchTitle = "%"+search+"%";
+		
+		try {
+			pstmt=conn.prepareStatement("SELECT * FROM FAQ WHERE FAQ_TITLE LIKE ? ");
+			pstmt.setString(1, searchTitle);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				Faq q=Faq.builder()
+					.faqCategory(rs.getString("faq_Category"))
+					.faqTitle(rs.getString("faq_Title"))
+					.faqContent(rs.getString("faq_Content"))
+					.build();
+				result.add(q);
+			}			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;		
+	}
 
+	public List<Faq> submitCategory(Connection conn, String category){
+		
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<Faq> result=new ArrayList<>();
+		try {
+			pstmt=conn.prepareStatement("SELECT * FROM FAQ WHERE FAQ_CATEGORY = ?");
+			pstmt.setString(1, category);
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				Faq q=Faq.builder()
+				.faqCategory(rs.getString("faq_Category"))
+				.faqTitle(rs.getString("faq_Title"))
+				.faqContent(rs.getString("faq_Content"))
+				.build();
+				result.add(q);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	
 	
 }

@@ -1,15 +1,19 @@
 package com.aja.productprint.model.dao;
 
+import static com.aja.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.aja.productprint.model.dto.Product;
-import static com.aja.common.JDBCTemplate.*;
+import com.aja.productprint.model.dto.WishDTO;
 
 
 
@@ -42,8 +46,56 @@ public class ProductDetailDao {
 		}finally {
 			close(rs);
 			close(pstmt);
-			
+//			System.out.println(result);
 		}return result;
+	}
+	
+	
+	public List<Product> selectDetailProductList(Connection conn, int cateKey){
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Product> list = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectDetailProductList"));
+			pstmt.setInt(1, cateKey);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(getProduct(rs));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+//			System.out.println(list);
+		}return list;
+		
+		
+	}
+	
+	
+	
+	public int selectWishProduct (Connection conn ,WishDTO wish) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int wishNumber = 0;
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectWishProductDetail"));
+			pstmt.setInt(1, wish.getCustKey());
+			pstmt.setInt(2, wish.getProdKey());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				wishNumber = rs.getInt("COUNT");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+//			System.out.println(list);
+		}return wishNumber;
 	}
 	
 	
@@ -53,13 +105,11 @@ public class ProductDetailDao {
 	
 	
 	
-	
-	
-	//Product객체
+	//Product객체    // option 상품사진(나중에) 
 		private Product getProduct(ResultSet rs) throws SQLException{
 			return Product.builder()
 					.prodKey(rs.getInt("PROD_KEY"))
-//					.optionKey(rs.getInt("OPTION_KEY"))
+					.optionKey(rs.getInt("OPTION_KEY"))
 					.cateKey(rs.getInt("CATE_KEY"))
 //					.keywordKey(rs.getInt("KEYWORD_KEY"))
 					.prodName(rs.getString("PROD_NAME"))
@@ -70,6 +120,7 @@ public class ProductDetailDao {
 					.prodComponent(rs.getString("PROD_COMPONENT"))
 					.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))
 					.prodDeleted(rs.getBoolean("PROD_DELETED"))
+					
 					.keywordName(rs.getString("KEYWORD_NAME"))
 					.cateName(rs.getString("CATE_NAME"))
 					.optionFlavor(rs.getString("OPTION_FLAVOR"))

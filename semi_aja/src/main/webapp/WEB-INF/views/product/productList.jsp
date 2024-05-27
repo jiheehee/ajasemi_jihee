@@ -2,10 +2,14 @@
     pageEncoding="UTF-8"%>
 
 <%@ include file = "/WEB-INF/views/common/header.jsp"  %>
+
 <%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
 	int totalPage =	(int)request.getAttribute("totalPage");
+	List<Integer> wishNumber = (List<Integer>)request.getAttribute("wishNumber");
+	
+	
 %>
 
 
@@ -155,7 +159,7 @@
             	<%for(Product p : productlist){ %>
             
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>">
+                    <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>">
                         <div class="product-img">
                             <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
                              alt="상품이미지" width="100%" height="100%">
@@ -163,21 +167,42 @@
                     </a>
                     <div class="product-msg">
                         <div class="product-msg-name">
-                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>">	
+                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>">	
                                 <div>								<!-- 눌렀을때 구분할수 있는 값도 같이 보내기 PROD_KEY -->
                                     <p><%=p.getProdName()%></p>
                                     <p><%=p.getKeywordName()%></p>
                                 </div>
                                 <div>
-                                    <span><%=p.getProdPrice()%></span>
+                                    <span><%=p.getProdPrice() + p.getOptionPrice()%></span>
                                     <span class="product-msg-option"><%=p.getOptionFlavor() %></span>
                                 </div>
                             </a>
                         </div>
                         <div class="product-msg-wish">
-                            <button type="button"  onclick="dee(event);">
-                                <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
-                                    alt="찜버튼" width="30px" height="30px" >
+                            <button type="button" onclick="wishadd(event);">
+                            	<!-- 
+                                	로그인한 회원만 찜가능 / 비 로그인상태로 누르면 로그인화면으로 이동
+                                	찜 전,후 다른 UI띄움
+                                	찜한 상태에서 찜버튼을 누르면 찜 취소기능
+                                -->
+                            	<input type="text" value="<%=p.getProdKey()%>" hidden>
+                            	
+                            	<!-- 찜 테이블에 where 유저아이디로 걸어서 뭔 상품을 찜헀는지 내용물을 가져옴 -->
+                            	<% 
+								    String imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg"; // 기본 이미지 URL
+								    if (loginMember != null) {
+								        for (int i = 0; i < wishNumber.size(); i++) {
+								            if (p.getProdKey() == wishNumber.get(i)) {
+								            	imgSrc = "https://i.pinimg.com/236x/3b/d1/b3/3bd1b3a93f9bb1857ef51a67b9d6d90c.jpg";
+								                break; // 조건이 맞는 이미지를 찾으면 멈춤
+								            } else {
+								            	imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg";
+								            }
+								        }
+								    }
+								%>		
+                                <img src= "<%=imgSrc%>" 
+                                	alt="찜버튼" width="30px" height="30px">
                             </button>
                         </div>
                     </div>
@@ -196,42 +221,64 @@
 
 
 <script>
+	
+	
+	
 
-	/* console.log(document.getElementById("product-wrap").innerHTML); */
-	/* console.log(document.getElementsByClassName("products")[0]); */
-	/* console.log($("#product-wrap>.products").clone()); */
-	var copydiv = "<div class='products'>"+document.getElementById("product-wrap").innerHTML+"</div>";
+	
+	// 찜 기능
+	<% if(loginMember !=null){%>
+	const wishadd=(e)=>{
+		let prodvalue = e.currentTarget.children[0].value;
+		console.log(prodvalue);
+		
+		$.ajax({
+			type: "get",
+			url : "<%=request.getContextPath()%>/product/productwishadd.do?prodKey="+prodvalue,
+			data : { }, //여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
+			dataType : "html",
+			beforeSend: function() {
+        	},
+			success:function(data){
+				location.reload();
+			},
+		});
+	}	//찜 닫
+	<%}else{%>
+		const wishadd=()=>{
+			alert("로그인 후 이용 가능합니다.");
+			window.location.href = "<%=request.getContextPath()%>/member/login.do";
+		}
+	<%}%>
+	
+	
+	
 
 
 	$(document).ready(function() {
 		var cPage = 1; //현재페이지
 		var loading = false;
-		
 			
 		function getList(cPage) {
-			if(<%=totalPage%>>cPage){
+			if(<%=totalPage%> > cPage){
 				$("#loading").show();
 			}
 			$.ajax({
 				type: "get",
 				url : "<%=request.getContextPath()%>/product/productlistprint.do?cateKey=<%=productlist.get(0).getCateKey()%>",
-				data : { cPage : cPage}, //여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
-						 //},	"order" : "view_cnt"
+				data : { cPage : cPage}, 	//여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
 				dataType : "html",
 				beforeSend: function() {
-					
                 	loading = true;
             	},
 				success:function(data){
-					/* consloe.log(data) */
 					if(cPage>1){
 						var e = $(data).find(".products");
-						/* console.log(e); */
 						$("#product-wrap").append(e);
-						/* console.log(cPage); */
 						$("#loading").hide();
 					}
-					loading = false;						
+					loading = false;
+						
 				},
 				error: function() {
 					$("#loading").hide();
@@ -239,6 +286,12 @@
 	            }
 			});
 		}
+	
+		
+		
+		
+		
+		
 		
 		
 		$(window).scroll(function(){
@@ -247,6 +300,7 @@
 			var documentHeight = $(document).height(); // 문서 전체의 높이
 			var isBottom = scrollTop + windowsHeight +10 >= documentHeight;  // 조건 
 			
+					
 			if(isBottom){
 				//만일 마지막 페이지라면
 				if(!loading){
@@ -259,15 +313,6 @@
 	});
 
 		
-	
-	
-   /*  const dee=(e)=>{
-        console.log(e.target);
-    }
-
-    const categorybtn=(e)=>{
-        console.log(e.target.value);
-    } */
     
     
 	

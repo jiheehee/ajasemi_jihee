@@ -5,7 +5,6 @@
 	Customer loginMember = (Customer)session.getAttribute("loginMember");
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +34,6 @@
                     alt="logo" height="50" ></a>
             </div>
 
-
             <!-- 제품,About -->
             <div id="headerTitle">
                 <div>
@@ -57,7 +55,7 @@
             <!-- 수정본 학원캄퓨터에 있음 -->
             <div id="headerMypage">
             	<div>
-            		<a href="<%=request.getContextPath() %>/product/productlist.do">관</a>
+            		<a href="<%=request.getContextPath() %>/product/productlist.do">관리자</a>
             	</div>
                 <div>
                     <a href="<%=request.getContextPath()%>/member/login.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
@@ -68,8 +66,9 @@
                         alt="위시리스트" height="25"></a>
                 </div>
                 <div>
-                    <a href="<%=request.getContextPath()%>/member/login.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
-                        alt="쇼핑백" height="25"></a>
+
+                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+                    	alt="쇼핑백" height="25"></a>
                 </div>
                 <div>
                     <a href="<%=request.getContextPath() %>/member/login.do"><img src="https://cdn-icons-png.flaticon.com/512/152/152532.png" 
@@ -87,7 +86,6 @@
 	                    alt="logo" height="50" ></a>
 	            </div>
 	
-	
 	            <!-- 제품,About -->
 	            <div id="headerTitle">
 	                <div>
@@ -103,8 +101,7 @@
                    		<a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>Help</p></a>
                 	</div>
 	            </div>
-	
-	
+		
 	            <!-- 장바구니,마이페이지,검색,메뉴? -->
 	            <!-- 수정본 학원캄퓨터에 있음 -->
 	            <div id="headerMypage">
@@ -119,7 +116,7 @@
 	                        alt="위시리스트" height="25"></a>
 	                </div>
 	                <div>
-	                    <a href=""><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+	                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
 	                        alt="쇼핑백" height="25"></a>
 	                </div>
 	                <div>

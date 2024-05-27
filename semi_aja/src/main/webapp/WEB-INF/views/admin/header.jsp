@@ -89,7 +89,6 @@
                         <li><a href="<%=request.getContextPath()%>/product/categorylist.do"><p>키워드/카테고리등록</p></a></li>
                         <li><a href="<%=request.getContextPath() %>/product/optionlist.do"><p>옵션관리</p></a></li>
                         <li><a href="<%=request.getContextPath()%>/product/productlist.do"><p>상품관리</p></a></li>
-                        
                     </ul>
                 </div>
 
@@ -104,7 +103,7 @@
                 <div>  <!-- CS/혜택 -->
                     <ul class="list">
                         <h2>CS/혜택</h2>
-                        <li><a href=""><p>쿠폰등록</p></a></li>
+                        <li><a href="<%=request.getContextPath()%>/coupon/couponlist.do"><p>쿠폰관리</p></a></li>
                         <li><a href=""><p>쿠폰발급?</p></a></li>
                         <li><a href=""><p>1 : 1 답변관리</p></a></li>
                         <li><a href=""><p>Q&A 관리</p></a></li>

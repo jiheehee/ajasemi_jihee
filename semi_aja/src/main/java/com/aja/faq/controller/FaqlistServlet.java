@@ -40,7 +40,6 @@ public class FaqlistServlet extends HttpServlet {
 		
 		// 어디로 이동시켜줄건지
 		request.getRequestDispatcher("/WEB-INF/views/faq/faq.jsp").forward(request, response);
-		
 	}
 
 	/**

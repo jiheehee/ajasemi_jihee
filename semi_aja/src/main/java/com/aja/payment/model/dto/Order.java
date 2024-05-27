@@ -28,5 +28,8 @@ public class Order {
 	private String orderDetailaddr;
 	private String orderPhone;
 	private String orderRequest;
+
 	private List<OrderDetail> orderDetail = new ArrayList<>();
+	private String cartKey;
+
 }
