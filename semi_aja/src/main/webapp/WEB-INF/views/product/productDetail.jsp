@@ -534,7 +534,7 @@
                                 	찜 전,후 다른 UI띄움
                                 	찜한 상태에서 찜버튼을 누르면 찜 취소기능
                                 -->
-                                    <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
+                                    <img src="https://i.pinimg.com/236x/3b/d1/b3/3bd1b3a93f9bb1857ef51a67b9d6d90c.jpg"
                                         alt="찜버튼" width="30px" height="30px" >
                                 </button>
                             </div>
