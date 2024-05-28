@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+   
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>admin</title>
 <style>
     /* 헤더전체 */
@@ -95,8 +94,7 @@
                 <div>  <!-- 배송/주문 -->
                     <ul class="list">
                         <h2>배송/주문</h2>
-                        <li><a href=""><p>배송관리</p></a></li>
-                        <li><a href=""><p>주문관리</p></a></li>
+                        <li><a href="<%=request.getContextPath()%>/order/orderlist.do"><p>배송/주문관리</p></a></li>
                     </ul>
                 </div>
 
