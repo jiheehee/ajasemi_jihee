@@ -1,6 +1,7 @@
-package com.aja.qna.controller;
+package com.aja.order.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -9,21 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.member.model.dto.Customer;
-import com.aja.qna.model.dto.Qna;
-import com.aja.qna.service.QnaService;
+import com.aja.order.model.dto.CustomerOrder;
+import com.aja.order.service.OrderService;
+import com.google.gson.Gson;
 
 /**
- * Servlet implementation class QnaListServlet
+ * Servlet implementation class OrderDeliveryAjaxServlet
  */
-@WebServlet("/qna/qnalist.do")
-public class QnaListServlet extends HttpServlet {
+@WebServlet("/order/orderdeliveryajax.do")
+public class OrderDeliveryAjaxServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QnaListServlet() {
+    public OrderDeliveryAjaxServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,15 +33,17 @@ public class QnaListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String type = request.getParameter("deliveryType");
+		int cPage = 1; int numPerpage =5;
+		List<CustomerOrder> orderList = new OrderService().selectOrderAll(cPage,numPerpage,type);
+		Gson gson = new Gson();
+		String jsonResponse = gson.toJson(orderList);
 		
-		Customer c=(Customer)request.getSession().getAttribute("loginMember");
-		int custKey=c.getCustKey();
-		
-		List<Qna> qna=new QnaService().qnaList(custKey);		
-		
-		request.setAttribute(getServletName(), response);
-		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
-				
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
+		out.print(jsonResponse);
+		out.flush();
 	}
 
 	/**

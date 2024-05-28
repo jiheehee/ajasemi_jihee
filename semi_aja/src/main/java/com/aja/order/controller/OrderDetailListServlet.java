@@ -1,4 +1,4 @@
-package com.aja.qna.controller;
+package com.aja.order.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.member.model.dto.Customer;
-import com.aja.qna.model.dto.Qna;
-import com.aja.qna.service.QnaService;
+import com.aja.order.model.dto.OrderDetail;
+import com.aja.order.service.OrderService;
 
 /**
- * Servlet implementation class QnaListServlet
+ * Servlet implementation class OrderDetailListServlet
  */
-@WebServlet("/qna/qnalist.do")
-public class QnaListServlet extends HttpServlet {
+@WebServlet("/order/detailorderlist.do")
+public class OrderDetailListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QnaListServlet() {
+    public OrderDetailListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,15 +31,11 @@ public class QnaListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int num =Integer.parseInt(request.getParameter("orderKey"));
+		List<OrderDetail> orderDetailList = new OrderService().selectOrderDetailAll(num);
 		
-		Customer c=(Customer)request.getSession().getAttribute("loginMember");
-		int custKey=c.getCustKey();
-		
-		List<Qna> qna=new QnaService().qnaList(custKey);		
-		
-		request.setAttribute(getServletName(), response);
-		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
-				
+		request.setAttribute("orderDetailList", orderDetailList);
+		request.getRequestDispatcher("/WEB-INF/views/admin/order/orderDetailList.jsp").forward(request, response);
 	}
 
 	/**

@@ -97,9 +97,9 @@
        	    	<td><%=p2.isProdDeleted()%></td>
        	    	<td>
        	    	<br>
-       	    		<form action="<%=request.getContextPath() %>/product/updateproduct.do">
+       	    		<form action="<%=request.getContextPath() %>/product/updateproduct.do"  onsubmit="openInNewWindow(event);">
        	    			<input type="hidden" name="prodKey" value="<%=p2.getProdKey() %>">
-       	    			<button type="submit" onsubmit="openInNewWindow(event);">수정</button> 
+       	    			<button type="submit">수정</button> 
        	    		</form>
        	    	</td>
        	    	<td>
@@ -148,9 +148,6 @@
                     var windowFeatures = "width=500,height=500,resizable=yes,scrollbars=yes";
                     var newWindow = window.open(fullUrl, "_blank", windowFeatures);
 
-                    if (!newWindow) {
-                        alert("팝업 창이 차단되었습니다. 팝업 창을 허용해 주세요.");
-                    }
                 }
             </script>
             

@@ -1,7 +1,6 @@
-package com.aja.qna.controller;
+package com.aja.order.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,21 +8,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.member.model.dto.Customer;
-import com.aja.qna.model.dto.Qna;
-import com.aja.qna.service.QnaService;
+import com.aja.order.service.OrderService;
 
 /**
- * Servlet implementation class QnaListServlet
+ * Servlet implementation class OrderDeleveryServlet
  */
-@WebServlet("/qna/qnalist.do")
-public class QnaListServlet extends HttpServlet {
+@WebServlet("/order/deliverystatusend.do")
+public class OrderDeliveryEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QnaListServlet() {
+    public OrderDeliveryEndServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,15 +29,25 @@ public class QnaListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int orderKey =Integer.parseInt(request.getParameter("orderKey"));
 		
-		Customer c=(Customer)request.getSession().getAttribute("loginMember");
-		int custKey=c.getCustKey();
+		int result = new OrderService().updateDeliveryStatus(orderKey);
 		
-		List<Qna> qna=new QnaService().qnaList(custKey);		
+		if(result>0) {
+			String msg="", loc="";
+			if(result>0) {
+				msg = "발송 성공했습니다. :)";
+				loc = "/order/orderlist.do";
+			}else {
+				msg = "발송 실패했습니다. :(";
+				loc = "/order/orderlist.do";
+			}
+			request.setAttribute("msg", msg);
+			request.setAttribute("loc",loc);
+			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+			
+		}
 		
-		request.setAttribute(getServletName(), response);
-		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
-				
 	}
 
 	/**

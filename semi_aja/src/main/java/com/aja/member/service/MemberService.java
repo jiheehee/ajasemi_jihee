@@ -64,9 +64,9 @@ public class MemberService {
 		return result;
 	}
 	
-	public List<ProductInfo> getCartInfo(int memberNo) {
+	public List<ProductInfo> getCartInfo(int memberNo, String cartKies) {
 		Connection conn = getConnection();
-		List<ProductInfo> products = dao.getCartInfo(conn, memberNo);
+		List<ProductInfo> products = dao.getCartInfo(conn, memberNo, cartKies);
 		close(conn);
 		return products;
 	}
