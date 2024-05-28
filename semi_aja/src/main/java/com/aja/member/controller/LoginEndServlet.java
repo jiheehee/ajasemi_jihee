@@ -56,7 +56,8 @@ public class LoginEndServlet extends HttpServlet {
 			saveIdCookie.setMaxAge(0);
 			saveId = null;
 			response.addCookie(saveIdCookie);
-		}		
+		}	
+		
 		if(custEmail.equals("")||custPw.equals("")) {
 			
 			request.setAttribute("msg", "아이디나 패스워드를 입력하세요.");
@@ -77,7 +78,7 @@ public class LoginEndServlet extends HttpServlet {
 			} else {
 				// custom이 널임 
 				request.setAttribute("msg", "아이디나 패스워드가 일치하지 않습니다.");
-				request.setAttribute("loc", "/");
+				request.setAttribute("loc", "/member/login.do");
 				request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 			}
 		}

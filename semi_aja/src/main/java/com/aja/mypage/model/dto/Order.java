@@ -1,4 +1,4 @@
-package com.aja.payment.model.dto;
+package com.aja.mypage.model.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -28,8 +28,5 @@ public class Order {
 	private String orderDetailaddr;
 	private String orderPhone;
 	private String orderRequest;
-
 	private List<OrderDetail> orderDetail = new ArrayList<>();
-	private String cartKey;
-
 }

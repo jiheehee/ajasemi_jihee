@@ -52,16 +52,22 @@ public class PaymentSuccessServlet extends HttpServlet {
 		
 		//포인트테이블 업데이트와 CUSTOEMR 포인트 UPDATE
 		int usingPoint = Integer.parseInt(request.getParameter("usingPoint"));
-		new PaymentService().updatePointState(custKey, usingPoint);
+		if(usingPoint > 0) {
+			new PaymentService().updatePointState(custKey, usingPoint);
+		}
 		
 		//쿠폰 사용시 쿠폰 사용여부 Y로 UPDATE
 		int dcKey = Integer.parseInt(request.getParameter("dcKey"));
-		new PaymentService().couponStateUpdate(dcKey, custKey);
+		if(dcKey > 0) {
+			new PaymentService().couponStateUpdate(dcKey, custKey);			
+		}
 		
 		//결제 완료시 주문된 상품 DELETE CART TABLE
 		String cartKeyString = request.getParameter("cartKey");
 		System.out.println("cartKeyString : " + cartKeyString);
 		new PaymentService().deleteCartAfterPay(cartKeyString, custKey);
+		
+		
 		
 		session.removeAttribute("productInfo");
 		
