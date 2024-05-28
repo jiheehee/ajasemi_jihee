@@ -8,9 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.aja.member.model.dto.Customer;
 import com.aja.productprint.model.dto.Product;
+import com.aja.productprint.model.dto.WishDTO;
 import com.aja.productprint.service.ProductDetailService;
+import com.aja.productprint.service.ProductWishAddService;
 
 /**
  * Servlet implementation class ProductDetailPrintServlet
@@ -46,6 +50,23 @@ public class ProductDetailPrintServlet extends HttpServlet {
 		request.setAttribute("productlist", list);
 		
 		
+		HttpSession session = request.getSession();
+		Customer loginMember = (Customer)session.getAttribute("loginMember"); //아이디가 session에 있어서 접근 가능
+		
+		int custKey = 0;
+		
+		if(loginMember != null) {
+			custKey = loginMember.getCustKey();			
+		}
+		
+		WishDTO wish = WishDTO.builder()
+				.custKey(custKey)
+				.prodKey(prodKey)
+				.build();
+		
+		int  wishNumber = new ProductDetailService().selectWishProduct(wish);
+		
+		request.setAttribute("wishNumber", wishNumber);
 		
 		
 		

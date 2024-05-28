@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-5z8RjQi6vXzVeRRyToZ0SZbztK7b65h/TMEYGP0m/CwLSN7pO3TbGMUo+DSB+32ozkbYf8qpSLMj/Hv5N96J2w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <title>AJA</title>
+
 </head>
 <body>
 
@@ -57,21 +58,22 @@
             		<a href="<%=request.getContextPath() %>/product/productlist.do">관리자</a>
             	</div>
                 <div>
-                    <a href=""><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
+                    <a href="<%=request.getContextPath()%>/member/login.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
                         alt="마이페이지" height="25"></a>
                 </div>
                 <div>
-                    <a href=""><img src="https://cdn-icons-png.flaticon.com/512/25/25424.png" 
+                    <a href="<%=request.getContextPath()%>/member/login.do"><img src="https://cdn-icons-png.flaticon.com/512/25/25424.png" 
                         alt="위시리스트" height="25"></a>
                 </div>
                 <div>
+
                     <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
-                        alt="쇼핑백" height="25"></a>
+                    	alt="쇼핑백" height="25"></a>
                 </div>
                 <div>
                     <a href="<%=request.getContextPath() %>/member/login.do"><img src="https://cdn-icons-png.flaticon.com/512/152/152532.png" 
                         alt="로그인" height="25"></a>
-                </div>         
+                </div>        
             </div>
         </div>  <!-- <div id="headerMain">닫힘 -->
     </header>
@@ -103,9 +105,10 @@
 	            <!-- 장바구니,마이페이지,검색,메뉴? -->
 	            <!-- 수정본 학원캄퓨터에 있음 -->
 	            <div id="headerMypage">
-	            	<div><%=loginMember.getCustNickname() %></div>
+	            	
+	            	<div id="headerNickname" style="font-size:10px;"><%=loginMember.getCustNickname() %></div>
 	                <div>
-	                    <a href=""><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
+	                    <a href="<%=request.getContextPath()%>/member/mypage.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
 	                        alt="마이페이지" height="25"></a>
 	                </div>
 	                <div>

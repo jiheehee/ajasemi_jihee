@@ -1,29 +1,29 @@
-package com.aja.productprint.controller;
+package com.aja.qna.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.aja.member.model.dto.Customer;
-import com.aja.productprint.model.dto.WishDTO;
-import com.aja.productprint.service.ProductWishAddService;
+import com.aja.qna.model.dto.Qna;
+import com.aja.qna.service.QnaService;
 
 /**
- * Servlet implementation class ProductWishAddServlet
+ * Servlet implementation class QnaListServlet
  */
-@WebServlet("/product/productwishadd.do")
-public class ProductWishAddServlet extends HttpServlet {
+@WebServlet("/qna/qnalist.do")
+public class QnaListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductWishAddServlet() {
+    public QnaListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,29 +33,13 @@ public class ProductWishAddServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int prodKey = Integer.parseInt(request.getParameter("prodKey"));
+		Customer c=(Customer)request.getSession().getAttribute("loginMember");
+		int custKey=c.getCustKey();
 		
-		HttpSession session = request.getSession();
-		Customer loginMember = (Customer)session.getAttribute("loginMember"); //아이디가 session에 있어서 접근 가능
+		List<Qna> qna=new QnaService().qnaList(custKey);		
 		
-		
-		
-		int custKey = loginMember.getCustKey();
-		
-		WishDTO wish  = WishDTO.builder()
-				.custKey(custKey)
-				.prodKey(prodKey)
-				.build();	
-		
-		
-		int result = new ProductWishAddService().insertProductWishAdd(wish);
-		
-		
-		
-		
-		System.out.println("찜 연결");
-		
-		
+		request.setAttribute(getServletName(), response);
+		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
 		
 		
 	}

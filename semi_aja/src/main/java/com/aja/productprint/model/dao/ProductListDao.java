@@ -77,7 +77,7 @@ public class ProductListDao {
 		ResultSet rs = null;
 		List<Integer> result = new ArrayList<>();
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("selectWishProduct"));
+			pstmt=conn.prepareStatement(sql.getProperty("selectWishProductList"));
 			pstmt.setInt(1, custKey);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {

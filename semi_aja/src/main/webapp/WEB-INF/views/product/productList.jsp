@@ -201,7 +201,8 @@
 								        }
 								    }
 								%>		
-                                <img src= "<%=imgSrc %>" alt="찜버튼" width="30px" height="30px">
+                                <img src= "<%=imgSrc%>" 
+                                	alt="찜버튼" width="30px" height="30px">
                             </button>
                         </div>
                     </div>
@@ -239,7 +240,7 @@
 			beforeSend: function() {
         	},
 			success:function(data){
-				
+				location.reload();
 			},
 		});
 	}	//찜 닫

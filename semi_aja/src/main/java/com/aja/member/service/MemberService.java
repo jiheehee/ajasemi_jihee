@@ -48,6 +48,22 @@ public class MemberService {
 		return ct;
 	}
 	
+	public Customer searchMemberById(String custEmail) {
+		Connection conn = getConnection();
+		Customer ct = dao.searchMemberById(conn,custEmail);
+		System.out.println(ct);
+		return ct;
+	}
+	
+	public int editCustomer(Customer editCt) {
+		Connection conn = getConnection();
+		int result = dao.editCustomer(conn,editCt);
+		if(result>0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
+	}
+	
 	public List<ProductInfo> getCartInfo(int memberNo, String cartKies) {
 		Connection conn = getConnection();
 		List<ProductInfo> products = dao.getCartInfo(conn, memberNo, cartKies);

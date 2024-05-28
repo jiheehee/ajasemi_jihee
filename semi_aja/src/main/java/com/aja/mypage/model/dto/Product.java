@@ -1,4 +1,4 @@
-package com.aja.productprint.model.dto;
+package com.aja.mypage.model.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Product {
 	private int prodKey;
 	private int cateKey;
-	private int optionKey;
+	//private int optionKey;
 	//private int keywordKey;
 	private String prodName;
 	private int prodPrice;
@@ -34,5 +34,7 @@ public class Product {
 	private int optionSize;
 	private int optionPrice;
 	private String cateName;
-	//이미지 리스트형식으로 한번에 가져오기
+	
+	private List<ProdImage> prodImages = new ArrayList<>();
+
 }

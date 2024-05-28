@@ -665,6 +665,7 @@
 	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
 	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
 	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
+	    	document.querySelector("input[value='우편번호 찾기']").hidden = true;
 	    	
 	    	//기본 배송지가 있는 사람이 신규 배송지를 눌렀다 다시 기본 배송지를 체크했을때 데이터를 받아옵니다.
 	    	document.querySelector("input[value='기존 배송지']").addEventListener("click",e => {
@@ -690,9 +691,10 @@
 	    	    	document.querySelector("input[id='sample4_postcode']").readOnly = true;
 	    	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = true;
 	    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = true;
+	    	    	document.querySelector("input[value='우편번호 찾기']").hidden = true;
 	    		});
 	    	})
-	    	
+	    	sample4_detailAddress
 	    	//기본 주소지가 있는 사람이 신규 배송지를 입력할때 기본배송지의 readOnly를 false로 해줍니다.
 	    	document.querySelector("input[value='신규 배송지']").addEventListener("click", e => {
 	    		document.querySelector("input[name='receptionName']").readOnly = false;
@@ -700,6 +702,7 @@
     	    	document.querySelector("input[id='sample4_postcode']").readOnly = false;
     	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = false;
     	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = false;
+    	    	document.querySelector("input[value='우편번호 찾기']").hidden = false;
 	    	})
 	    <%}%>
 	    
@@ -960,14 +963,19 @@
        		const usingPoint = document.getElementById("pointApplySpan").innerText; //사용한 포인트
        		const selectCoupon = document.getElementById("choiceCoupon");
        		
-       		const receptionName = document.querySelector("input[name='receptionName']").innerText; //수령인 이름
-       		const receptionPhoneNum1 = document.querySelector("input[name='receptionPhoneNum1']").innerText; //수령인 전화번호
-       		const postcode = document.getElementById("sample4_postcode").innerText; //우편번호
-       		const roadAddress = document.getElementById("sample4_roadAddress").innerText;// 도로명 주소
-       		const detailAddress = document.getElementById("sample4_detailAddress").innerText;// 상세 주소
+       		const receptionName = document.querySelector("input[name='receptionName']").value; //수령인 이름
+       		const receptionPhoneNum1 = document.querySelector("input[name='receptionPhoneNum1']").value; //수령인 전화번호
+       		const postcode = document.getElementById("sample4_postcode").value; //우편번호
+       		const roadAddress = document.getElementById("sample4_roadAddress").value;// 도로명 주소
+       		const detailAddress = document.getElementById("sample4_detailAddress").value;// 상세 주소
        		
        		//필수로 입력되어야 하는 input태그 안에 공란이면 공란인 input태그로 focus되고 결제가 진행되지 않습니다.
        		if(!receptionName || !receptionPhoneNum1 || !postcode || !roadAddress || detailAddress) {
+       			console.log(!receptionName + receptionName);
+       			console.log(!receptionPhoneNum1 + receptionPhoneNum1);
+       			console.log(!postcode + postcode);
+       			console.log(!roadAddress + roadAddress);
+       			console.log(!detailAddress + detailAddress);
        			if(!receptionName) {
        				document.querySelector("input[name='receptionName']").focus();
        				return;

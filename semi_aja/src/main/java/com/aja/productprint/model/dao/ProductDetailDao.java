@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.aja.productprint.model.dto.Product;
+import com.aja.productprint.model.dto.WishDTO;
 
 
 
@@ -74,6 +75,28 @@ public class ProductDetailDao {
 	}
 	
 	
+	
+	public int selectWishProduct (Connection conn ,WishDTO wish) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int wishNumber = 0;
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectWishProductDetail"));
+			pstmt.setInt(1, wish.getCustKey());
+			pstmt.setInt(2, wish.getProdKey());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				wishNumber = rs.getInt("COUNT");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+//			System.out.println(list);
+		}return wishNumber;
+	}
 	
 	
 	
