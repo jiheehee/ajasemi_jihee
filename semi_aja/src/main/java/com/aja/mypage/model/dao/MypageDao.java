@@ -42,12 +42,6 @@ public class MypageDao {
 			pstmt.setInt(2, cPage*numPerpage);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
-//				Board b=getBoard(rs);
-//				do {
-//					b.getComments().add(getBoardComment(rs));
-//				}while(rs.next());
-				
-//				result.add(b);
 				getOrderAndOrderDetail(result,rs);
 			}
 		}catch(SQLException e) {
