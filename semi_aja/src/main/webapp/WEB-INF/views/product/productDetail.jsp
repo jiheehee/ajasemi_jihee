@@ -12,7 +12,9 @@
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
 	Product product = (Product)request.getAttribute("product");	
-
+	int wishNumber = (int)request.getAttribute("wishNumber");
+	
+	
 	Set<String> nameFilter = new HashSet<>();
 
 	
@@ -440,6 +442,101 @@
     }
     
    
+   
+   
+   
+   
+    /* 모달 전체 창 */
+      .modal-buy{
+          display: none; /* 기본적으로 안 보이게 설정  */
+          position: fixed; /* 화면에 고정 */
+          z-index: 1; /* 다른 요소들보다 위에 위치 */
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden; /* 스크롤 가능하게 설정 */
+          background-color: rgba(0, 0, 0, 0.2); /* 반투명 배경 */
+      }
+      /* 모달 메세지 창 */
+      .modal-buy>div{
+          background-color: #fefefe;
+          margin: 15% auto; /* 중앙 정렬 */
+          border: 1px solid #888;
+          width: 300px; /* 모달 너비 */
+          border-radius: 10px;
+      }
+
+      .modal-buy>div>div:nth-of-type(1){
+          height: 30px;
+      }
+      /* X */
+      .modal-buy>div>div:nth-of-type(1)>p:nth-of-type(1){
+          float: right;
+          margin: 0 ;
+          padding: 0 20px 0 0;
+          font-size: 40px;
+          height: 100%;
+          color: #aaa;;
+      }
+      /* X 효과 */
+      .modal-buy>div>div:nth-of-type(1)>p:nth-of-type(1):hover, .modal-buy>div>div:nth-of-type(1)>p:nth-of-type(1):focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+      }
+      /* 중간 div */
+      .modal-buy>div>div:nth-of-type(2){
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      /* 중간에 이미지 */
+      .modal-buy>div>div:nth-of-type(2)>div>img{
+          margin : 0 0 0 60px;
+      }
+      /* 중간에 p태그 */
+      .modal-buy>div>div:nth-of-type(2)>div>p{
+          margin: 10px 0 10px 0;
+      }
+      /* 버튼 태그있는 div영역 */
+      .modal-buy>div>div:nth-of-type(3){
+          display: flex;
+          height: 40px;
+          width: 100%;
+          padding: 0 7% 0 7%;
+          margin-bottom :10px;
+          
+      }
+      /* 버튼 감싸고있는 a태그 */
+      .modal-buy>div>div:nth-of-type(3)>a{
+          height: 100%;
+      }
+      /* 버튼 속성 */
+      .modal-buy>div>div:nth-of-type(3)>a>button{
+          height: 100%;
+          border: 1px solid black;
+          border-radius: 5px;
+          cursor: pointer;
+          
+      }
+      
+      /* 계속쇼핑하기 버튼 */
+      .modal-buy>div>div:nth-of-type(3)>a:nth-of-type(1)>button{
+          background-color: black;
+          color: white;
+          margin: 0 5px 0 0 ;
+      }
+      /* 장바구니 보기 버튼 */
+      .modal-buy>div>div:nth-of-type(3)>a:nth-of-type(2)>button{
+          background-color: white;
+          color: black;
+          margin: 0 0 0 5px ;
+      }
+   
+   
+   
+   
     
 </style>    
    
@@ -468,7 +565,7 @@
                         </div>
                         <p><%=product.getProdContent()%></p>
                     </div>
-
+					<!-- <p>관련 상품</p> -->
                     <div id="product-main-content-list">  <!-- 관련상품 출력 / list받아오면 처리 카테고리같은애들 다 띄우기 -->
                         <%for(Product p : productlist){ 
                         	if(! product.getProdName().equals(p.getProdName())){ 
@@ -508,7 +605,7 @@
 	                                	  			<%if(product.getProdKey()==p.getProdKey()){ %>
 		                                	  				style="border: 2px solid black;"
 		                                	  			<%} %>>
-		                                	  			<%=p.getOptionSize()%>mL
+		                                	  		<%=p.getOptionSize()%>mL
                                 	  			</button>
                                 	  	<%}
                                 	  }%>
@@ -526,15 +623,25 @@
                         <div>
                             <div id="product-main-content-buy"> <!-- 로그인 안헀을때 alert창 띄워주기 -->
                                 <button id="addCart">장바구니</button>	<!-- 장바구니로 정보넘김 -->
-                                <button id="">구매하기</button>	<!-- 결제페이지한테 정보넘김 -->
-                                <button type="button"  onclick="dee(event);">	
+                                <button id="buyNow">바로 구매하기</button>	<!-- 결제페이지한테 정보넘김  // 상품고유번호, 수량만 보내기-->
+                                <button type="button"  onclick="wishadd(event);">
                                 <!-- 
                                 	로그인한 회원만 찜가능
                                 	비 로그인상태로 누르면 로그인화면으로 이동
                                 	찜 전,후 다른 UI띄움
                                 	찜한 상태에서 찜버튼을 누르면 찜 취소기능
                                 -->
-                                    <img src="https://i.pinimg.com/236x/ce/28/d0/ce28d041490341165bd143bb07944e75.jpg"
+                                    <% 
+								    String imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg"; // 기본 이미지 URL
+								    if (loginMember != null) {
+							            if (wishNumber > 0) {
+							            	imgSrc = "https://i.pinimg.com/236x/3b/d1/b3/3bd1b3a93f9bb1857ef51a67b9d6d90c.jpg";
+							            } else {
+							            	imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg";
+							        	}
+								    }
+								%>
+                                <img src= "<%=imgSrc%>" 
                                         alt="찜버튼" width="30px" height="30px" >
                                 </button>
                             </div>
@@ -860,8 +967,43 @@
                     </ul>
                 </div>
             </div>  <!-- Q&A 닫힘 -->
-
+				
         </div>  <!-- 아래공간 닫 -->
+        
+        
+        <!-- 모달 HTML -->
+		<div class="modal-buy"> <!-- 배경 -->
+	        <div >  <!-- 가장 큰범위 div -->
+	            <div>   <!-- 가장 위부분 x -->
+	                <p class="modal-close">&times;</p>
+	            </div>
+	
+	            <div>   <!-- 중간부분 -->
+	                <div>
+	                    <img src="https://i.pinimg.com/236x/7c/7e/0f/7c7e0f0c00f30b5462e86f7b43ef48d0.jpg" 
+	                    	alt="장바구니" width="60px" height="60px">
+	                    
+	                    <p></p>
+	                </div>
+	            </div>
+	
+	            <div>   <!-- 하단부 버튼 -->
+	                <a href="#">
+	                    <button>
+	                        계속 쇼핑하기
+	                    </button>
+	                </a>
+	                <a href="">	<!-- 장바구니 서블릿 주소 -->
+	                    <button>
+	                        장바구니 보기
+	                    </button>
+	                </a>
+	            </div>
+	        </div>
+	    </div>
+        
+		
+		
     </main>
 </body>    
     
@@ -869,14 +1011,100 @@
   
 <script>
 
+	//모달창	  
+	//모달 닫기 버튼
+     document.getElementsByClassName("modal-close")[0].addEventListener("click",e=>{
+  	   document.getElementsByClassName("modal-buy")[0].style.display="none";
+     });
+       
+	//모달 계속쇼핑하기 버튼
+     document.querySelector(".modal-buy>div>div:nth-of-type(3)>a:nth-of-type(1)>button").addEventListener("click",e=>{
+    	 document.getElementsByClassName("modal-buy")[0].style.display="none";
+     });
+    
+
+
+
+	//구매기능	id buyNow  결제페이지로 이동 ->	상품고유번호, 수량 넘기기
+	<% if(loginMember !=null){%>
+			if(document.querySelector("#product-main-content-menu-quantity>div>input").value>0){
+		  		document.querySelector("#buyNow").addEventListener("click",e=>{
+					const productCount = document.querySelector("#product-main-content-menu-quantity>div>input").value;
+					//결제 서블릿으로 상품고유번호, 수량 넘겨주기
+					window.location.href = "<%=request.getContextPath()%>/pay//* 바로결제서블릿주소 */?prodKey=<%=product.getProdKey()%>"
+						+"&productCount="+productCount;
+			  	});
+			}
+		<%}else{%>
+			document.querySelector("#buyNow").addEventListener("click",e=>{
+				alert("로그인 후 이용 가능합니다.");
+				window.location.href = "<%=request.getContextPath()%>/member/login.do";
+		  	}); 
+			
+		<%}%>
+
+
+
+	//찜 기능
+	<% if(loginMember !=null){%>
+	const wishadd=(e)=>{
+		$.ajax({
+			type: "get",
+			url : "<%=request.getContextPath()%>/product/productwishadd.do",
+			data : {prodKey : <%=product.getProdKey()%>}, //여기 data 서블릿으로 넘겨줘서 그 값을 처리해서 아래 success의 data에 담겨져있음
+			dataType : "html",
+			beforeSend: function() {
+	    	},
+			success:function(data){
+				location.reload();
+			},
+		});
+	}	//찜 닫
+	<%}else{%>
+		const wishadd=()=>{
+			alert("로그인 후 이용 가능합니다.");
+			window.location.href = "<%=request.getContextPath()%>/member/login.do";
+		}
+	<%}%>
+
+
+
 	
 	//장바구니 버튼	//key:value로 뭐뭐넘길지 생각하기	//회원고유번호, 상품고유번호, 옵션고유번호, 수량 넘겨받아서 DB에 저장하고 장바구니 페이지로 패이지전환
 		<% if(loginMember !=null){%>
 			if(document.querySelector("#product-main-content-menu-quantity>div>input").value>0){
 		  		document.querySelector("#addCart").addEventListener("click",e=>{
 					const productCount = document.querySelector("#product-main-content-menu-quantity>div>input").value;
-					window.location.href = "<%=request.getContextPath()%>/product/productcartadd.do?prodKey=<%=product.getProdKey()%>"
-						+"&optionKey=<%=product.getOptionKey()%>&productCount="+productCount;
+					
+					//장바구니 서블릿으로 필요한 값 넘겨주기
+					 $.ajax({
+						type: "get",
+						url : "<%=request.getContextPath()%>/product/productcartadd.do?prodKey=<%=product.getProdKey()%>"
+							+"&optionKey=<%=product.getOptionKey()%>&productCount="+productCount
+							,
+						data : { }, 
+						beforeSend: function() {
+				    	},
+						success:function(data){
+							////ajax 로 result 값 넘겨주기 setAttribute로 넘겨주고 get으로 받아서 그걸 이용해 모달창 띄우기
+							//console.log(data);
+							var	modalMsg = "";
+							modalMsg = "장바구니에 추가되었습니다.";
+							if(data > 0){
+								//console.log("data : " + data);
+								//console.log("if문 true")
+								//	장바구니 이미 있을때
+								modalMsg = "장바구니에 이미 있습니다."; 
+							}
+							console.log("modalMsg");
+							//모달창 열기
+							document.querySelector(".modal-buy>div>div:nth-of-type(2)>div>p").innerText = modalMsg;
+							document.getElementsByClassName("modal-buy")[0].style.display="block";
+
+							//	모달창 .style.display="block";
+							//	모달창안에 버튼 두개 장바구니로이동, 계속쇼핑하기 만들어서 a태그로 어디로 넘길지 정하기
+						}
+					}); //ajax닫힘
 			  	}); 				
 			}
 		<%}else{%>
@@ -977,10 +1205,8 @@
     
     
 
-    //찜버튼
-    const dee=(e)=>{
-        console.log(e.target);
-    };
+    
+    
 </script>    
     
     

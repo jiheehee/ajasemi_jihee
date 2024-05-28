@@ -67,7 +67,7 @@ public class ProductListPrintServlet extends HttpServlet {
 		if(loginMember != null) {
 			custKey = loginMember.getCustKey();			
 		}
-		List<Integer> wishNumber = new ProductListService().selectWishProduct(custKey); 			
+		List<Integer> wishNumber = new ProductListService().selectWishProduct(custKey);
 		
 		
 		request.setAttribute("wishNumber", wishNumber);
