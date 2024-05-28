@@ -18,7 +18,7 @@ import com.aja.product.model.dao.ProductDao;
 public class CouponDao {
 	Properties sql = new Properties();
 	{
-		String path = ProductDao.class.getResource("/coupon/sql.properties").getPath();
+		String path = ProductDao.class.getResource("/sql/coupon/sql.properties").getPath();
 		try(FileReader fr = new FileReader(path)){
 			sql.load(fr);
 		}catch(IOException e) {

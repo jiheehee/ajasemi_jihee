@@ -55,5 +55,11 @@ public class OrderService {
 		close(conn);
 		return result;
 	}
+	public int deliveryComplete(int orderKey) {
+		Connection conn = getConnection();
+		int result = dao.deliveryComplete(conn,orderKey);
+		close(conn);
+		return result;
+	}
 	
 }

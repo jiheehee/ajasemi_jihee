@@ -1,7 +1,6 @@
 package com.aja.order.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.aja.order.service.OrderService;
 
 /**
- * Servlet implementation class OrderDeliveryChangeServlet
+ * Servlet implementation class OrderDeliveryCompleteServlet
  */
-@WebServlet("/order/orderdeliverychange.do")
-public class OrderDeliveryChangeServlet extends HttpServlet {
+@WebServlet("/order/deliverystatuscomplete.do")
+public class OrderDeliveryCompleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public OrderDeliveryChangeServlet() {
+    public OrderDeliveryCompleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,29 +28,22 @@ public class OrderDeliveryChangeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		response.setCharacterEncoding("UTF-8");
+		int orderKey =Integer.parseInt(request.getParameter("orderKey"));
 		
-		String type = request.getParameter("deliveryType");
-		String order = request.getParameter("orders");
-		String[] orders = order.split(",");
+		int result = new OrderService().deliveryComplete(orderKey);
 		
-		int[] realOrders = new int[orders.length];
-		for(int i=0;i<orders.length;i++) {
-			realOrders[i] = Integer.parseInt(orders[i]);
-		}
-		
-		int result = new OrderService().updateDelivery(type,realOrders);
-
 		if(result>0) {
-			String msg="";
+			String msg="", loc="";
 			if(result>0) {
-				msg="변경 성공했습니다. :)";
+				msg = "변경 성공했습니다. :)";
+				loc = "/order/orderlist.do";
 			}else {
-				msg="변경 실패했습니다. :(";
+				msg = "변경 실패했습니다. :(";
+				loc = "/order/orderlist.do";
 			}
 			request.setAttribute("msg", msg);
-			request.getRequestDispatcher("/WEB-INF/views/common/closeMsg.jsp").forward(request, response);
+			request.setAttribute("loc",loc);
+			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 		}
 	}
 

@@ -18,7 +18,7 @@ import com.aja.order.model.dto.OrderDetail;
 public class OrderDao {
 	Properties sql = new Properties();
 	{
-		String path = OrderDao.class.getResource("/order/sql.properties").getPath();
+		String path = OrderDao.class.getResource("/sql/order/sql.properties").getPath();
 		try(FileReader fr = new FileReader(path)){
 			sql.load(fr);
 		}catch(IOException e) {
@@ -122,6 +122,22 @@ public class OrderDao {
 			System.out.println(query);
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, type);
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	public int deliveryComplete(Connection conn,int orderKey) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String complete = "배송완료";
+		try {
+			pstmt=conn.prepareStatement(sql.getProperty("deliveryComplete"));
+			pstmt.setString(1, complete);
+			pstmt.setInt(2, orderKey);
 			result = pstmt.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
