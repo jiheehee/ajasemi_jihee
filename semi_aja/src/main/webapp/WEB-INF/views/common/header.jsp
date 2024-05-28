@@ -58,7 +58,7 @@
             		<a href="<%=request.getContextPath() %>/product/productlist.do">관리자</a>
             	</div>
                 <div>
-                    <a href="<%=request.getContextPath()%>/member/login.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
+                    <a href="<%=request.getContextPath()%>/mypage/mypage.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
                         alt="마이페이지" height="25"></a>
                 </div>
                 <div>
@@ -108,7 +108,7 @@
 	            	
 	            	<div id="headerNickname" style="font-size:10px;"><%=loginMember.getCustNickname() %></div>
 	                <div>
-	                    <a href="<%=request.getContextPath()%>/member/mypage.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
+	                    <a href="<%=request.getContextPath()%>/mypage/mypage.do"><img src="https://i.pinimg.com/236x/f4/bd/5d/f4bd5d6403cc1f1b4179dc11687bf74a.jpg" 
 	                        alt="마이페이지" height="25"></a>
 	                </div>
 	                <div>

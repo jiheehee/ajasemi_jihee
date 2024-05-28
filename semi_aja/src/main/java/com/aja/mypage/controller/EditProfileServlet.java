@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 /**
  * Servlet implementation class EditProfileServlet
  */
-@WebServlet("/member/editmember.do")
+@WebServlet("/mypage/editmember.do")
 public class EditProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

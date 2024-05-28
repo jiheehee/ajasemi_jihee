@@ -35,7 +35,7 @@ public class PaymentDao {
 		int result = 0;
 		int orderKey = 0;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_ORDER.NEXTVAL,?,?,?,DEFAULT,'결제완료',null,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_PROD_ORDER.NEXTVAL,?,?,?,DEFAULT,?,?,?,?,?,?,?)");
 			setOrder(pstmt, orderInfo);
 			result = pstmt.executeUpdate();
 			if(result > 0) commit(conn);
@@ -43,7 +43,7 @@ public class PaymentDao {
 			close(pstmt);
 			
 			//TEST를 위해 DB에서 주문고유번호를 가져옵니다.
-			pstmt = conn.prepareStatement("SELECT ORDER_KEY FROM PROD_ORDER WHERE CUST_KEY = ?");
+			pstmt = conn.prepareStatement("SELECT ORDER_KEY FROM PROD_ORDER WHERE CUST_KEY = ? ORDER BY ORDER_KEY DESC");
 			pstmt.setInt(1, custKey);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
@@ -54,6 +54,7 @@ public class PaymentDao {
 			
 			//여기는 장바구니를 먼저 구현한 후에 해야할것같습니다.
 			for(ProductInfo p : purchaseList) {
+				System.out.println("결제후 productInfo : " + p);
 				int totalProductPrice = p.getOptionPrice() + p.getProdPrice();
 				pstmt = conn.prepareStatement("INSERT INTO ORDER_DETAIL VALUES(SEQ_ORDER_DETAIL.NEXTVAL,?,?,?,?,?)");
 				pstmt.setInt(1, p.getOptionKey());
@@ -62,9 +63,12 @@ public class PaymentDao {
 				pstmt.setInt(4, totalProductPrice);
 				pstmt.setInt(5, p.getCartQuantity());
 				result = pstmt.executeUpdate();
-				if(result > 0) commit(conn);
-				else rollback(conn);
+				close(pstmt);
 			}
+			
+			pstmt = conn.prepareStatement("INSERT INTO ORDER_STATUS VALUES(SEQ_ORDER_STATUS.NEXTVAL,?,DEFAULT,DEFAULT,NULL,DEFAULT)");
+			pstmt.setInt(1, orderKey);
+			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -92,8 +96,6 @@ public class PaymentDao {
 				pstmt.setInt(1, custKey);
 				pstmt.setString(2, usingPointToString);
 				result = pstmt.executeUpdate();
-				if(result > 0) commit(conn);
-				else rollback(conn);
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();

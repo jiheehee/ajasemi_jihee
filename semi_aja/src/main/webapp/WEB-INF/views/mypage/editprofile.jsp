@@ -400,7 +400,7 @@
 									"custPhone":custPhone};
 				console.log(sendData);
 				$.ajax({
-					url:"<%=request.getContextPath()%>/member/editmember.do",
+					url:"<%=request.getContextPath()%>/mypage/editmember.do",
 					type:"POST",
 					data: {sendData:JSON.stringify(sendData)},
 				    /* contentType: "application/x-www-form-urlencoded; charset=UTF-8",  */
