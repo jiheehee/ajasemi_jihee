@@ -20,7 +20,7 @@ import com.oreilly.servlet.MultipartRequest;
 public class ProductDao {
 	Properties sql = new Properties();
 	{
-		String path = ProductDao.class.getResource("/product/sql.properties").getPath();
+		String path = ProductDao.class.getResource("/sql/product/sql.properties").getPath();
 		try(FileReader fr = new FileReader(path)){
 			sql.load(fr);
 		}catch(IOException e) {

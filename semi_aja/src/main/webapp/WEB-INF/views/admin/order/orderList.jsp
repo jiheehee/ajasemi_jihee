@@ -85,6 +85,16 @@
                     </form>
                     <%}
                     }%>
+                    
+                    <%if(co.getOrderDelivery()!=null){ %>
+                    <%if(co.getOrderDelivery().equals("배송중")){ %>
+                    <form action ="<%=request.getContextPath()%>/order/deliverystatuscomplete.do">
+                    	<input type="hidden" name="orderKey" value="<%=co.getOrderKey() %>">
+                    	<button type="submit">배송완료</button>
+                    </form>
+                    
+                    <%}
+                    }%>
                 </tr>
                	
          <%}
@@ -95,14 +105,21 @@
         </tbody>
     </table>
       	<div><button onclick="deliveryStatus();">배송관리</button></div>
+      	<br>
+      	<div><button onclick="orderStatus();">주문관리</button></div>
      <div id="pageBar">
         	<%=request.getAttribute("pageBar") %>
-        </div>
+     </div>
     </section>
     <script>
+    		orderStatus=()=>{
+    			var url = "<%=request.getContextPath()%>/order/orderStatuslist.do"
+    			var windowFeatures = "width=1000,height=1200,resizable=yes,scrollbars=yes";
+    			window.open(url,"_blank",windowFeatures);
+    		}
     		deliveryStatus=()=>{
 	    		var url = "<%=request.getContextPath()%>/order/orderdeliverylist.do"
-	    		var windowFeatures = "width=500,height=500,resizable=yes,scrollbars=yes";
+	    		var windowFeatures = "width=1000,height=1200,resizable=yes,scrollbars=yes";
 	    		window.open(url,"_blank",windowFeatures);
     		}
     		

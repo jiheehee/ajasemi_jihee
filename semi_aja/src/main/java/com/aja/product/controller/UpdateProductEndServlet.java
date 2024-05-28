@@ -55,17 +55,15 @@ public class UpdateProductEndServlet extends HttpServlet {
 		
 		int result = new ProductService().updateProduct(p);
 		
-		String msg="", loc="";
+		String msg="";
 		if(result>0) {
 			msg="수정 성공했습니다. :)";
-			loc = "/product/productlist.do";
 		}else {
 			msg = "수정 실패했습니다. :(";
-			loc = "/product/productlist.do";
+
 		}
 		request.setAttribute("msg", msg);
-		request.setAttribute("loc",loc);
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/common/closeMsg.jsp").forward(request, response);
 		
 	}
 

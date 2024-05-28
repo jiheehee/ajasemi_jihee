@@ -24,7 +24,7 @@
     <div id="profilePw-container">
         <div><h6>비밀번호 확인</h6></div>
         <div id="profilePwCheck">
-            <form action="<%=request.getContextPath()%>/member/profileend.do">
+            <form action="<%=request.getContextPath()%>/mypage/profileend.do">
                 <input type="password" name="custPw">
                 <!-- <button onclick="submit();" type="button">확인</button> -->
                 <button type="submit">확인</button>
@@ -35,7 +35,7 @@
 <script>
 	const submit = ()=>{
 		const custPw = document.querySelector("input[name='custPw']").value;
-		location.replace("<%=request.getContextPath()%>/member/profileend.do?custPw="+custPw);
+		location.replace("<%=request.getContextPath()%>/mypage/profileend.do?custPw="+custPw);
 	}
 </script>
 

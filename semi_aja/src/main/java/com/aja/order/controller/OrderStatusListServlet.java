@@ -1,4 +1,4 @@
-package com.aja.mypage.controller;
+package com.aja.order.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MypageProfileServlet
+ * Servlet implementation class OrderStatusListServlet
  */
-@WebServlet("/mypage/profile.do")
-public class MypageProfileServlet extends HttpServlet {
+@WebServlet("/order/orderStatuslist.do")
+public class OrderStatusListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MypageProfileServlet() {
+    public OrderStatusListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,8 +26,7 @@ public class MypageProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/mypage/profileCheck.jsp").forward(request, response);
-
+		
 	}
 
 	/**

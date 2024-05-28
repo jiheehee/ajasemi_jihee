@@ -16,7 +16,7 @@ import com.aja.member.service.MemberService;
 /**
  * Servlet implementation class MypageProfileEndServlet
  */
-@WebServlet("/member/profileend.do")
+@WebServlet("/mypage/profileend.do")
 public class MypageProfileEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
