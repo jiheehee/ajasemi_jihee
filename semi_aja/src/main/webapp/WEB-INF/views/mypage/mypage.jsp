@@ -66,9 +66,9 @@
             <div><h4>TOTAL KRW 구매실적</h4></div>
         </div>
         <div id="mypageList">
-            <div onclick="location.assign('<%=request.getContextPath()%>'/WEB-INF/views/member/order.jsp)"><h3>ORDER</h3></div>
+            <div onclick="location.assign('<%=request.getContextPath()%>'/WEB-INF/views/mypage/order.jsp)"><h3>ORDER</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>WISHLIST</h3></div>
-            <div onclick="location.assign('<%=request.getContextPath()%>/member/profile.do')"><h3>PROFILE</h3></div>
+            <div onclick="location.assign('<%=request.getContextPath()%>/mypage/profile.do')"><h3>PROFILE</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>ADDRESS</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>COUPON</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>POINT</h3></div>

@@ -15,7 +15,7 @@ import com.aja.mypage.model.dto.Order;
 /**
  * Servlet implementation class OrderListServlet
  */
-@WebServlet("/member/orderlist.do")
+@WebServlet("/mypage/orderlist.do")
 public class OrderListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
