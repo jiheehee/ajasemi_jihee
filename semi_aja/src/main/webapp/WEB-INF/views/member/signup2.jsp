@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file = "/WEB-INF/views/common/header.jsp"%>
 
+
  <style>
  	.errormessage{
  		font-size: 10px;
@@ -137,90 +138,89 @@
     <div id="editprofile">
         <div id="editprofile-container">
             <div id="editprofile-text">
-                <div style="height: 100px;"><h5>회원정보 수정</h5></div>
+                <div style="height: 100px;"><h5>회원가입</h5></div>
                 <div style="height: 80px;"><h6>INFORMATION</h6></div>
             </div>
-       
-            <div id="profileId" class="profileInput">
-                <div class="profilefont">아이디</div>
-                <input type="text" name="custEmail" value="<%=loginMember.getCustEmail()%>" readonly>
-            </div>
-            <div class="errormessage"></div>
-            <div id="new-profilePw" class="profileInput">
-                <div class="profilefont">새 비밀번호</div>
-                <input type="password" name="custPw" id="newPassword">
-            </div>
-            <div id="passwordMessage" class="errormessage"></div>
-            <div id="newPwCheck"></div>
-            <div id="new-profilePw-check" class="profileInput">
-                <div class="profilefont">새 비밀번호 확인</div>
-                <input type="password" name="custPwCheck" id="newPasswordCheck">
-            </div>
-            <div id="passwordCheckMessage" class="errormessage"></div>
-            <div id="profileName" class="profileInput">
-                <div class="profilefont">이름</div>
-                <input type="text" name="custName" value="<%=loginMember.getCustName()%>" id="custName">
-            </div>
-            <div id="nameMessage" class="errormessage"></div>
-            <div id="profileNickname" class="profileInput">
-                <div class="profilefont">닉네임</div>
-                <input type="text" name="custNickname" value="<%=loginMember.getCustNickname()%>">
-            </div>
-            <div id="nicknameMessage" class="errormessage"></div>
-            <div id="profilePhone" class="profileInput">
-                <div class="profilefont">전화번호</div>
-                <select name="phone-first" id="phone-first">
-                    <option value="010" <%=loginMember.getCustPhone().substring(0,3).equals("010") ? "selected":""%>>010</option>
-                    <option value="011" <%=loginMember.getCustPhone().substring(0,3).equals("011") ? "selected":""%>>011</option>
-                    <option value="016" <%=loginMember.getCustPhone().substring(0,3).equals("016") ? "selected":""%>>016</option>
-                    <option value="017" <%=loginMember.getCustPhone().substring(0,3).equals("017") ? "selected":""%>>017</option>
-                    <option value="018" <%=loginMember.getCustPhone().substring(0,3).equals("018") ? "selected":""%>>018</option>
-                    <option value="019" <%=loginMember.getCustPhone().substring(0,3).equals("019") ? "selected":""%>>019</option>
-                </select>
-                <input type="text" name="phone-second" value="<%=loginMember.getCustPhone().substring(3,7) %>" style="width: 20%; margin-left: 5px; margin-right: 5px;">
-                <input type="text" name="phone-last" value="<%=loginMember.getCustPhone().substring(7) %>" style="width: 20%;">
-            </div>
-            <div id="phoneMessage" class="errormessage"></div>
-            <div id="profileBirth" class="profileInput">
-               <div class="profilefont">생년월일</div>
-               <input type="date" name="custBirth" value=<%=loginMember.getCustBirth() %>>
-            </div>
-            <div class="errormessage"></div>
-            <div id="profileGender" class="profileInput">
-                <div class="profilefont">성별</div>
-                <div class="gender-option">
-                    <input type="radio" id="female" name="custGender" value="F" class="custom-radio" <%=loginMember.getCustGender().equals("F")?"checked":"" %> onclick="return false">
-                    <label for="female" class="custom-label"></label><p>Female</p>
-                </div>
-                <div class="gender-option">
-                    <input type="radio" id="male" name="custGender" value="M" class="custom-radio" <%=loginMember.getCustGender().equals("M")?"checked":"" %> onclick="return false">
-                    <label for="male" class="custom-label"></label><p>Male</p>
-                </div>
-            </div>
-            <div class="errormessage"></div>
-         
-            <div id="profileAddress" class="profileInput">
-                <div class="profilefont">주소</div>
-                <div class="address-content inputsize">
-                    <div class="profileInput">
-                        <input type="text" id="sample6_postcode" name="custPostcode" placeholder="우편번호" style="width: 45%;" value=<%=loginMember.getCustPostcode() %>>
-                        <input type="button" onclick="sample6_execDaumPostcode()" value="주소찾기" style="width: 15%;">
-                    </div>
-                    <div class="profileInput">
-                        <input type="text" id="sample6_address" name="custAddress" placeholder="주소" value="<%=loginMember.getCustAddress()%>">
-                    </div>
-                    <div class="profileInput">
-                        <input type="text" id="sample6_detailAddress" name="custDetailAddress" placeholder="상세주소" value=<%=loginMember.getCustDetailAddress()  %>>
-                    </div>
-                </div>
-				
-            </div>
-            
-            <!-- 제출 !  -->
-           	<div class="button-container">
-           		<button onclick="edit();">회원정보수정</button>
-           		<button>회원탈퇴</button>
-           	</div>
+       		<form action="" method="POST" >
+	            <div id="profileId" class="profileInput">
+	                <div class="profilefont">아이디</div>
+	                <input type="text" name="custEmail">
+	            </div>
+	            <div class="errormessage"></div>
+	            <div id="new-profilePw" class="profileInput">
+	                <div class="profilefont">비밀번호</div>
+	                <input type="password" name="custPw" id="Password">
+	            </div>
+	            <div id="passwordMessage" class="errormessage"></div>
+	            <div id="newPwCheck"></div>
+	            <div id="new-profilePw-check" class="profileInput">
+	                <div class="profilefont">비밀번호 확인</div>
+	                <input type="password" name="custPwCheck" id="PasswordCheck">
+	            </div>
+	            <div id="passwordCheckMessage" class="errormessage"></div>
+	            <div id="profileName" class="profileInput">
+	                <div class="profilefont">이름</div>
+	                <input type="text" name="custName" id="custName">
+	            </div>
+	            <div id="nameMessage" class="errormessage"></div>
+	            <div id="profileNickname" class="profileInput">
+	                <div class="profilefont">닉네임</div>
+	                <input type="text" name="custNickname">
+	            </div>
+	            <div id="nicknameMessage" class="errormessage"></div>
+	            <div id="profilePhone" class="profileInput">
+	                <div class="profilefont">전화번호</div>
+	                <select name="phone-first" id="phone-first">
+	                    <option value="010" >010</option>
+	                    <option value="011" >011</option>
+	                    <option value="016" >016</option>
+	                    <option value="017" >017</option>
+	                    <option value="018" >018</option>
+	                    <option value="019" >019</option>
+	                </select>
+	                <input type="text" name="phone-second" style="width: 20%; margin-left: 5px; margin-right: 5px;">
+	                <input type="text" name="phone-last" style="width: 20%;">
+	            </div>
+	            <div id="phoneMessage" class="errormessage"></div>
+	            <div id="profileBirth" class="profileInput">
+	               <div class="profilefont">생년월일</div>
+	               <input type="date" name="custBirth">
+	            </div>
+	            <div class="errormessage"></div>
+	            <div id="profileGender" class="profileInput">
+	                <div class="profilefont">성별</div>
+	                <div class="gender-option">
+	                    <input type="radio" id="female" name="custGender" value="F" class="custom-radio">
+	                    <label for="female" class="custom-label"></label><p>Female</p>
+	                </div>
+	                <div class="gender-option">
+	                    <input type="radio" id="male" name="custGender" value="M" class="custom-radio">
+	                    <label for="male" class="custom-label"></label><p>Male</p>
+	                </div>
+	            </div>
+	            <div class="errormessage"></div>
+	         
+	            <div id="profileAddress" class="profileInput">
+	                <div class="profilefont">주소</div>
+	                <div class="address-content inputsize">
+	                    <div class="profileInput">
+	                        <input type="text" id="sample6_postcode" name="custPostcode" placeholder="우편번호" style="width: 45%;">
+	                        <input type="button" onclick="sample6_execDaumPostcode()" value="주소찾기" style="width: 15%;">
+	                    </div>
+	                    <div class="profileInput">
+	                        <input type="text" id="sample6_address" name="custAddress" placeholder="주소">
+	                    </div>
+	                    <div class="profileInput">
+	                        <input type="text" id="sample6_detailAddress" name="custDetailAddress" placeholder="상세주소">
+	                    </div>
+	                </div>
+	            </div>
+	            
+	            <!-- 제출 !  -->
+	           	<div class="button-container">
+	           		<button onclick="edit(); type="button">회원가입</button>
+	           	</div>
+           	</form>
         </div>
     </div>
 </section>
@@ -285,7 +285,7 @@
     const passwordMessage = document.getElementById('passwordMessage');
 
     const passwordInputChangeHandler = () => {
-        const newPassword = passwordInput.value.trim();
+        const password = passwordInput.value.trim();
         const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
         if (!passwordRegExp.test(newPassword)) {
             passwordMessage.innerText = "비밀번호는 8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 모두 포함해야 합니다.";
@@ -297,13 +297,13 @@
     passwordInput.addEventListener('input', passwordInputChangeHandler);
 
     // 비밀번호 확인 유효성 검사
-    const newPasswordCheckInput = document.querySelector("input[name='custPwCheck']");
+    const passwordCheckInput = document.querySelector("input[name='custPwCheck']");
     const passwordCheckMessage = document.getElementById('passwordCheckMessage');
 
     const newPasswordCheckInputChangeHandler = () => {
-        const newPassword = passwordInput.value.trim();
-        const newPasswordCheck = newPasswordCheckInput.value.trim();
-        if (newPassword !== newPasswordCheck) {
+        const password = passwordInput.value.trim();
+        const passwordCheck = passwordCheckInput.value.trim();
+        if (password !== passwordCheck) {
             passwordCheckMessage.innerText = "비밀번호와 비밀번호 확인이 일치하지 않습니다.";
         } else {
             passwordCheckMessage.innerText = "";
@@ -331,26 +331,11 @@
     phoneSecondInput.addEventListener('input', phoneInputChangeHandler);
     phoneLastInput.addEventListener('input', phoneInputChangeHandler);
     
-    // 새비밀번호가 헌비밀번호랑 같은지 검사
-    const newCustPwInput = document.querySelector("input[name='custPw']");
-    const newCustPwCheckInput = document.querySelector("input[name='custPwCheck']");
-    
-    const newCustPwChangeHandler = () => {
-    	const newCustPw = newCustPwInput.value.trim();
-    	const newCustPwCheck = newCustPwCheckInput.value.trim();
-    	if(newCustPw=='<%=loginMember.getCustPw()%>'){
-    		passwordCheckMessage.innerText="현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.";
-    	} else {
-    		passwordCheckMessage.innerText="";
-    	}
-    }
-    
-  	newCustPwCheckInput.addEventListener('blur', newCustPwChangeHandler);
 	
 </script>
 <script>
 	
-	const edit = ()=>{
+	<%-- const edit = ()=>{
 		// 인풋에 담긴 밸류를 비교해서 loginMember 랑 모두 같으면, 변경할 내용이 없는 거임 
 		// 하나라도 다르면, 변경할 내용이 있음 !
 		const custEmail = document.querySelector("input[name='custEmail']");
@@ -364,20 +349,20 @@
 		const custPostcode = document.querySelector("input[name='custPostcode']").value;
 		const custAddress = document.querySelector("input[name='custAddress']").value;
 		const custDetailAddress = document.querySelector("input[name='custDetailAddress']").value;
-		let custPw = document.querySelector("input[name='custPw']").value;
+		const custPw = document.querySelector("input[name='custPw']").value;
 		const custPwCheck = document.querySelector("input[name='custPwCheck']").value;
 	
-		console.log(custPhoneFirst);
 		
 		const nameRegExp = /^[가-힣]+$/;
         const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
         const phoneRegExp = /^\d{4}$/;
 
 		// 이름 유효성, 패스워드 형식 유효성, 패스워드 확인 일치
-		// 새패스워드 확인, 전화번호 유효성 검사 
-		if(nameRegExp.test(custName.value.trim()) && (passwordRegExp.test(custPw.trim())||custPw.trim()=="" )
+		// 전화번호 유효성 검사 
+		// 주소, 성별, 생년월일 필수 ! 
+		if(nameRegExp.test(custName.value.trim()) && passwordRegExp.test(custPw.trim())
 				&& custPw.trim()===custPwCheck.trim() && phoneRegExp.test(custPhoneSecond) 
-				&& phoneRegExp.test(custPhoneLast) && custPw.trim()!=='<%=loginMember.getCustPw()%>'){
+				&& phoneRegExp.test(custPhoneLast)){
 				
 			if(custPw==''){
 				custPw=null;
@@ -402,12 +387,11 @@
 				$.ajax({
 					url:"<%=request.getContextPath()%>/mypage/editmember.do",
 					type:"POST",
-					/* data: {sendData:JSON.stringify(sendData)}, */
-					data: sendData,
-				    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+					data: {sendData:JSON.stringify(sendData)},
+				    /* contentType: "application/x-www-form-urlencoded; charset=UTF-8",  */
 				    success: function(editedCt) {
 				        console.log(editedCt);
-				
+				        sessionStorage.setItem("loginMember",JSON.stringify(editedCt));
 				        location.reload();
 				    }
 					
@@ -420,10 +404,17 @@
 		
 		
 	}
-	
+	 --%>
 
 
 </script>
+
+
+
+
+
+
+
 
 
 

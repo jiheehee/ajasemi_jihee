@@ -1,4 +1,4 @@
-package com.aja.common;
+package com.aja.common.filter;
 
 import java.io.IOException;
 

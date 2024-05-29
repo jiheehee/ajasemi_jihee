@@ -28,5 +28,6 @@ public class Order {
 	private String orderDetailaddr;
 	private String orderPhone;
 	private String orderRequest;
+	@Builder.Default
 	private List<OrderDetail> orderDetail = new ArrayList<>();
 }

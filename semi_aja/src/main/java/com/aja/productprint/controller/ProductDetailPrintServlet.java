@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.aja.member.model.dto.Customer;
+import com.aja.product.service.ProductService;
 import com.aja.productprint.model.dto.Product;
 import com.aja.productprint.model.dto.WishDTO;
 import com.aja.productprint.service.ProductDetailService;
@@ -68,6 +69,12 @@ public class ProductDetailPrintServlet extends HttpServlet {
 		
 		request.setAttribute("wishNumber", wishNumber);
 		
+		//상품 이름 
+		String prodName = (String)request.getParameter("prodName");
+		System.out.println(prodName);
+		List<Integer> reviewQnaCount = new ProductDetailService().selectDetailProductCount(prodName);
+		
+		request.setAttribute("reviewQnaCount", reviewQnaCount);
 		
 		
 		request.getRequestDispatcher("/WEB-INF/views/product/productDetail.jsp").forward(request, response);
