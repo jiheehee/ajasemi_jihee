@@ -77,6 +77,8 @@ public class ProductCartAddServlet extends HttpServlet {
 		//ajax 값 넘겨주기 
 		response.getWriter().print(cartResult);
 		
+		
+		
 		//response.getWriter().		
 		
 		
