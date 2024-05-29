@@ -46,7 +46,6 @@ public class ProductDetailDao {
 		}finally {
 			close(rs);
 			close(pstmt);
-//			System.out.println(result);
 		}return result;
 	}
 	
@@ -96,6 +95,33 @@ public class ProductDetailDao {
 			close(pstmt);
 //			System.out.println(list);
 		}return wishNumber;
+	}
+	
+	
+	
+public List<Integer> selectDetailProductCount(Connection conn, String prodName){
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<Integer> reviewQnaCount = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectDetailProductCount"));
+			pstmt.setString(1, prodName);
+			pstmt.setString(2, prodName);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				reviewQnaCount.add(rs.getInt("REVIEW_COUNT"));
+				reviewQnaCount.add(rs.getInt("QNA_COUNT"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+			System.out.println("Dao에서 reviewQnaCount : "+reviewQnaCount.toString());
+		}return reviewQnaCount;
+		
+		
 	}
 	
 	

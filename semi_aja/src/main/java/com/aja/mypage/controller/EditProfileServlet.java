@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 /**
  * Servlet implementation class EditProfileServlet
  */
-@WebServlet("/mypage/editmember.do")
+@WebServlet(name = "check", urlPatterns="/mypage/editmember.do")
 public class EditProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -49,6 +49,7 @@ public class EditProfileServlet extends HttpServlet {
 		
 		
 		// 암호화 처리를 해야되는데 , 그러면 Json방식으로 바으면 안댄다 ! 
+		String custEmail = request.getParameter("custEmail");
 		String custPw = request.getParameter("custPw");
 		String custName = request.getParameter("custName");
 		String custNickname = request.getParameter("custNickname");
@@ -58,13 +59,20 @@ public class EditProfileServlet extends HttpServlet {
 		String custAddress = request.getParameter("custAddress");
 		String custDetailAddress = request.getParameter("custDetailAddress");
 		
-		Customer editCt = Customer.builder().custPw(custPw).custName(custName)
-				.custNickname(custNickname).custPhone(custPhone).custBirth(custBirth)
-				.custPostcode(custPostcode).custAddress(custAddress).custDetailAddress(custDetailAddress)
-				.build();
+		Customer editCt = Customer.builder()
+							.custEmail(custEmail)
+							.custPw(custPw)
+							.custName(custName)
+							.custNickname(custNickname)
+							.custPhone(custPhone)
+							.custBirth(custBirth)
+							.custPostcode(custPostcode)
+							.custAddress(custAddress)
+							.custDetailAddress(custDetailAddress)
+							.build();
 		
-//        Gson gson = new Gson();
-//        Customer editCt = gson.fromJson(data, Customer.class);
+//      Gson gson = new Gson();
+//      Customer editCt = gson.fromJson(data, Customer.class);
         
         
         
@@ -74,7 +82,6 @@ public class EditProfileServlet extends HttpServlet {
         if(result>0) {
         	Customer editedCt = new MemberService().searchMemberById(editCt.getCustEmail());
         	request.getSession().setAttribute("loginMember", editedCt);
-        	
         }
         
 		

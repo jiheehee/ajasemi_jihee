@@ -1,3 +1,4 @@
+<%@page import="com.aja.productprint.model.dto.ReviewDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
@@ -5,16 +6,16 @@
 
 <%@	page import="java.text.DecimalFormat"%>
 <%@ page import="java.util.List,com.aja.productprint.model.dto.Product" %>
-<%@ page import="java.util.HashSet" %>
-<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet,java.util.Set" %>
+
 
 
 <%
 	List<Product> productlist = (List<Product>)request.getAttribute("productlist");
 	Product product = (Product)request.getAttribute("product");	
 	int wishNumber = (int)request.getAttribute("wishNumber");
-	
-	
+	List<Integer> reviewQnaCount = (List<Integer>)request.getAttribute("reviewQnaCount");
+	//reviewQnaCount [0]=review   [1]=qna
 	Set<String> nameFilter = new HashSet<>();
 
 	
@@ -274,6 +275,15 @@
         -webkit-text-fill-color: transparent;
         -webkit-text-stroke-width: 1.3px;
         -webkit-text-stroke-color: #2b2a29;
+        
+    }
+    
+    .star-ratings{
+    	font-size: 26px;
+    }
+    
+    .star-ratings-list{
+    	font-size: 18px;    	
     }
 
     .star-ratings-fill, .star-ratings-fill-list{
@@ -304,6 +314,7 @@
         list-style: none;
         margin: 0;
         padding: 0;
+        /* background-color : red; */
     }
 
     /* 별점 게시자 날짜 정렬 */
@@ -561,7 +572,8 @@
                         <div>
                             <h3><%=product.getProdName()%></h3>
                             <p>₩ <%=df.format(price)%></p>
-                            <p><%=product.getKeywordName()%></p>
+                            <p><%=product.getOptionFlavor()%> | <%=product.getKeywordName()%></p>
+                            <%-- <p><%=product.getKeywordName()%></p> --%>
                         </div>
                         <p><%=product.getProdContent()%></p>
                     </div>
@@ -571,7 +583,7 @@
                         	if(! product.getProdName().equals(p.getProdName())){ 
                         		 if(! nameFilter.contains(p.getProdName())){%>
 			                        <div class="product-main-content-productlist">
-			                            <input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
+			                            <input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>" hidden> 
 			                            <button class="product-main-content-listbtn" onclick="relproduct(event);"> 
 			                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
 			                                alt="상품" width="100%">
@@ -600,7 +612,7 @@
                                 	  <!-- list받아오면 처리/ 상품이름이 같은애 기준? -->
                                 	  <%for(Product p : productlist){
                                 	  		if(product.getProdName().equals(p.getProdName())){ %>
-                                	  			<input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>" hidden> 
+                                	  			<input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>" hidden> 
                                 	  			<button onclick="relproduct(event);"
 	                                	  			<%if(product.getProdKey()==p.getProdKey()){ %>
 		                                	  				style="border: 2px solid black;"
@@ -662,8 +674,8 @@
 
         <ul id="product-footer-category">
             <li>제품 상세정보</li>
-            <li>리뷰 (3)</li>
-            <li>Q&A (4)</li>
+            <li>리뷰 (<%=reviewQnaCount.get(0)%>)</li>
+            <li>Q&A (<%=reviewQnaCount.get(1)%>)</li>
         </ul>
         <hr width="100%">
         <div id="product-footer-main">   <!-- 아래 공간 -->
@@ -708,87 +720,14 @@
                 <hr width="100%">
             </div>  <!-- 제품설명 닫 -->
 
+
+
             <div id="product-footer-main-two">   <!-- 리뷰 / 리뷰가 없으면 등록된 리뷰가 없습니다. 띄우기  -->
-                <div id="product-footer-main-two-header">   <!-- 별 만들기 -->
-                    <h3>리뷰 (3)</h3>
-                    <div class="star-ratings">
-                        <div class="star-ratings-fill">
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                        </div>
-                        <div>
-                            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                        </div>
-                    </div>
-                </div>
-                <hr style="width: 100%; border: 3px solid black">
-                <div>   <!-- 리뷰 목록 -->
-                    <ul id="product-footer-main-two-reviewlist">    <!-- 리뷰하나당 li -->
-                        <li>
-                            <div class="product-footer-main-two-reviewlist-div">   <!-- 별점, 게시자, 날짜 -->
-                                <div class="star-ratings-list">
-                                    <div class="star-ratings-fill-list">
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                    <div>
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                </div>
-                                <div>게시자sol</div>
-                                <div>2024.05.21</div>
-                            </div>
-                            <div>   <!-- 리뷰내용 -->
-                                <p>
-                                    리뷰내용 리뷰내용 리뷰내용 리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                    리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                </p>
-                            </div>
-                            <hr style="width: 100%;">
-                        </li>
-                        <li>    <!-- 리뷰2 열림  -->
-                            <div class="product-footer-main-two-reviewlist-div">   <!-- 별점, 게시자, 날짜 -->
-                                <div class="star-ratings-list">
-                                    <div class="star-ratings-fill-list">
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                    <div>
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                </div>
-                                <div>게시자sol</div>
-                                <div>2024.05.21</div>
-                            </div>
-                            <div>   <!-- 리뷰내용 -->
-                                <p>
-                                    리뷰내용 리뷰내용 리뷰내용 리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                    리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                </p>
-                            </div>
-                            <hr style="width: 100%;">
-                        </li>
-                        <li>
-                            <div class="product-footer-main-two-reviewlist-div">   <!-- 별점, 게시자, 날짜 -->
-                                <div class="star-ratings-list">
-                                    <div class="star-ratings-fill-list">
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                    <div>
-                                        <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-                                    </div>
-                                </div>
-                                <div>게시자sol</div>
-                                <div>2024.05.21</div>
-                            </div>
-                            <div>   <!-- 리뷰내용 -->
-                                <p>
-                                    리뷰내용 리뷰내용 리뷰내용 리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                    리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용리뷰내용 리뷰내용리뷰내용
-                                </p>
-                            </div>
-                            <hr style="width: 100%;">
-                        </li>   <!-- 리뷰3 닫 -->
-                    </ul>
-                </div>
+                
             </div>  <!-- 리뷰 닫힘 -->
+
+
+
 
             <div id="product-footer-main-three">   <!-- Q&A -->
                 <!-- 제목 내용 상품이미지... 등록일 비밀글(y,n) 카테고리 / 답변은 내용 작성일 -->
@@ -993,7 +932,7 @@
 	                        계속 쇼핑하기
 	                    </button>
 	                </a>
-	                <a href="">	<!-- 장바구니 서블릿 주소 -->
+	                <a href="<%=request.getContextPath()%>/member/cartview.do">	<!-- 장바구니 서블릿 주소 -->
 	                    <button>
 	                        장바구니 보기
 	                    </button>
@@ -1057,8 +996,10 @@
 	    	},
 			success:function(data){
 				location.reload();
+				
 			},
 		});
+		
 	}	//찜 닫
 	<%}else{%>
 		const wishadd=()=>{
@@ -1096,7 +1037,7 @@
 								//	장바구니 이미 있을때
 								modalMsg = "장바구니에 이미 있습니다."; 
 							}
-							console.log("modalMsg");
+							//console.log("modalMsg");
 							//모달창 열기
 							document.querySelector(".modal-buy>div>div:nth-of-type(2)>div>p").innerText = modalMsg;
 							document.getElementsByClassName("modal-buy")[0].style.display="block";
@@ -1132,12 +1073,47 @@
         two.style.display = "none";
         three.style.display = "none";
     });
+    
+    
+    
     // 리뷰 띄우기
     document.querySelector("#product-footer-category>li:nth-of-type(2)").addEventListener("click",e=>{
         one.style.display = "none";
         two.style.display = "block";
         three.style.display = "none";
+        //리뷰 버튼을 누르면 PROD_KEY를 이용해서 알 맞는 리뷰룰 리스트형태로 가져오고 innerHTML해서 넣기..?   append?
+        
+		$.ajax({
+			type: "get",
+			url : "<%=request.getContextPath()%>/product/productreviewprint.do",
+			data : {prodName : "<%=product.getProdName()%>"}, 
+			dataType : "html",
+			success:function(data){
+				//console.log("get방식");
+				//console.log(data);
+				//리뷰 jsp 가져오기
+				document.querySelector("#product-footer-main-two").innerHTML = data;
+				let totalstar = 0;
+				//리뷰 별점 표시
+				for(let i=0;i<<%=reviewQnaCount.get(0)%>;i++ ){
+					let starwidth = (document.querySelectorAll("#product-footer-main-two-reviewlist>li>p")[i].innerText * 20)+1;
+					document.getElementsByClassName("star-ratings-fill-list")[i].style.width = starwidth+"%";
+					totalstar += Number(document.querySelectorAll("#product-footer-main-two-reviewlist>li>p")[i].innerText) ;
+					//console.log(totalstar);
+				}
+				//console.log(totalstar);
+			    //전체 별점의 평균값 출력
+			    const totalstaravg = totalstar/<%=reviewQnaCount.get(0)%>;
+			    //console.log(totalstaravg);
+			    const totalstarwidth = (totalstaravg * 20)+1;   //4자리에 별점 가져와서 대입하기
+			    document.getElementsByClassName("star-ratings-fill")[0].style.width = totalstarwidth+"%";
+			}
+		});
     });
+    
+    
+    
+    
     // Q&A 띄우기
     document.querySelector("#product-footer-category>li:nth-of-type(3)").addEventListener("click",e=>{
         one.style.display = "none";
@@ -1158,15 +1134,7 @@
     });
 
 
-    //리뷰에 별점 표시
-    for(let i=0;i<document.getElementById("product-footer-main-two-reviewlist").children.length;i++){
-        const score = (i * 20)+1;   //i자리에 해당리뷰 별점가져와 대입
-        document.getElementsByClassName("star-ratings-fill-list")[i].style.width = score+"%";
-    }
-
-    //전체 별점의 평균값 출력
-    const score = (4 * 20)+1;   //4자리에 별점 가져와서 대입하기
-    document.getElementsByClassName("star-ratings-fill")[0].style.width = score+"%";
+    
     
 
     //수량 + 버튼

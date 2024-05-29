@@ -38,6 +38,13 @@ public class ProductDetailService {
 	}
 	
 	
+	public List<Integer> selectDetailProductCount(String prodName){
+		Connection conn = getConnection();
+		List<Integer> reviewQnaCount = dao.selectDetailProductCount(conn, prodName);
+		close(conn);
+		return reviewQnaCount;
+	}
+	
 	
 	
 }
