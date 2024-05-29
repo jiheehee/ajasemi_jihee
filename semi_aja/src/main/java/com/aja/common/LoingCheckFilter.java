@@ -18,7 +18,7 @@ import com.aja.member.model.dto.Customer;
 /**
  * Servlet Filter implementation class LoingCheckFilter
  */
-@WebFilter(urlPatterns = {"/cart/*","/mypage/*"})
+@WebFilter(urlPatterns = {"/cart/*","/mypage/*","/qna/*",})
 public class LoingCheckFilter extends HttpFilter implements Filter {
        
     /**

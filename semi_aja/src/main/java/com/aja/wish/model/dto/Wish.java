@@ -1,4 +1,4 @@
-package com.aja.wishlist.model.dto;
+package com.aja.wish.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 
-public class Wishlist {
-	private int custKey;
-	private int prodKdy;
+public class Wish {
 	
+	private int custKey;
+	private int prodKey;
+
 }

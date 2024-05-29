@@ -151,7 +151,7 @@
 			else if($(e.target).val()>50) $(e.target).val(50);
 			totalPriceCalc($(e.target));
 			checkedAllPriceCalc();})
-		});
+		})
 	$("#stock-container>button").click(e=>{
 		//버튼클릭시 수량 증가하기
 		const flag=e.target.value;
