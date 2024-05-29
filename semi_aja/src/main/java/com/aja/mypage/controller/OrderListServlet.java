@@ -95,8 +95,7 @@ public class OrderListServlet extends HttpServlet {
 		pageBar+="</ul>";
 		request.setAttribute("pageBar",pageBar);
 		
-		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath")
-				+"board/boardList.jsp").forward(request,response);
+		request.getRequestDispatcher("/WEB-INF/views/mypage/order.jsp").forward(request,response);
 	}
 
 	/**

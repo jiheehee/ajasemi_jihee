@@ -573,7 +573,7 @@
         	}
         }
         
-        document.getElementById('idcheck').addEventListener('click', function() {
+        <%-- document.getElementById('idcheck').addEventListener('click', function() {
             const emailId = document.querySelector("input[name='custEmailId']").value;
             const emailDomain = document.querySelector("select[name='emailDomain']").value;
             const email = emailId + emailDomain;
@@ -596,7 +596,7 @@
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        	});
+        	}); --%>
         
 
 	</script>

@@ -1,4 +1,4 @@
-package com.aja.common;
+package com.aja.common.filter;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ import com.aja.member.model.dto.Customer;
 /**
  * Servlet Filter implementation class LoingCheckFilter
  */
-@WebFilter(urlPatterns = {"/cart/*","/mypage/*","/qna/*",})
+@WebFilter(urlPatterns = {"/cart/*","/mypage/*"})
 public class LoingCheckFilter extends HttpFilter implements Filter {
        
     /**

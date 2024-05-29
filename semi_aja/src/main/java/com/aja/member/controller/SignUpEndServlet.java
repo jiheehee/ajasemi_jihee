@@ -16,7 +16,7 @@ import com.aja.member.service.MemberService;
 /**
  * Servlet implementation class SignUpEndServlet
  */
-@WebServlet("/member/signupend.do")
+@WebServlet(name = "signup", urlPatterns="/member/signupend.do")
 public class SignUpEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
