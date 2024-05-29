@@ -60,7 +60,9 @@ public class MypageDao {
 		try {
 			pstmt=conn.prepareStatement(sql.getProperty("selectOrderCount"));
 			rs=pstmt.executeQuery();
+			
 			if(rs.next()) result=rs.getInt(1);
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -72,8 +74,8 @@ public class MypageDao {
 	private void getOrderAndOrderDetail(List<Order> result, ResultSet rs) throws SQLException {
 		int pk = rs.getInt("order_key");
 		
-		if(result.stream().anyMatch(r->r.getCustKey()==pk)) { 
-			result.stream().filter(o->o.getCustKey()==pk)
+		if(result.stream().anyMatch(r->r.getOrderKey()==pk)) { 
+			result.stream().filter(o->o.getOrderKey()==pk)
 			.forEach(o-> {
 				try {
 					if(rs.getString("prod_key")!=null) {
@@ -105,18 +107,17 @@ public class MypageDao {
 	
 	private Order getOrder(ResultSet rs) throws SQLException{
 		return Order.builder()
+				.orderKey(rs.getInt("order_key"))
 				.orderAddress(rs.getString("order_address"))
-				.orderDate(rs.getDate("orderDate"))
+				.orderDate(rs.getDate("order_date"))
 				.orderDetailaddr(rs.getString("order_detailaddr"))
 				.orderName(rs.getString("order_name"))
 				.orderPayoption(rs.getString("order_payoption"))
 				.orderPhone(rs.getString("order_phone"))
 				.orderPostcode(rs.getString("order_postcode"))
 				.orderPrice(rs.getInt("order_price"))
-				.orderReason(rs.getString("order_reason"))
-				.orderRequest(rs.getString("order_request"))
 				.orderSale(rs.getInt("order_sale"))
-				.orderState(rs.getString("order_state"))
+//				.orderState(rs.getString("order_state"))
 				.build();
 	}
 	
