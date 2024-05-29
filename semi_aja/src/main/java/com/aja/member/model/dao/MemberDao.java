@@ -17,6 +17,7 @@ import com.aja.member.model.dto.CouponInfo;
 import com.aja.member.model.dto.Customer;
 import com.aja.member.model.dto.KakaoDTO;
 import com.aja.member.model.dto.ProductInfo;
+import com.aja.payment.model.dto.Order;
 
 public class MemberDao {
 	private Properties prop = new Properties();
@@ -36,7 +37,8 @@ public class MemberDao {
 	public int signUp(Connection conn, Customer ct) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-//		String sql = "INSERT INTO CUSTOMER VALUES(CK_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT)";
+		// signUp=INSERT INTO CUSTOMER VALUES(CUST_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT,?,DEFAULT)
+
 		// 리소스파일(프로펄티즈파일) 만들어서 넣기 ~
 		try {
 			pstmt = conn.prepareStatement(prop.getProperty("signUp"));
@@ -49,6 +51,7 @@ public class MemberDao {
 			pstmt.setString(7, ct.getCustBirth());
 			pstmt.setString(8, ct.getCustAddress());
 			pstmt.setString(9, ct.getCustDetailAddress());
+			pstmt.setString(10, ct.getCustPostcode());			
 			
 			result = pstmt.executeUpdate();
 			
@@ -138,21 +141,75 @@ public class MemberDao {
 		
 	}
 	
-	public List<ProductInfo> getCartInfo(Connection conn, int memberNo) {
+
+	public int editCustomer(Connection conn, Customer editCt) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+//		String sql = "UPDATE CUSTOMER SET CUST_NAME=?,CUST_NICKNAME=?, CUST_PW= CASE WHEN ? IS NULL THEN CUST_PW ELSE ?, 
+		// CUST_PHONE=?, CUST_POSTCODE=?, CUST_ADDRESS=?, CUST_DETAIL_ADDRESS = ? WHERER CUST_EMAIL =?";
+		
+		try {
+			pstmt = conn.prepareStatement(prop.getProperty("editCustomer"));
+			pstmt.setString(1, editCt.getCustName());
+			pstmt.setString(2, editCt.getCustNickname());
+			pstmt.setString(3, editCt.getCustPw());
+			pstmt.setString(4, editCt.getCustPw());
+			pstmt.setString(5, editCt.getCustPhone());
+			pstmt.setString(6, editCt.getCustPostcode());
+			pstmt.setString(7, editCt.getCustAddress());
+			pstmt.setString(8, editCt.getCustDetailAddress());
+			pstmt.setString(9, editCt.getCustEmail());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	public List<ProductInfo> getCartInfo(Connection conn, int memberNo, String cartKies) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT P.PROD_IMAGE, P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY "
-												+ "FROM CART C "
-												+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
-												+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
-												+ "WHERE CUST_KEY = ?");
-			pstmt.setInt(1, memberNo);
+			String[] cartKey = cartKies.split(",");		
+			StringBuffer sql = new StringBuffer("SELECT P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY "
+	                + "FROM CART C "
+	                + "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
+	                + "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
+	                + "WHERE CUST_KEY = ?");
+			
+			if(cartKies.contains(",")) {
+		        sql.append(" AND CART_KEY IN(");
+		        for(int i = 0; i < cartKey.length; i++) {
+		           if(i + 1 == cartKey.length) {
+		              sql.append("?)");
+		           } else {
+		              sql.append("?,");
+		           }
+		        }
+	        } else {
+	           sql.append(" AND CART_KEY = ?");
+	        }
+			
+			pstmt = conn.prepareStatement(sql.toString());
+			
+			if(cartKies.contains(",")) {
+				pstmt.setInt(1, memberNo);
+				for(int i = 0; i < cartKey.length; i++) {
+					pstmt.setString(i + 2, cartKey[i]);
+				}
+			} else {
+				pstmt.setInt(1, memberNo);
+				pstmt.setString(2, cartKies);
+			}
+			
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				productInCart.add(ProductInfo.builder()
-										.prodImage(rs.getString("prod_image"))
 										.prodName(rs.getString("prod_name"))
 										.prodContent(rs.getString("prod_content"))
 										.optionFlavor(rs.getString("option_flavor"))
@@ -179,7 +236,7 @@ public class MemberDao {
 		ResultSet rs = null;
 		List<CouponInfo> coupons = new ArrayList<CouponInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT COUPON_NAME, SUBSTR(COUPON_SALE,1,LENGTH(COUPON_SALE)-1) AS \"COUPON_SALE\", COUPON_ENDDATE, CUST_POINT, DC_KEY "
+			pstmt = conn.prepareStatement("SELECT COUPON_NAME, COUPON_SALE, COUPON_ENDDATE, CUST_POINT, DC_KEY "
 											+ "FROM DETAILCOUPON "
 											+ "LEFT JOIN COUPON USING(COUPON_KEY) "
 											+ "LEFT JOIN CUSTOMER USING(CUST_KEY) "
@@ -214,13 +271,12 @@ public class MemberDao {
 		return coupons;
 	}
 	
-	
-	
 	public static Customer getCustomer(ResultSet rs) throws SQLException{
 		
 		return Customer.builder()
 				.custEmail(rs.getString("cust_email"))
 				.custAddress(rs.getString("cust_address"))
+				.custDetailAddress(rs.getString("cust_detail_address"))
 				.custBirth(rs.getString("cust_birth"))
 				.custEnrollDate(rs.getDate("cust_enroll_date"))
 				.custGender(rs.getString("cust_gender"))
@@ -230,6 +286,7 @@ public class MemberDao {
 				.custPw(rs.getString("cust_pw"))
 				.custDelete(rs.getString("cust_delete"))
 				.custName(rs.getString("cust_name"))
+				.custPostcode(rs.getString("cust_postcode"))
 				.build();
 	}
 }

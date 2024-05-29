@@ -1,6 +1,8 @@
 package com.aja.payment.model.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +28,8 @@ public class Order {
 	private String orderDetailaddr;
 	private String orderPhone;
 	private String orderRequest;
+
+	private List<OrderDetail> orderDetail = new ArrayList<>();
 	private String cartKey;
+
 }

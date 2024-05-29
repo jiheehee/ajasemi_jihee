@@ -102,8 +102,8 @@
                         	</div>
                         </td>
 						<td id='cart-total'>
-							<span><%=cart.getProduct().getProdPrice() %> + <%=cart.getOption().getOptionPrice() %></span></span><br>
-							<h5>=<strong><%=(cart.getProduct().getProdPrice())+(cart.getOption().getOptionPrice()) %></h5></strong>
+							<span><%=cart.getProduct().getProdPrice() %> + <%=cart.getOption().getOptionPrice() %></span><br>
+							<h5>=<strong><%=(cart.getProduct().getProdPrice())+(cart.getOption().getOptionPrice()) %></strong></h5>
 						</td>								
                         <td>                             
                             <a href="" class="btn">삭제</a>
@@ -124,11 +124,11 @@
             	</thead> 
             	<tbody>
                         <tr>
-                            <td>체크박스로 선택된거 다 가져오기</td>
+                            <td id="allPrice1">0</td>
                             <td><strong>+</strong></td>
                             <td><%=+3000 %></td>
                             <td><strong>=</strong></td>
-                            <td><h5><strong>91,000원</strong></h5></td>
+                            <td><h5><strong>0</strong></h5></td>
                         </tr>
                 </tbody>           	           
             </table>            
@@ -137,11 +137,21 @@
     </div>
 </body>
 <script>
-	$("#stock-container>input").keyup(e=>{
-		if($(e.target).val()<=0) $(e.target).val(1);
-		else if($(e.target).val()>50) $(e.target).val(50);
-		totalPriceCalc($(e.target));
+	
+	$("tbody input[name=selectProducts]").change(e=>{
+		checkedAllPriceCalc();
 	})
+	$("#stock-container>input").on({"keyup":(e=>{
+			if($(e.target).val()<=0) $(e.target).val(1);
+			else if($(e.target).val()>50) $(e.target).val(50);
+			totalPriceCalc($(e.target));
+			checkedAllPriceCalc();
+		}),"click":(e=>{
+			if($(e.target).val()<=0) $(e.target).val(1);
+			else if($(e.target).val()>50) $(e.target).val(50);
+			totalPriceCalc($(e.target));
+			checkedAllPriceCalc();})
+		});
 	$("#stock-container>button").click(e=>{
 		//버튼클릭시 수량 증가하기
 		const flag=e.target.value;
@@ -153,15 +163,27 @@
 					break;
 			case 'decre' : 
 					$target=$(e.target).prev();
-					$target.val()>1&&$target.val(Number($target.val())-1);
-					break;
+					$target.val()>1&&$target.val(Number($target.val())-1);break;
 		}
 		totalPriceCalc($target);
+		checkedAllPriceCalc();
 	});
 	function totalPriceCalc($target){
-		const oriPriceData=$("#cart-total>span").text().split("+");
-		$("#cart-total strong").text((Number(oriPriceData[0].trim())+Number(oriPriceData[1].trim()))*$target.val());
+		const oriPriceData =$target.parents("tr").find("span").text().split("+");
+		$target.parents("tr").find("strong").text((Number(oriPriceData[0])+Number(oriPriceData[1]))*$target.val());
+		
 	}
+	function checkedAllPriceCalc(){
+		const checkedCart=$("input[name=selectProducts]:checked");
+		let totalPrice=0;
+		checkedCart.each((i,e)=>{
+			totalPrice+=Number($(e).parents("tr").find("strong").text());
+		});
+		$("#allPrice1").text(totalPrice);
+		$("#allPrice1").parents("tr").find("strong").last().text((totalPrice+3000)+"원");
+	}
+
+	
 </script>
 <br>
 <br>

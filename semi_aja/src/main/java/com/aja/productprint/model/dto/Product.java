@@ -1,6 +1,10 @@
 package com.aja.productprint.model.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.aja.product.model.dto.ProdImage;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

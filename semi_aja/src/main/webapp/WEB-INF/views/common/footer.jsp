@@ -27,13 +27,13 @@
             <!-- Q&A 등 하이퍼링크 -->
             <div id="footerMainRight">
                 <div>
-                    <a href=""><p>Q&A</p></a>
+                    <a href="<%=request.getContextPath() %>/qna/qnalist.do"><p>Q&A</p></a>
                 </div>
                 <div>
                     <a href=""><p>CONTACT</p></a>
                 </div>
                 <div>
-                    <a href=""><p>FAQ</p></a>
+                    <a href="<%=request.getContextPath() %>/faq/faqlist.do"><p>FAQ</p></a>
                 </div>
                 <div>
                     <a href="https://www.instagram.com/mango_ili/"><p>INSTARGRAM</p></a>
