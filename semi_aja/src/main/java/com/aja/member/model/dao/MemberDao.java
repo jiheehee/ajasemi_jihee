@@ -37,7 +37,7 @@ public class MemberDao {
 	public int signUp(Connection conn, Customer ct) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		// signUp=INSERT INTO CUSTOMER VALUES(CUST_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT,DEFAULT)
+		// signUp=INSERT INTO CUSTOMER VALUES(CUST_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT,?,DEFAULT)
 
 		// 리소스파일(프로펄티즈파일) 만들어서 넣기 ~
 		try {
@@ -49,9 +49,9 @@ public class MemberDao {
 			pstmt.setString(5, ct.getCustPhone());
 			pstmt.setString(6, ct.getCustGender());
 			pstmt.setString(7, ct.getCustBirth());
-			pstmt.setString(8, ct.getCustPostcode());			
-			pstmt.setString(9, ct.getCustAddress());
-			pstmt.setString(10, ct.getCustDetailAddress());
+			pstmt.setString(8, ct.getCustAddress());
+			pstmt.setString(9, ct.getCustDetailAddress());
+			pstmt.setString(10, ct.getCustPostcode());			
 			
 			result = pstmt.executeUpdate();
 			

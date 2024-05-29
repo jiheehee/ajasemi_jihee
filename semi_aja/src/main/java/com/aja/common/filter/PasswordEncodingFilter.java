@@ -18,7 +18,7 @@ import com.aja.common.PasswordEncoder;
  * Servlet Filter implementation class PasswordEncodingFilter
  */
 @WebFilter(servletNames = {
-		"login","signup"
+		"login","signup","check"
 })
 public class PasswordEncodingFilter extends HttpFilter implements Filter {
        
