@@ -33,17 +33,20 @@ public class PaymentSuccessServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("paySuccessServlet 실행");
 		HttpSession session = request.getSession();
-		int custKey = (int)session.getAttribute("cust_key");
+//		HttpSession session = request.getSession();
+//		Customer loginMember = (Customer)session.getAttribute("loginMember");
+//		int custKey = loginMember.getCustKey();
+		System.out.println("paySuccessServlet 실행");
+		
+		int custKey = 46;
 		System.out.println("session에서 받아온 custKey : " + custKey);
 		
 		//int dcKey = Integer.parseInt(request.getParameter("dcKey"));
 		
 		//String cartKies = request.getParameter("cartKies");
 		
-		Order orderInfo = (Order)session.getAttribute("orderInfo"); 
+		Order orderInfo = (Order)session.getAttribute("orderInfo");
 		request.setAttribute("orderInfo", orderInfo);
 		List<ProductInfo> purchaseList = (List<ProductInfo>)session.getAttribute("productInfo");
 		System.out.println("session에서 받아온 orderInfo : " + orderInfo);

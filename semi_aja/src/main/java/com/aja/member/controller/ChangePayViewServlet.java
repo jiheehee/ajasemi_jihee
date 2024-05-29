@@ -36,9 +36,11 @@ public class ChangePayViewServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Customer loginMember = (Customer)session.getAttribute("loginMember");
-		int memberNo = loginMember.getCustKey();
-		session.setAttribute("cust_key", memberNo);
+//		Customer loginMember = (Customer)session.getAttribute("loginMember");
+//		int memberNo = loginMember.getCustKey();
+//		session.setAttribute("cust_key", memberNo);
+		
+		int memberNo = 46;
 		
 		String cartKies = request.getParameter("cartKies");
 		
@@ -51,9 +53,6 @@ public class ChangePayViewServlet extends HttpServlet {
 		
 		List<CouponInfo> coupons = new MemberService().getCouponInfo(memberNo);
 		coupons.forEach(System.out::println);
-		
-		System.out.println("URI : " + request.getRequestURI());
-		System.out.println("URL : " + request.getRequestURL());
 
 		request.setAttribute("defaultAddress", defaultAddress);
 		request.setAttribute("cartInfo", products);

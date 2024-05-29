@@ -52,7 +52,7 @@
                             <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
                             <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="도로명주소" readonly><br>
                             <span id="guide" style="color:#999;display:none"></span>
-                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소" readonly><br>
+                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소"><br>
                         </td>
                     </tr>
                 </table>
@@ -1056,13 +1056,14 @@
                     + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
                     + "&cartKies=<%= cartKey %>"
                     + "&dcKey=" + dcKey, --%>
+                    //custKey 나중에 변경
                     "fail_url": "http://localhost:8080/testproject/fail",
                     "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
-                    "custKey" : "<%= session.getAttribute("cust_key") %>",
+                    "custKey" : "46",
                     "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
                     "orderSale" : (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText)),
                     "orderPayoption" : "카카오페이",
-                    "orderName" : "<%= defaultAddressInfo.getAddrName() %>",
+                    "orderName" : document.querySelector("input[name='receptionName']").value,
                     "orderPostcode" : document.getElementById("sample4_postcode").value,
                     "orderAddress" : document.getElementById("sample4_roadAddress").value,
                     "orderDetailaddr" : document.getElementById("sample4_detailAddress").value,
