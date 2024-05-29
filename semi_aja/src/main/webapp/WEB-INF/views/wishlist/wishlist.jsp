@@ -3,7 +3,8 @@
 <%@ page import="java.util.List,com.aja.wish.model.dto.Wish,java.text.SimpleDateFormat" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
-	List<Wish> wishList=(List<Wish>)request.getAttribute("wish");
+	List<Wish> wish=(List<Wish>)request.getAttribute("wish");
+	/* out.print(wishList.get(0).getProdKey()); */
 %>
 
 <style>
@@ -73,13 +74,13 @@
  </style>
 
 <header>
-    <h3><strong>NOTICE</strong></h3>
- <h6><strong>공지사항</strong></h6>
+    <h3><strong>WISH LIST</strong></h3>
+ <h6><strong>위시리스트</strong></h6>
 </header>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <body>
-	<form action="wishInto" metho="post">
+	<form action="wishInto" method="post">
 		<table>
 			<thead>
 				<tr>
@@ -92,44 +93,50 @@
 		</table>
 	</form>
 
+	<%for(Wish w : wish){ %>
     <div class="wishlist-container">
         <h1>위시리스트</h1>
         <ul class="wishlist">
             <li class="wishlist-item">
-                <h2>상품 이름 1</h2>
-                <p>상품 상세 페이지 이동</p>
-                <span class="price">₩30,000</span>
-                <button class="remove-button">삭제</button>
+                <h2><%=w.getProduct().getProdName() %></h2>
+                <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=w.getProdKey()%>"></a>
+                <span class="price"><%=w.getProduct().getProdPrice() %></span>
+                <button class="remove-button" onclick="delProduct(event, '<%=w.getProdKey()%>');">삭제</button>
             </li>
         </ul>
     </div>
-    
-    <%for(Product p : productlist){ %>
-            
-                <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
-                    <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>">
-                        <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
-                             alt="상품이미지" width="100%" height="100%">
-                        </div>
-                    </a>
-                    <div class="product-msg">
-                        <div class="product-msg-name">
-                            <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>">	
-                                <div>								<!-- 눌렀을때 구분할수 있는 값도 같이 보내기 PROD_KEY -->
-                                    <p><%=p.getProdName()%></p>
-                                    <p><%=p.getKeywordName()%></p>
-                                </div>
-                                <div>
-                                    <span><%=p.getProdPrice() + p.getOptionPrice()%></span>
-                                    <span class="product-msg-option"><%=p.getOptionFlavor() %></span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="product-msg-wish">
-                            <button type="button" onclick="wishadd(event);">
-    
+    <%
+	}
+    %>
 </body>
+
+<script>
+	function delProduct(event,prodKey){
+		//이벤트 발생한 버튼의 부모 요소인 li 찾기		
+		const listProduct=event.currentTarget.parentElement.parentElement.parentElement;
+		
+
+		
+		//서버로 삭제 요청 보냄
+		$.ajax({
+			type:"POST",
+			url:"<%=request.getContextPath()%>/product/productwishdelete.do",
+			data:{prodKey: prodKey},
+			success: function(response){
+				console.log("삭제 성공",response);
+				if(response>0){
+					//선택한 항목 삭제
+					listProduct.remove();
+				}else{
+					alert("삭제실패 다시시도하세요! :(");
+				}
+			},
+			error:function(error){
+				console.error("삭제 실패",error);
+			}
+		});		
+	}		
+</script>
 
 
 

@@ -23,11 +23,14 @@ public class WishDao {
 		ResultSet rs=null;
 		List<Wish> result=new ArrayList<>();
 		try {
-			pstmt=conn.prepareStatement("SELECT * FROM WISH LEFT JOIN PRODUCT p USING(PROD_KEY) WHERE CUST_KEY=?");
+			pstmt=conn.prepareStatement("SELECT * FROM WISH LEFT JOIN PRODUCT USING(PROD_KEY) LEFT JOIN KEYWORD USING(KEYWORD_KEY) LEFT JOIN CATEGORY USING(CATE_KEY) LEFT JOIN PROD_OPTION USING(OPTION_KEY) WHERE CUST_KEY= ?");
 			pstmt.setInt(1,custKey);
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
-				Wish w=new Wish();
+				Wish w = new Wish();
+				w.setCustKey(rs.getInt("cust_key"));
+				w.setProdKey(rs.getInt("prod_key"));
+				w.setProduct(getProduct(rs));
 				result.add(w);
 			}			
 		}catch(SQLException e) {
@@ -58,6 +61,21 @@ public class WishDao {
 				.optionSize(rs.getInt("OPTION_SIZE"))
 				.optionPrice(rs.getInt("OPTION_PRICE"))
 				.build();
+	}
+	
+	public int deleteWish(Connection conn,int prodKey){
+		
+		PreparedStatement pstmt=null;		
+		int rs=0;
+		try {
+			pstmt=conn.prepareStatement("DELETE FROM WISH WHERE PROD_KEY =?");
+			pstmt.setInt(1,prodKey);
+			rs=pstmt.executeUpdate();						
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
 	}
 	
 	

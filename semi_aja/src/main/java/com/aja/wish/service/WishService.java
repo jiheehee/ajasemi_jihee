@@ -12,12 +12,21 @@ public class WishService {
 	
 	private WishDao dao=new WishDao(); 
 	
-	public List<Wish> wishList(int custKey){		
+	public List<Wish> wishList(int prodKey){		
 		
 		Connection conn=getConnection();
-		List<Wish> wish=dao.wishList(conn,custKey);
+		List<Wish> wish=dao.wishList(conn,prodKey);
 		close(conn);
 		return wish;
+	}
+	
+	public int deleteWish(int prodKey){
+		
+		Connection conn=getConnection();
+		int delwish=dao.deleteWish(conn,prodKey);
+		close(conn);
+		return delwish;
+				
 	}
 	
 

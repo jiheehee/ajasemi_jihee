@@ -1,7 +1,7 @@
 package com.aja.wish.controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,21 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.member.model.dto.Customer;
-import com.aja.wish.model.dto.Wish;
 import com.aja.wish.service.WishService;
 
 /**
- * Servlet implementation class WishServlet
+ * Servlet implementation class WishDeleteServlet
  */
-@WebServlet("/wish/wish.do")
-public class WishServlet extends HttpServlet {
+@WebServlet("/product/productwishdelete.do")
+public class WishDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WishServlet() {
+    public WishDeleteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,13 +31,14 @@ public class WishServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Customer c=(Customer)request.getSession().getAttribute("loginMember");
-		int custKey=c.getCustKey();
+		int prodKey=Integer.parseInt(request.getParameter("prodKey"));
 		
-		System.out.println(custKey);
-		List<Wish> wish=new WishService().wishList(custKey);
-		request.setAttribute("wish", wish);
-		request.getRequestDispatcher("/WEB-INF/views/wishlist/wishlist.jsp").forward(request, response);
+		int result=new WishService().deleteWish(prodKey);
+		
+		response.setContentType("text/plain;charset=utf-8");
+		PrintWriter out=response.getWriter();
+		out.print(result);
+		
 	}
 
 	/**
