@@ -8,6 +8,19 @@
 %>
 
 <style>
+
+ h3{
+	padding-top: 30px;
+}
+
+h3,h6 {
+		padding-left:250px;
+	}
+	
+h6 {
+	margin-bottom:40px;
+}
+
  body {
      font-family: Arial, sans-serif;
      background-color: #f4f4f4;
@@ -84,8 +97,8 @@
 		<table>
 			<thead>
 				<tr>
-					<th>상품명</th>
-					<th>상세페이지</th>
+					<th></th>
+					<th></th>
 					<th></th>
 					<th></th>
 				</tr>

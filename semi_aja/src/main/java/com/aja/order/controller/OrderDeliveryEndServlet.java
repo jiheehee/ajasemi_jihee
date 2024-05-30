@@ -46,6 +46,7 @@ public class OrderDeliveryEndServlet extends HttpServlet {
 			request.setAttribute("loc",loc);
 			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 			
+			
 		}
 		
 	}
