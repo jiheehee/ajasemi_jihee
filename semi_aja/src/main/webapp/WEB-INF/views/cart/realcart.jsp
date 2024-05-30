@@ -136,12 +136,13 @@
                     <tr>
                         <td id="totalCheckedPriceTd">0</td>
                         <td><strong>+</strong></td>
-                        <td id="deliveryPriceTd">3000</td>
+                        <td id="deliveryPriceTd">0</td>
                         <td><strong>=</strong></td>
                         <td><h5><span id="finalPriceSpan">0</span></h5></td>
                     </tr>
                 </tbody>           	           
             </table>
+         <p>총 주문금액이 50000원 보다 많을경우 배송비는 무료입니다.</p>
         <button id="paymentDoButton">결제하러가기</button>
     </div>
 <% } %>
@@ -253,12 +254,17 @@
 				document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
 				
 				//상품가격이에 따라 배송비 추가여부를 확인합니다.
-				if(totalCheckedPrice() > 50000) {
-					document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+				if(totalCheckedPrice() == 0) {
+					document.getElementById("finalPriceSpan").innerText = 0;
 					document.getElementById("deliveryPriceTd").innerText = 0;
 				} else {
-					document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
-					document.getElementById("deliveryPriceTd").innerText = 3000;
+					if(totalCheckedPrice() > 50000) {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+						document.getElementById("deliveryPriceTd").innerText = 3000;
+					}
 				}
 				
 				callUpdateCartFetch(modifyAmount, cartKey);
@@ -284,8 +290,18 @@
 				
 				document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
 				
-				if(totalCheckedPrice() > 50000) document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
-				else document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+				if(totalCheckedPrice() == 0) {
+					document.getElementById("finalPriceSpan").innerText = 0;
+					document.getElementById("deliveryPriceTd").innerText = 0;
+				} else {
+					if(totalCheckedPrice() > 50000) {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+						document.getElementById("deliveryPriceTd").innerText = 3000;
+					}
+				}
 				
 				callUpdateCartFetch(modifyAmount, cartKey);
 			}
@@ -312,6 +328,19 @@
 					document.getElementById("totalProdPrice" + pk).innerText = (prodPrice + optionPrice) * e.target.value;
 					
 					document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
+					
+					if(totalCheckedPrice() == 0) {
+						document.getElementById("finalPriceSpan").innerText = 0;
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						if(totalCheckedPrice() > 50000) {
+							document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+							document.getElementById("deliveryPriceTd").innerText = 0;
+						} else {
+							document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+							document.getElementById("deliveryPriceTd").innerText = 3000;
+						}
+					}
 				}
 			}
 			callUpdateCartFetch(inputAmount, cartKey);
