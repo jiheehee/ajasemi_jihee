@@ -96,6 +96,7 @@
           <div class="clearfix">
         <table id="tbl-category">
             <tr>
+            	<th>카테고리번호</th>
                 <th>카테고리명</th>
                 <th>삭제</th>
             </tr>
@@ -130,6 +131,7 @@
     <div class="clearfix">
         <table id="tbl-keyword">
             <tr>
+            	<th>키워드번호</th>
                 <th>키워드명</th>
                 <th>삭제</th>
             </tr>

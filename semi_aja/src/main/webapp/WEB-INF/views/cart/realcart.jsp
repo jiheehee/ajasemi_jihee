@@ -240,6 +240,7 @@
 			const maxAmount = document.querySelectorAll(".amountInput")[buttonId].max;
 			console.log("maxAmount : " + maxAmount);
 			console.log("modifyAmount : " + modifyAmount);
+			//수정된 수량이 재고량보다 많을때입니다.
 			if(modifyAmount > maxAmount) {
 				alert("재고량 이상입니다.");
 			} else {
@@ -251,6 +252,7 @@
 				
 				document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
 				
+				//상품가격이에 따라 배송비 추가여부를 확인합니다.
 				if(totalCheckedPrice() > 50000) {
 					document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
 					document.getElementById("deliveryPriceTd").innerText = 0;
@@ -358,23 +360,12 @@
 	
 	//삭제하기 버튼입니다.
 	document.getElementsByName("deleteButton").forEach(e => {
-		e.addEventListener("click", e => {mn
+		e.addEventListener("click", e => {
 			console.log("아니 된거맞아?");
 			console.log(e.target.id);
 			const pk = e.target.id;
 			const cartKey = document.querySelectorAll("input[name='selectProducts']")[pk].value;
 			location.assign("<%= request.getContextPath() %>/cart/deletecart.do?cartKey=" + cartKey);
-			<%-- fetch("<%= request.getContextPath() %>/cart/deletecart.do?cartKey=" + cartKey, {
-				mothod : "GET",
-				headers : {
-					"Content-type" : "application/x-www-form-urlencoded"
-				}
-			})
-			.then(response => response.text())
-			.then(data => {
-				console.log(data);
-				document.querySelector("#cartInfoContainer>tbody").innerHTML = data;
-			}) --%>
 		})
 	});
 	

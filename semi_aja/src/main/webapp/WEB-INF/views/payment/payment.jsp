@@ -96,7 +96,7 @@
 	                        <tr>
 	                            <td>
 	                                <div class="prodImgContainer">
-	                                    <img src="<%= p.getProdImage1() %>" alt="" width="100px" height="100px">
+	                                    <img src="<%= request.getContextPath() %>/upload/product/<%= p.getProdImage1() %>" alt="" width="100px" height="100px">
 	                                </div>
 	                                <div class="prodContentContainer">
 	                                    <p><%= p.getProdName() %></p>
@@ -308,7 +308,7 @@
         }
         .prodContentContainer>p:last-child{
             margin-top:10px;
-            width:200px;
+            width:440px;
         }
         .prodContentContainer{
             width:200px;
@@ -946,6 +946,7 @@
                     'Content-Type': 'application/json;charset=utf-8'
                 },
                 //상품정보와 상품결제/실패/성공/취소로 이동할 주소등등 을 body에 담아서 넘겨줍니다
+                //http://14.36.141.71:10079/GDJ79_semi_aja_semi 서버
                 body: JSON.stringify({
                     "cid": "TC0ONETIME",
                     "partner_order_id": "partner_order_id",
@@ -955,19 +956,10 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    "approval_url": "http://14.36.141.71:10079/GDJ79_semi_aja_semi/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
                     + "&cartKey=" + "<%= cartKey %>",
-                    <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
-                    + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
-                    + "&orderSale=" + (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText))
-                    + "&orderPayoption=카카오페이&orderName=<%= defaultAddressInfo.getAddrName() %>"
-                    + "&orderPostcode=<%= defaultAddressInfo.getAddrPostcode() %>&orderAddress=<%= defaultAddressInfo.getAddrAddress() %>"
-                    + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
-                    + "&cartKies=<%= cartKey %>"
-                    + "&dcKey=" + dcKey, --%>
-                    //custKey 나중에 변경
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
+                    "cancel_url": "http://14.36.141.71:10079/GDJ79_semi_aja_semi/WEB-INF/views/payment/paycancel.jsp",
                     "custKey" : "52",
                     "dcKey" : Number(document.getElementById("pointApplySpan").innerText),
                     "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),

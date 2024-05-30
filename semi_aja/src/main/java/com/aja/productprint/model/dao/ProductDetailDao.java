@@ -31,7 +31,7 @@ public class ProductDetailDao {
 	
 	
 	public Product selectDetailProduct(Connection conn ,int prodKey) {
-		System.out.println("PRODKEY : " + prodKey);
+		//System.out.println("PRODKEY : " + prodKey);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Product result = new Product();

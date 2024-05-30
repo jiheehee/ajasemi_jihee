@@ -8,30 +8,22 @@
 <!-- Bootstrap CSS -->
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <style>
-    .full-height {
-        height: 600px;
-    }
-    .centered-button {
+    .centered-content {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100%;
+        height: 100vh;
     }
 </style>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <img src="<%= request.getContextPath() %>/upload/errorimage/errorpageimage.png" class="img-fluid full-height" alt="Error Image">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 centered-button">
-                <button class="btn btn-primary" onclick="location.assign('<%= request.getContextPath() %>/main/mainview.do')">메인으로</button>
-            </div>
-        </div>
+    <div class="container centered-content">
+        <h1>취소했어요</h1>
+        <button class="btn btn-primary" onclick="location.assign('<%= request.getContextPath() %>/main/mainview.do')">메인으로</button>
     </div>
+
+    <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -17,9 +17,9 @@ import com.aja.member.model.dto.ProductInfo;
 import com.aja.payment.model.dto.Order;
 
 public class PaymentDao {
-	
-	//Properties driver = new Properties();
-	
+
+//	Properties driver = new Properties();
+//	
 //	{		
 //		String path = PaymentDao.class.getResource("/sql/payment/sql_payment.properties").getPath();
 //		try(FileReader fr = new FileReader(path)) {

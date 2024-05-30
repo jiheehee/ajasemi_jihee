@@ -29,8 +29,6 @@ public class KakaoLoginService {
 		return ct;
 	}
 	
-	
-	
 	public String getAccessToken(String code) {
 		// access토큰 받기 !
 		System.out.println("--토큰발급--");

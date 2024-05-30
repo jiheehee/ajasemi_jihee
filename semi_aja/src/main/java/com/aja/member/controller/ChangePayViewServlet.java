@@ -54,7 +54,7 @@ public class ChangePayViewServlet extends HttpServlet {
 
 		request.setAttribute("defaultAddress", defaultAddress);
 		request.setAttribute("cartInfo", products);
-		request.setAttribute("coupons", coupons);	
+		request.setAttribute("coupons", coupons);
 		request.getRequestDispatcher("/WEB-INF/views/payment/payment.jsp")
 		.forward(request, response);
 	}
