@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class MypageProfileServlet
  */
-@WebServlet("/member/profile.do")
+@WebServlet("/mypage/profile.do")
 public class MypageProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

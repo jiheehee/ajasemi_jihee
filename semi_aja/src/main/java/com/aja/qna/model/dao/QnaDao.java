@@ -21,9 +21,9 @@ public class QnaDao {
 		 List<Qna> result=new ArrayList<>();
 		 
 		 try {
-		 pstmt=conn.prepareStatement("SELECT * FROM QNA ");
+		 pstmt=conn.prepareStatement("SELECT QNA_CONTENT ,QNA_ENROLLDATE FROM QNA");
 		 
-		pstmt=conn.prepareStatement("SELECT * FROM cart c JOIN PRODUCT p ON (p.PROD_KEY=c.prod_key) JOIN CATEGORY c2 using(cate_key) "
+		 pstmt=conn.prepareStatement("SELECT * FROM cart c JOIN PRODUCT p ON (p.PROD_KEY=c.prod_key) JOIN CATEGORY c2 using(cate_key) "
 				+ "				JOIN KEYWORD k using(keyword_key)"
 				+ "JOIN PROD_OPTION po ON po.option_key=c.OPTION_KEY WHERE cust_key=?");
 		 

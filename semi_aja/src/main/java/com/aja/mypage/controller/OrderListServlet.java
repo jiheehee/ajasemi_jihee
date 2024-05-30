@@ -15,7 +15,7 @@ import com.aja.mypage.model.dto.Order;
 /**
  * Servlet implementation class OrderListServlet
  */
-@WebServlet("/member/orderlist.do")
+@WebServlet("/mypage/orderlist.do")
 public class OrderListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -95,8 +95,7 @@ public class OrderListServlet extends HttpServlet {
 		pageBar+="</ul>";
 		request.setAttribute("pageBar",pageBar);
 		
-		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath")
-				+"board/boardList.jsp").forward(request,response);
+		request.getRequestDispatcher("/WEB-INF/views/mypage/order.jsp").forward(request,response);
 	}
 
 	/**

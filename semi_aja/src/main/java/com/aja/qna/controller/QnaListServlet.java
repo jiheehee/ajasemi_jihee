@@ -40,8 +40,7 @@ public class QnaListServlet extends HttpServlet {
 		
 		request.setAttribute(getServletName(), response);
 		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
-		
-		
+				
 	}
 
 	/**

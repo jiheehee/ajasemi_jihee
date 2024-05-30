@@ -43,7 +43,16 @@ public class OrderDeliveryChangeServlet extends HttpServlet {
 		
 		int result = new OrderService().updateDelivery(type,realOrders);
 
-		
+		if(result>0) {
+			String msg="";
+			if(result>0) {
+				msg="변경 성공했습니다. :)";
+			}else {
+				msg="변경 실패했습니다. :(";
+			}
+			request.setAttribute("msg", msg);
+			request.getRequestDispatcher("/WEB-INF/views/common/closeMsg.jsp").forward(request, response);
+		}
 	}
 
 	/**

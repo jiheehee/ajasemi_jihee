@@ -9,6 +9,8 @@ import java.util.List;
 import com.aja.order.model.dao.OrderDao;
 import com.aja.order.model.dto.CustomerOrder;
 import com.aja.order.model.dto.OrderDetail;
+import com.aja.order.model.dto.OrderRefund;
+import com.aja.order.model.dto.OrderStock;
 
 public class OrderService {
 	private OrderDao dao = new OrderDao();
@@ -25,6 +27,18 @@ public class OrderService {
 		close(conn);
 		return orderList;
 		}
+	public List<CustomerOrder> selectOrderAll(String type){
+		Connection conn = getConnection();
+		List<CustomerOrder> orderList = dao.selectOrderAll(conn,type);
+		close(conn);
+		return orderList;
+	}
+	public List<CustomerOrder> selectOrderAll(){
+		Connection conn = getConnection();
+		List<CustomerOrder> orderList = dao.selectOrderAll(conn);
+		close(conn);
+		return orderList;
+	}
 	public int selectOrderCount() {
 		Connection conn = getConnection();
 		int result = dao.selectOrderCount(conn);
@@ -52,6 +66,54 @@ public class OrderService {
 	public int updateDelivery(String type,int[] realOrders) {
 		Connection conn = getConnection();
 		int result = dao.updateDelivery(conn,type,realOrders);
+		close(conn);
+		return result;
+	}
+	public int deliveryComplete(int orderKey) {
+		Connection conn = getConnection();
+		int result = dao.deliveryComplete(conn,orderKey);
+		close(conn);
+		return result;
+	}
+	public OrderRefund orderRefundInfo(int orderKey){
+		Connection conn = getConnection();
+		OrderRefund or = dao.orderRefundInfo(conn,orderKey);
+		close(conn);
+		return or;
+	}
+	public List orderDetailList(int orderKey) {
+		Connection conn = getConnection();
+		List orderDetailList = dao.orderDetailList(conn,orderKey);
+		close(conn);
+		return orderDetailList;
+	}
+	public int refundPoint(int orderPoint, int custKey) {
+		Connection conn = getConnection();
+		int result = dao.refundPoint(conn,orderPoint,custKey);
+		close(conn);
+		return result;
+	}
+	public int refundCoupon(int dcKey) {
+		Connection conn = getConnection();
+		int result = dao.refundCoupon(conn,dcKey);
+		close(conn);
+		return result;
+	}
+	public int orderStatusUpdate(int osKey) {
+		Connection conn = getConnection();
+		int result = dao.orderStatusUpdate(conn, osKey);
+		close(conn);
+		return result;
+	}
+	public OrderStock orderStockRollback(int odKey) {
+		Connection conn = getConnection();
+		OrderStock os = dao.orderStockRollback(conn,odKey);
+		close(conn);
+		return os;
+	}
+	public int orderStockUpdate(int prodKey, int quantity) {
+		Connection conn = getConnection();
+		int result = dao.orderStockUpdate(conn,prodKey,quantity);
 		close(conn);
 		return result;
 	}

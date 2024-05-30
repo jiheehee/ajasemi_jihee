@@ -400,13 +400,14 @@
 									"custPhone":custPhone};
 				console.log(sendData);
 				$.ajax({
-					url:"<%=request.getContextPath()%>/member/editmember.do",
+					url:"<%=request.getContextPath()%>/mypage/editmember.do",
 					type:"POST",
-					data: {sendData:JSON.stringify(sendData)},
-				    /* contentType: "application/x-www-form-urlencoded; charset=UTF-8",  */
+					/* data: {sendData:JSON.stringify(sendData)}, */
+					data: sendData,
+				    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				    success: function(editedCt) {
 				        console.log(editedCt);
-				        sessionStorage.setItem("loginMember",JSON.stringify(editedCt));
+				
 				        location.reload();
 				    }
 					

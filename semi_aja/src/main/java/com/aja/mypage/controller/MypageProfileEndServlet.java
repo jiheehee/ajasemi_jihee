@@ -16,7 +16,7 @@ import com.aja.member.service.MemberService;
 /**
  * Servlet implementation class MypageProfileEndServlet
  */
-@WebServlet("/member/profileend.do")
+@WebServlet(name = "check2",urlPatterns="/mypage/profileend.do")
 public class MypageProfileEndServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -41,11 +41,10 @@ public class MypageProfileEndServlet extends HttpServlet {
 		String inputPw = request.getParameter("custPw");
 		
 		Customer checkCt = new MemberService().searchMemberById(ct.getCustEmail(), inputPw);
-		// 이게 null 이면, 비밀번호가 일치하지 않는 거임 
-		System.out.println(checkCt+"null 이라고 ?");
+		// 이게 null 이면, 비밀번호가 일치하지 않는 거임 ! 
 		
 		if(checkCt == null) {
-			response.sendRedirect(request.getContextPath()+"/member/profile.do");
+			response.sendRedirect(request.getContextPath()+"/mypage/profile.do");
 		} else {
 //			response.sendRedirect(request.getContextPath()+"/WEB-INF/views/mypage/editprofile.jsp");
 			request.getRequestDispatcher("/WEB-INF/views/mypage/editprofile.jsp").forward(request, response);

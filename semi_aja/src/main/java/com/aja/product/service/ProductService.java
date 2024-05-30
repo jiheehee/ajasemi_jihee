@@ -1,7 +1,7 @@
 package com.aja.product.service;
 
-import static com.aja.admin.common.JDBCTemplate.close;
-import static com.aja.admin.common.JDBCTemplate.getConnection;
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.getConnection;
 
 import java.sql.Connection;
 import java.util.List;

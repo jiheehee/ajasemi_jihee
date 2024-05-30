@@ -20,7 +20,9 @@
             padding: 0;
             background-color: #f4f4f4;
         }
-
+		.hidden{
+			display:none;
+		}
         h1 {
             text-align: center;
             color: #333;
@@ -93,8 +95,8 @@
         </table>
         <form action = "<%=request.getContextPath()%>/order/orderdeliverychange.do" onsubmit ="getOrder(event);">
         	<select name = "deliveryT" id="deliveryT">
-        		<option value="배송준비중"  >배송준비중</option>
-        		<option value="배송중" >배송중</option>
+        		<option value="배송준비중" class='hidden' >배송준비중</option>
+        		<option value="배송중" selected>배송중</option>
         		<option value="배송완료"  >배송완료</option>
         	</select>
         	<input type="submit" value="변경">
@@ -201,6 +203,17 @@
     	 
     	 
      }
+     
+     $(document).ready(function(){
+    	 $("#deliveryType").change(function(){
+    		 var nowType = $("#deliveryType").val();
+    	 	$("#deliveryT option").removeClass('hidden');
+    	 	$('#deliveryT option[value="'+ nowType+'"]').addClass('hidden');
+    	 	var firstVisibleOption=$("#deliveryT option:not(.hidden)").first().val();
+    	 	$("#deliveryT").val(firstVisibleOption);
+	     })
+     });
+     
      
   
     </script>
