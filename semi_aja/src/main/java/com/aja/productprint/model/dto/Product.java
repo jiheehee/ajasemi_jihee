@@ -34,5 +34,12 @@ public class Product {
 	private int optionSize;
 	private int optionPrice;
 	private String cateName;
+	
 	//이미지 리스트형식으로 한번에 가져오기
+	private String prodImage1;
+	private String prodImage2;
+	private String prodImage3;
+	private String prodImage4;
+	private String prodImage5;
+	
 }

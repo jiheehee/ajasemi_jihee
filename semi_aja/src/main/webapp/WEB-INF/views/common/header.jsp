@@ -64,7 +64,7 @@
                 </div>
                 <div>
 
-                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+                    <a href="<%=request.getContextPath() %>/member/cartview.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
                     	alt="쇼핑백" height="25"></a>
                 </div>
                 <div>
@@ -117,7 +117,7 @@
 	                        alt="위시리스트" height="25"></a>
 	                </div>
 	                <div>
-	                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+	                    <a href="<%=request.getContextPath() %>/member/cartview.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
 	                        alt="쇼핑백" height="25"></a>
 	                </div>
 	                <div>

@@ -1,7 +1,6 @@
 package com.aja.cart.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,21 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.aja.cart.model.dto.CartInfo;
 import com.aja.cart.service.CartService2;
 import com.aja.member.model.dto.Customer;
 
 /**
- * Servlet implementation class ChangeCartViewServlet
+ * Servlet implementation class ModifyCartQuantityServlet
  */
-@WebServlet("/member/cartview.do")
-public class ChangeCartViewServlet extends HttpServlet {
+@WebServlet("/cart/updateQuantity.do")
+public class ModifyCartQuantityServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChangeCartViewServlet() {
+    public ModifyCartQuantityServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,26 +31,23 @@ public class ChangeCartViewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
+//		HttpSession session = request.getSession();
 //		Customer loginMember = (Customer)session.getAttribute("loginMember");
 //		int custKey = loginMember.getCustKey();
-//		System.out.println("session에서 가져온 custKey : " + custKey);
 		
-		int custKey = 52;
+		int custKey = 46;
 		
-		session.setAttribute("custKey", custKey);
-		List<CartInfo> cartInfoList =  new CartService2().getCartInfo(custKey);
-		request.setAttribute("cartInfoList", cartInfoList);
-		cartInfoList.forEach(System.out::println);
+		int cartKey = Integer.parseInt(request.getParameter("cartKey"));
 		
-		request.getRequestDispatcher("/testview/testcart.jsp").forward(request, response);;
+		int amount = Integer.parseInt(request.getParameter("amount"));
+		
+		new CartService2().updateAmountFromCart(custKey, cartKey, amount);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

@@ -32,12 +32,14 @@ public class CartDao2 {
 		ResultSet rs = null;
 		List<CartInfo> cartInfoList = new ArrayList<CartInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT P.PROD_NAME, P.PROD_STOCK, C.CART_KEY, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, C.CART_QUANTITY, P.PROD_PRICE "
-													+ "FROM CART C "
-													+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
-													+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
-													+ "WHERE C.CUST_KEY = ?");
-			pstmt.setInt(1, custKey);
+			pstmt = conn.prepareStatement("SELECT * FROM "
+					+ "( SELECT ROWNUM AS RNUM, N.* FROM "
+					+ "( SELECT P.PROD_NAME, P.PROD_STOCK, C.CART_KEY, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, C.CART_QUANTITY, P.PROD_PRICE "
+					+ "FROM CART C "
+					+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
+					+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
+					+ "WHERE CUST_KEY = 52 ORDER BY CART_KEY) N ) ");
+//				
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				cartInfoList.add(CartInfo.builder()
@@ -59,4 +61,22 @@ public class CartDao2 {
 		}
 		return cartInfoList;
 	}
+	
+	public int updateAmountFromCart(Connection conn, int custKey, int cartKey, int amount) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement("UPDATE CART SET CART_QUANTITY = ? WHERE CUST_KEY = ? AND CART_KEY = ?");
+			pstmt.setInt(1, amount);
+			pstmt.setInt(2, custKey);
+			pstmt.setInt(3, cartKey);
+			result = pstmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 }

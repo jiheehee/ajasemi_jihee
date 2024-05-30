@@ -52,7 +52,7 @@
                             <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
                             <input type="text" id="sample4_roadAddress" class="addressInput" placeholder="도로명주소" readonly><br>
                             <span id="guide" style="color:#999;display:none"></span>
-                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소" readonly><br>
+                            <input type="text" id="sample4_detailAddress" class="addressInput" placeholder="상세주소"><br>
                         </td>
                     </tr>
                 </table>
@@ -176,6 +176,7 @@
 	                            <td class="numtd">
 	                                <p><%= p.getOptionFlavor()%></p>
 	                                <p><%= p.getOptionSize() %></p>
+	                                <p><%= p.getOptionPrice() %></p>
 	                            </td>
 	                            <td class="numtd">
 	                                <p><%= p.getProdPrice() %></p>
@@ -273,46 +274,7 @@
             </div>
         </div>
     </section>
-    <footer>
-        <div id="footerMain">
-            <!-- 주소 전화번호 등 -->
-            <div id="footerMainLeft">
-                <div>
-                    <p>ajaaja</p>
-                </div>
-                <div>
-                    <p>
-                        2024-서울가산-e호 <br>
-                        (08505)서울특별시 금천구 가산디지털2로95(가산동,km타워)3층 305호
-                    </p>
-                </div>
-                <div>
-                    <p>SH 110-457</p>
-                </div>
-                <div>
-                    <p>COPYRIGHT AJAAJA,ALL RIGHTS RESERVED.</p>
-                </div>
-            </div>
-            <!-- Q&A 등 하이퍼링크 -->
-            <div id="footerMainRight">
-                <div>
-                    <a href=""><p>Q&A</p></a>
-                </div>
-                <div>
-                    <a href=""><p>CONTACT</p></a>
-                </div>
-                <div>
-                    <a href=""><p>FAQ</p></a>
-                </div>
-                <div>
-                    <a href=""><p>INSTARGRAM</p></a>
-                </div>
-                <div>
-                    <a href=""><p>NOTICE</p></a>
-                </div>
-            </div>
-        </div>  <!-- <div id="footerMain">닫힘 --> 
-    </footer>
+    
     <style>
         section{
             display: flex;
@@ -1056,13 +1018,16 @@
                     + "&orderDetailaddr=<%= defaultAddressInfo.getAddrDetail() %>&orderPhone=<%= defaultAddressInfo.getAddrPhone() %>"
                     + "&cartKies=<%= cartKey %>"
                     + "&dcKey=" + dcKey, --%>
+                    //custKey 나중에 변경
                     "fail_url": "http://localhost:8080/testproject/fail",
                     "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
-                    "custKey" : "<%= session.getAttribute("cust_key") %>",
+                    "custKey" : "52",
+                    "dcKey" : Number(document.getElementById("pointApplySpan").innerText),
                     "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
                     "orderSale" : (Number(document.getElementById("discountPriceSpan").innerText) + Number(document.getElementById("pointApplySpan").innerText)),
+                    "orderPoint" : Number(document.getElementById("pointApplySpan").innerText),
                     "orderPayoption" : "카카오페이",
-                    "orderName" : "<%= defaultAddressInfo.getAddrName() %>",
+                    "orderName" : document.querySelector("input[name='receptionName']").value,
                     "orderPostcode" : document.getElementById("sample4_postcode").value,
                     "orderAddress" : document.getElementById("sample4_roadAddress").value,
                     "orderDetailaddr" : document.getElementById("sample4_detailAddress").value,
@@ -1089,5 +1054,4 @@
         	//response객체는 servlet에서 받아주고 있습니다.
         })
     </script>
-</body>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp" %>

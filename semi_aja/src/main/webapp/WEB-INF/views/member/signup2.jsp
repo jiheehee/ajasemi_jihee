@@ -146,7 +146,7 @@
 	                <div class="profilefont">아이디</div>
 	                <input type="text" name="custEmail">
 	            </div>
-	            <div class="errormessage"></div>
+	            <div id="emailIdMessage" class="errormessage"></div>
 	            <div id="new-profilePw" class="profileInput">
 	                <div class="profilefont">비밀번호</div>
 	                <input type="password" name="custPw" id="Password">
@@ -218,7 +218,7 @@
 	            
 	            <!-- 제출 !  -->
 	           	<div class="button-container">
-	           		<button onclick="edit(); type="button">회원가입</button>
+	           		<button onclick="signUp(); type="button">회원가입</button>
 	           	</div>
            	</form>
         </div>
@@ -264,6 +264,18 @@
 <script>
 	// 유효성 검사 
 	
+	// 이메일 유효성 검사(@와 .이 있어야 함)
+	const emailInput = document.querySelector("input[name='custEmail']");
+	
+	const emailBlurChangeHandler = () => {
+		const custEmail = emailInput.value.trim();
+		const emailRegExp = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,6}$/;
+		if(!emailRegExp.test(custEmail)) {
+			
+		}
+	}
+	
+	emailInput.addEventListener('blur', emailBlurChangeHandler);
     // 이름 유효성 검사 (한글만 허용)
     const nameInput = document.querySelector("input[name='custName']");
     const nameMessage = document.getElementById('nameMessage');

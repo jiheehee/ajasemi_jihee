@@ -35,20 +35,27 @@ public class PaymentDao {
 		int result = 0;
 		int orderKey = 0;
 		try {
-			pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_PROD_ORDER.NEXTVAL,?,?,?,DEFAULT,?,?,?,?,?,?,?)");
-			setOrder(pstmt, orderInfo);
-			result = pstmt.executeUpdate();
+			if(orderInfo.getDcKey() == -1) {
+				pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_PROD_ORDER.NEXTVAL,?,?,?,DEFAULT,?,?,?,?,?,?,?,DEFAULT,?)");
+				setOrderNotUsingCoupon(pstmt, orderInfo);
+				result = pstmt.executeUpdate();
+			} else {
+				pstmt = conn.prepareStatement("INSERT INTO PROD_ORDER VALUES(SEQ_PROD_ORDER.NEXTVAL,?,?,?,DEFAULT,?,?,?,?,?,?,?,?,?)");				
+				setOrder(pstmt, orderInfo);
+				result = pstmt.executeUpdate();
+			}
 			if(result > 0) commit(conn);
 			else rollback(conn);
 			close(pstmt);
 			
 			//TEST를 위해 DB에서 주문고유번호를 가져옵니다.
 			pstmt = conn.prepareStatement("SELECT ORDER_KEY FROM PROD_ORDER WHERE CUST_KEY = ? ORDER BY ORDER_KEY DESC");
-			pstmt.setInt(1, custKey);
+			pstmt.setInt(1, 52);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				orderKey = rs.getInt("order_key");
 			}
+			System.out.println("orderKey : " + orderKey);
 			close(rs);
 			close(pstmt);
 			
@@ -90,11 +97,10 @@ public class PaymentDao {
 			close(pstmt);
 			
 			if(usingPoint > 0) {
-				String usingPointToString = "" + (usingPoint * -1);
 				System.out.println("usingPoint : " + usingPoint);
 				pstmt = conn.prepareStatement("INSERT INTO POINT VALUES(SEQ_POINT.NEXTVAL,?,?,DEFAULT,NULL)");
 				pstmt.setInt(1, custKey);
-				pstmt.setString(2, usingPointToString);
+				pstmt.setInt(2, usingPoint);
 				result = pstmt.executeUpdate();
 			}
 		} catch(SQLException e) {
@@ -168,5 +174,21 @@ public class PaymentDao {
 		pstmt.setString(8, orderInfo.getOrderDetailaddr());
 		pstmt.setString(9, orderInfo.getOrderPhone());
 		pstmt.setString(10, orderInfo.getOrderRequest());
+		pstmt.setInt(11, orderInfo.getDcKey());
+		pstmt.setInt(12, orderInfo.getOrderPoint());
+	}
+	
+	private void setOrderNotUsingCoupon(PreparedStatement pstmt, Order orderInfo) throws SQLException {
+		pstmt.setInt(1, orderInfo.getCustKey());
+		pstmt.setInt(2, orderInfo.getOrderPrice());
+		pstmt.setInt(3, orderInfo.getOrderSale());
+		pstmt.setString(4, orderInfo.getOrderPayoption());
+		pstmt.setString(5, orderInfo.getOrderName());
+		pstmt.setString(6, orderInfo.getOrderPostcode());
+		pstmt.setString(7, orderInfo.getOrderAddress());
+		pstmt.setString(8, orderInfo.getOrderDetailaddr());
+		pstmt.setString(9, orderInfo.getOrderPhone());
+		pstmt.setString(10, orderInfo.getOrderRequest());
+		pstmt.setInt(11, orderInfo.getOrderPoint());
 	}
 }

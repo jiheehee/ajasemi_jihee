@@ -9,20 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.productprint.model.dto.ReviewDTO;
-import com.aja.productprint.service.ProductReviewPrintService;
+import com.aja.productprint.model.dto.ProductQnaDTO;
+import com.aja.productprint.service.ProductQnaPrintService;
 
 /**
- * Servlet implementation class ProductReviewPrintServlet
+ * Servlet implementation class ProductQnaPrintServlet
  */
-@WebServlet("/product/productreviewprint.do")
-public class ProductReviewPrintServlet extends HttpServlet {
+@WebServlet("/product/productqnaprint.do")
+public class ProductQnaPrintServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ProductReviewPrintServlet() {
+    public ProductQnaPrintServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,20 +33,15 @@ public class ProductReviewPrintServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String prodName = request.getParameter("prodName");
-		//System.out.println(prodName);
+		System.out.println(prodName);
+		List<ProductQnaDTO> qnaList = new ProductQnaPrintService().selectProductAllQna(prodName);
 		
-		List<ReviewDTO> reviewList = new ProductReviewPrintService().selectProductAllReview(prodName);
-		//System.out.println("reviewList : "+reviewList);
+		request.setAttribute("qnaList", qnaList);
 		
-//		int reviewCount = new ProductReviewPrintService().selectProductAllReviewCount(prodName);
-//		System.out.println("reviewCount : "+reviewCount);
+		request.getRequestDispatcher("/WEB-INF/views/product/productqna.jsp").forward(request, response);
 		
 		
-		request.setAttribute("reviewList", reviewList);
-//		request.setAttribute("reviewCount", reviewCount);
 		
-		request.getRequestDispatcher("/WEB-INF/views/product/productreview.jsp").forward(request, response);
-		//request.getRequestDispatcher("/referenceview/productreview.jsp").forward(request, response);
 	}
 
 	/**

@@ -145,7 +145,7 @@
                     var queryString = new URLSearchParams(formData).toString();
                     var fullUrl = url + "?" + queryString;
 
-                    var windowFeatures = "width=500,height=500,resizable=yes,scrollbars=yes";
+                    var windowFeatures = "width=500,height=1000,resizable=yes,scrollbars=yes";
                     var newWindow = window.open(fullUrl, "_blank", windowFeatures);
 
                 }
