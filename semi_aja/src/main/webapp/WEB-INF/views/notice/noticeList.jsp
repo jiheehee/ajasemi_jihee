@@ -29,12 +29,17 @@
     /* 팝업 보여질때 */
    .popup_show {
         display: block;
+        border:1px solid red;
+        width:1000px;
+        height:1000px;
     }
 
     /* 팝업 토글 버튼 스타일 */
     tr.titleId {
         cursor: pointer;
-        background-color: #f0f0f0; /* 팝업 토글 영역 강조*/
+/*         background-color: #e1dcd6; /* 팝업 토글 영역 강조*/ */
+        background-color: ##ffffff; /* 팝업 토글 영역 강조*/
+        border:1px solid red;
     }
 </style>
 
@@ -75,7 +80,7 @@
 	</table>
 </section>
 <script>
-	const pop_up = function(e){
+/* 	const pop_up = function(e){
 		const $tr = e.target.parentElement;
 		const $popup = $tr.nextElementSibling;
 		console.log($popup);
@@ -83,6 +88,21 @@
 		$popup.classList.toggle("popup");
 		$popup.classList.toggle("popup_show");
 	}
+	 */
+	const pop_up = function(e){
+        const $tr = e.target.parentElement;
+        const $popup = $tr.nextElementSibling;
+        console.log($popup);
+        
+    // 다른 열들의 팝업을 모두 닫음 
+    const $popups = document.querySelectorAll('.popup_show');
+    $popups.forEach(popup => {
+        popup.classList.remove('popup_show');
+        popup.classList.add('popup');
+    });
+
+    $popup.classList.toggle("popup_show");
+    }
 </script>
 
 

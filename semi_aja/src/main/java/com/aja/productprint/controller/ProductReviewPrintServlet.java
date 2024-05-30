@@ -33,10 +33,10 @@ public class ProductReviewPrintServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String prodName = request.getParameter("prodName");
-		System.out.println(prodName);
+		//System.out.println(prodName);
 		
 		List<ReviewDTO> reviewList = new ProductReviewPrintService().selectProductAllReview(prodName);
-		System.out.println("reviewList : "+reviewList);
+		//System.out.println("reviewList : "+reviewList);
 		
 //		int reviewCount = new ProductReviewPrintService().selectProductAllReviewCount(prodName);
 //		System.out.println("reviewCount : "+reviewCount);

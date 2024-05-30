@@ -31,19 +31,23 @@ public class MypageDao {
 		}
 	}
 
-	public List<Order> selectOrderAll(Connection conn, int cPage, int numPerpage){
+	public List<Order> selectOrderAll(Connection conn, int custKey, int cPage, int numPerpage){
 		
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
 		List<Order> result=new ArrayList<>();
 		try {
 			pstmt=conn.prepareStatement(sql.getProperty("selectOrderAll"));
-			pstmt.setInt(1, (cPage-1)*numPerpage+1);
-			pstmt.setInt(2, cPage*numPerpage);
+			pstmt.setInt(1, custKey);			
+			pstmt.setInt(2, (cPage-1)*numPerpage+1);
+			pstmt.setInt(3, cPage*numPerpage);
+			
 			rs=pstmt.executeQuery();
+			
 			while(rs.next()) {
 				getOrderAndOrderDetail(result,rs);
 			}
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -117,7 +121,8 @@ public class MypageDao {
 				.orderPostcode(rs.getString("order_postcode"))
 				.orderPrice(rs.getInt("order_price"))
 				.orderSale(rs.getInt("order_sale"))
-//				.orderState(rs.getString("order_state"))
+				.orderStatus(rs.getString("order_status"))
+				.orderDelivery(rs.getString("order_delivery"))
 				.build();
 	}
 	

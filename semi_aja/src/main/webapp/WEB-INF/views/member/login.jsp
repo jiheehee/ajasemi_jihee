@@ -5,6 +5,7 @@
 	// Cookie 가저오기
 	Cookie[] cookies = request.getCookies();
 	String saveId =null;
+	String custEmail;
 	String custEmailId=null;
 	String domainEmail=null;
 	
@@ -12,8 +13,8 @@
 		for(Cookie c : cookies){
 			if(c.getName().equals("saveId")){
 				saveId = c.getValue();
-				custEmailId=saveId.substring(0,saveId.indexOf("@"));
-				domainEmail=saveId.substring(saveId.indexOf("@"));
+			/* 	custEmailId=saveId.substring(0,saveId.indexOf("@"));
+				domainEmail=saveId.substring(saveId.indexOf("@")); */
 				break;
 			}
 		}
@@ -25,6 +26,8 @@
 
         }
         .login-container {
+       		margin-top:70px !important;
+       		margin-bottom:70px !important;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -35,9 +38,10 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            background-color: rgba(255, 255, 255, 0.595);
+            background-color: white;
         }
         .login-container h3 {
+        	margin-top:35px;
             margin-bottom: 40px;
             text-align: center;
         }
@@ -51,7 +55,7 @@
             display: flex;
             flex-direction: column;
             width: 400px;
-            border: 1px solid red;
+            /* border: 1px solid red; */
         }
         .login-box input,
         .login-box select#emailDomain {
@@ -60,9 +64,8 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        input[name='custEmailId'] {
-            flex: 1;
-            margin-right: 10px;
+        input[name='custEmail'] {
+            flex: 2;
         }
 
         select#emailDomain {
@@ -79,7 +82,7 @@
         }
         .login-window{
             width: 100%;
-            background-color: rgba(241, 223, 223, 0.181);
+            background-color: black;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -113,9 +116,9 @@
             width: 100%;
             height: 40px;
         }
-        .saveId{
+        /* .saveId{
             border: 1px solid salmon;
-        }
+        } */
         input[id="saveId"]{
             position: relative;
             top: 2.5px;
@@ -150,6 +153,18 @@
 		  background-color: #CBA400;
 		  transform: translateY(0);
 		} */
+		div#pwBox input, div#idBox input {
+	    	border: none;
+		    border-bottom: 1px solid black;
+		    outline: none;
+		    font-size : 12.5px;
+		    padding-left: 8px;
+	    }
+	    button[type='button'], button[type='submit']{
+   		font-size: 10px;
+   		background-color: black;
+   		color: rgb(235, 235, 235);
+   		}
     </style>
     <style>
 	    /* 모달 스타일 */
@@ -199,13 +214,14 @@
             <div class="login-box">
             <form action="<%=request.getContextPath() %>/member/loginend.do" method="POST" onSubmit ="return isValid()" >
                 <div class="input" id="idBox">
-                    <input type="text" name="custEmailId" placeholder="Email_Id" value="<%=saveId!=null?custEmailId:"" %>">
+                	<input type="text" name="custEmail" placeholder="이메일을 입력하세요." value="<%=saveId!=null?saveId:"" %>">
+                   <%--  <input type="text" name="custEmailId" placeholder="Email_Id" value="<%=saveId!=null?custEmailId:"" %>">
                     <select id="emailDomain" name="emailDomain">
                         <option value="none">이메일선택</option>
                         <option value="@naver.com" <%=saveId!=null&&domainEmail.equals("@naver.com")?"selected":"" %>> @ naver.com</option>
                         <option value="@daum.net" <%=saveId!=null&&domainEmail.equals("@daum.net")?"selected":"" %>> @ daum.net</option>
                         <option value="@gmail.com" <%=saveId!=null&&domainEmail.equals("@gmail.com")?"selected":"" %>> @ gmail.com</option>
-                    </select>
+                    </select> --%>
                 </div>
                 <div id="idValidContainer"></div>
                 <div class="input" id="pwBox">
@@ -251,18 +267,16 @@
     	};
     	// 로그인 버튼 클릭시 프론트에서 js 로 처리해야 할 것 : 유효성 검사, 사용자에게 간단한 오류알림 등
         const isValid = () => {
-            const custEmailId = $("input[name='custEmailId']").val();
-            const emailDomain = $("#emailDomain").val();
+            const custEmail = $("input[name='custEmail']").val();
             const custPw = $("input[name='custPw']").val();
-           	const custEmail = custEmailId + emailDomain;
             
-           	if(custEmailId.trim()==='' || emailDomain === 'none' || custPw.trim()=== '') {
+           	if(custEmailId.trim()===''|| custPw.trim()=== '') {
            		// 아이디나 패스워드를 입력하지 않고 로그인 버튼 클릭 시, 자바스크립트로 프론트에서 걸러줌.
            	 	openModal("아이디 또는 패스워드를 입력하세요.");
            		return false;
            	} 
            	
-           	if(custEmailId.length<4 || custEmailId.length>12){
+           	if(!custEmail.contains("@") || !custEmail.contains(".")){
            		openModal("아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
            		return false;
            	}

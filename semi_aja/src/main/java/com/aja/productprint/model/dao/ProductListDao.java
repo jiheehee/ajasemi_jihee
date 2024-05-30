@@ -91,7 +91,26 @@ public class ProductListDao {
 //			System.out.println(result);
 		}return result;
 	}
-	
+	public Product selectProductImage(Connection conn,int prodKey) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Product p = new Product();
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("selectProductImage"));
+			pstmt.setInt(1, prodKey);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				p = getProductImage(rs);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return p;
+	}
 	
 	
 	
@@ -112,12 +131,22 @@ public class ProductListDao {
 				.prodDetailCon(rs.getString("PROD_DETAILCON"))
 				.prodComponent(rs.getString("PROD_COMPONENT"))
 				.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))
-				.prodDeleted(rs.getBoolean("PROD_DELETED"))
+				.prodDeleted(rs.getString("PROD_DELETED"))
 				.keywordName(rs.getString("KEYWORD_NAME"))
 				.cateName(rs.getString("CATE_NAME"))
 				.optionFlavor(rs.getString("OPTION_FLAVOR"))
 				.optionSize(rs.getInt("OPTION_SIZE"))
 				.optionPrice(rs.getInt("OPTION_PRICE"))
+				
+				.build();
+	}
+	private Product getProductImage(ResultSet rs)throws SQLException{
+		return Product.builder()
+				.prodImage1(rs.getString("PROD_IMAGE1"))
+				.prodImage2(rs.getString("PROD_IMAGE2"))
+				.prodImage3(rs.getString("PROD_IMAGE3"))
+				.prodImage4(rs.getString("PROD_IMAGE4"))
+				.prodImage5(rs.getString("PROD_IMAGE5"))
 				.build();
 	}
 	

@@ -1,4 +1,4 @@
-package com.aja.qna.controller;
+package com.aja.productprint.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,21 +9,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.member.model.dto.Customer;
-import com.aja.qna.model.dto.Qna;
-import com.aja.qna.service.QnaService;
+import com.aja.productprint.model.dto.ProductQnaDTO;
+import com.aja.productprint.service.ProductQnaPrintService;
 
 /**
- * Servlet implementation class QnaListServlet
+ * Servlet implementation class ProductQnaPrintServlet
  */
-@WebServlet("/qna/qnalist.do")
-public class QnaListServlet extends HttpServlet {
+@WebServlet("/product/productqnaprint.do")
+public class ProductQnaPrintServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QnaListServlet() {
+    public ProductQnaPrintServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,13 +32,15 @@ public class QnaListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Customer c=(Customer)request.getSession().getAttribute("loginMember");
-		int custKey=c.getCustKey();
+		String prodName = request.getParameter("prodName");
+		System.out.println(prodName);
+		List<ProductQnaDTO> qnaList = new ProductQnaPrintService().selectProductAllQna(prodName);
 		
-		List<Qna> qna=new QnaService().qnaList(custKey);			
+		request.setAttribute("qnaList", qnaList);
 		
-		request.setAttribute(getServletName(), response);
-		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/product/productqna.jsp").forward(request, response);
+		
+		
 		
 	}
 

@@ -13,12 +13,20 @@ public class QnaService {
 	
 	QnaDao dao=new QnaDao();
 	
-	public List<Qna> qnaList(int custKey){
-		
+	public List<Qna> qnaList(int custKey){		
 		Connection conn=getConnection();
 		List<Qna> qna=dao.qnaList(conn,custKey);
 		close(conn);
 		return qna;
+	}
+	
+	public int insertQna(Qna q) {
+		Connection conn=null;
+		int result=dao.insertQna(conn, q);
+		if(result>0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;		
 	}
 	
 	

@@ -1,7 +1,6 @@
 package com.aja.productprint.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -49,7 +48,14 @@ public class ProductListPrintServlet extends HttpServlet {
 		
 //		System.out.println(cateKey);
 		List<Product> result = new ProductListService().selectAllProduct(cateKey,cPage,numPerpage);
-		
+		for(int i=0;i<result.size();i++) {
+			Product p = new ProductListService().selectProductImage(result.get(i).getProdKey());
+			result.get(i).setProdImage1(p.getProdImage1());
+			result.get(i).setProdImage2(p.getProdImage2());
+			result.get(i).setProdImage3(p.getProdImage3());
+			result.get(i).setProdImage4(p.getProdImage4());
+			result.get(i).setProdImage5(p.getProdImage5());
+		};
 //		System.out.println(result);
 		request.setAttribute("productlist", result);
 		

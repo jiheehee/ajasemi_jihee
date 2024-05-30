@@ -69,10 +69,10 @@
             <div onclick="location.assign('<%=request.getContextPath()%>/mypage/orderlist.do')"><h3>ORDER</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>WISHLIST</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>/mypage/profile.do')"><h3>PROFILE</h3></div>
-            <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>ADDRESS</h3></div>
+            <div onclick="location.assign('<%=request.getContextPath()%>/mypage/address.do')"><h3>ADDRESS</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>COUPON</h3></div>
             <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>POINT</h3></div>
-            <div onclick="location.assign('<%=request.getContextPath()%>')"><h3>LOGOUT</h3></div>
+            <div onclick="location.assign('<%=request.getContextPath()%>/member/logout.do')"><h3>LOGOUT</h3></div>
         </div>
     </div>
 </section>
