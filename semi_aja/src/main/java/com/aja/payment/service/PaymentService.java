@@ -29,6 +29,7 @@ public class PaymentService {
 		int result = dao.updatePointState(conn, custKey, usingPoint);
 		if(result > 0) commit(conn);
 		else rollback(conn);
+		close(conn);
 		return result;
 	}
 	
@@ -46,6 +47,16 @@ public class PaymentService {
 		int result = dao.deleteCartAfterPay(conn, cartKies, custKey);
 		if(result > 0) commit(conn);
 		else rollback(conn);
+		close(conn);
+		return result;
+	}
+	
+	public int updateProductStock(List<ProductInfo> purchaseList) {
+		Connection conn = getConnection();
+		int result = dao.updateProductStock(conn, purchaseList);
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		close(conn);
 		return result;
 	}
 }

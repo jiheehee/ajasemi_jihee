@@ -72,7 +72,7 @@
 <% } else {%>
 	<div class="container">
         <h1>장바구니</h1>
-            <table>
+            <table id="cartInfoContainer">
                 <thead>
                     <tr>
                     	<th>선택</th>
@@ -85,31 +85,34 @@
                 </thead>
                 <tbody>
                 <%for(CartInfo c : cartInfos) {%>
-                	<tr>
-                        <td>
-                            <input type="checkbox" name="selectProducts"
-                            value="<%= c.getCartKey() %>" id="<%= count %>">
-                        </td>                	                      
-                     <td><%= c.getProdName() %></td>
-                     <td>
-                     	 <p>향 : <%= c.getOptionFlavor() %></p>
-                         <p>용량 : <%= c.getOptionSize() %></p>
-                     </td>             
-                     <td>
-                         <div class="stock-container">
-                             <button class="amountUp" id="<%= count %>" type='button' value="incre">+</button>
-                             <input type="number" min='1' max='<%= c.getProdStock() %>' value='<%= c.getCartQuantity() %>' size="2" class="amountInput">
-                             <button class="amountDown" type='button' value="decre" id="<%= count %>">-</button>
-                         </div>
-                     </td>
-                     <td class='cart-total'>
-                        <span>상품가격 : </span><span id="prodPrice<%= count %>"><%= c.getProdPrice() %></span> + <span>옵션가격 : </span><span id="optionPrice<%= count %>"><%= c.getOptionPrice() %></span><br>
-                        <span>총 가격 : </span><span id="totalProdPrice<%= count %>" class="totalPriceSpan"><%= (c.getProdPrice() + c.getOptionPrice()) * c.getCartQuantity() %></span>
-                     </td>								
-                     <td>                             
-                         <a href="" class="btn">삭제</a>
-                     </td>
-                  </tr>
+             	<tr>
+	                <td>
+	                    <input type="checkbox" name="selectProducts"
+	                    value="<%= c.getCartKey() %>" id="<%= count %>">
+	                </td>
+	                <td>
+	                	<%= c.getProdName() %>
+	                	<img src="<%= request.getContextPath() %>/upload/product/<%= c.getCartImage1() %>" width="100" height="100">
+	                </td>
+	                <td>
+	                	 <p>향 : <%= c.getOptionFlavor() %></p>
+	                    <p>용량 : <%= c.getOptionSize() %></p>
+	                </td>             
+	                <td>
+	                    <div class="stock-container">
+	                        <button class="amountUp" id="<%= count %>" type='button' value="incre">+</button>
+	                        <input type="number" min='1' max='<%= c.getProdStock() %>' value='<%= c.getCartQuantity() %>' size="2" class="amountInput">
+	                        <button class="amountDown" type='button' value="decre" id="<%= count %>">-</button>
+	                    </div>
+	                </td>
+	                <td class='cart-total'>
+	                   <span>상품가격 : </span><span id="prodPrice<%= count %>"><%= c.getProdPrice() %></span> + <span>옵션가격 : </span><span id="optionPrice<%= count %>"><%= c.getOptionPrice() %></span><br>
+	                   <span>총 가격 : </span><span id="totalProdPrice<%= count %>" class="totalPriceSpan"><%= (c.getProdPrice() + c.getOptionPrice()) * c.getCartQuantity() %></span>
+	                </td>								
+	                <td>                             
+	                    <button class="btn btn-primary" id="<%= count %>" name="deleteButton">삭제</button>
+	                </td>
+                </tr>
                 <%count++;
                 } %>
                 </tbody>
@@ -183,12 +186,13 @@
 			const totalPriceTd = document.getElementById("totalCheckedPriceTd");
 			const deliveryElement = document.getElementById("deliveryPriceTd");
 			
+			
 			//호출한 함수가 배송비를 보함한 전체비용을 리턴합니다. 리턴된 가격이 53000원 이하면 배송비가 붙은 가격이고 아니면 붙지않은 가격입니다.
-			checkedTotalPrice < 53000 ? 
+			totalCheckedPrice() < 53000 ? 
 					totalPriceTd.innerText = totalCheckedPrice() - 3000  : totalPriceTd.innerText = totalCheckedPrice();
 			
 			//위 조건으로 배송비여부를 선택합니다.
-			checkedTotalPrice < 53000 ? 
+			totalCheckedPrice() < 53000 ? 
 					deliveryElement.innerText = 3000 :  deliveryElement.innerText = 0;
 		}
 	}
@@ -310,8 +314,35 @@
 		})
 	});
 	
+	//삭제하기 버튼입니다.
+	document.getElementsByName("deleteButton").forEach(e => {
+		e.addEventListener("click", e => {
+			console.log("아니 된거맞아?");
+			console.log(e.target.id);
+			const pk = e.target.id;
+			const cartKey = document.querySelectorAll("input[name='selectProducts']")[pk].value;
+			location.assign("<%= request.getContextPath() %>/cart/deletecart.do?cartKey=" + cartKey);
+			<%-- fetch("<%= request.getContextPath() %>/cart/deletecart.do?cartKey=" + cartKey, {
+				mothod : "GET",
+				headers : {
+					"Content-type" : "application/x-www-form-urlencoded"
+				}
+			})
+			.then(response => response.text())
+			.then(data => {
+				console.log(data);
+				document.querySelector("#cartInfoContainer>tbody").innerHTML = data;
+			}) --%>
+		})
+	});
+	
 	//결제하기 버튼을 눌렀을때입니다.
 	document.getElementById("paymentDoButton").addEventListener("click", e => {
+		const prodPrice = Number(document.getElementById("totalCheckedPriceTd").innerText);
+		if(prodPrice == 0) {
+			alert("결제할 상품을 선택하지 않았습니다.");
+			return;
+		}
 		let cartKies = "";
 		let count = 1;
 		const checkedNumber = document.querySelectorAll("input[name='selectProducts']").length;
