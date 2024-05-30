@@ -72,7 +72,7 @@
         <div  id="admin_header"> <!-- 상단 바 -->
             <div id="admin_header_logo">
             <a href="<%=request.getContextPath()%>">
-                <img src="<%=request.getContextPath() %>/upload/product/logo.png" alt="logo" width="150" height="50">
+                <img src="<%=request.getContextPath() %>/images/logo(apricot).png" alt="logo" width="150" height="50">
             </a>
             </div>
             <div id="admin_header_title">
