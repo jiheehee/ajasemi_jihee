@@ -266,12 +266,15 @@
 	
 	// 이메일 유효성 검사(@와 .이 있어야 함)
 	const emailInput = document.querySelector("input[name='custEmail']");
+	const emailMessage = document.getElementById("emailIdMessage");
 	
 	const emailBlurChangeHandler = () => {
 		const custEmail = emailInput.value.trim();
 		const emailRegExp = /^[a-z0-9]+@[a-z0-9]+\.[a-z]{2,6}$/;
 		if(!emailRegExp.test(custEmail)) {
-			
+			emailMessage.innerText="이메일주소가 유효하지 않습니다.";
+		} else {
+			emailMessage.innerText="";
 		}
 	}
 	
@@ -347,77 +350,6 @@
 </script>
 <script>
 	
-	<%-- const edit = ()=>{
-		// 인풋에 담긴 밸류를 비교해서 loginMember 랑 모두 같으면, 변경할 내용이 없는 거임 
-		// 하나라도 다르면, 변경할 내용이 있음 !
-		const custEmail = document.querySelector("input[name='custEmail']");
-		const custName = document.querySelector("input[name='custName']");
-		const custNickname = document.querySelector("input[name='custNickname']");
-		const custBirth = document.querySelector("input[name='custBirth']");
-		const custPhoneFirst = document.querySelector("select[name='phone-first']").value.trim();
-		const custPhoneSecond = document.querySelector("input[name='phone-second']").value.trim();
-		const custPhoneLast = document.querySelector("input[name='phone-last']").value.trim();
-		const custPhone = custPhoneFirst + custPhoneSecond + custPhoneLast;
-		const custPostcode = document.querySelector("input[name='custPostcode']").value;
-		const custAddress = document.querySelector("input[name='custAddress']").value;
-		const custDetailAddress = document.querySelector("input[name='custDetailAddress']").value;
-		const custPw = document.querySelector("input[name='custPw']").value;
-		const custPwCheck = document.querySelector("input[name='custPwCheck']").value;
-	
-		
-		const nameRegExp = /^[가-힣]+$/;
-        const passwordRegExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-        const phoneRegExp = /^\d{4}$/;
-
-		// 이름 유효성, 패스워드 형식 유효성, 패스워드 확인 일치
-		// 전화번호 유효성 검사 
-		// 주소, 성별, 생년월일 필수 ! 
-		if(nameRegExp.test(custName.value.trim()) && passwordRegExp.test(custPw.trim())
-				&& custPw.trim()===custPwCheck.trim() && phoneRegExp.test(custPhoneSecond) 
-				&& phoneRegExp.test(custPhoneLast)){
-				
-			if(custPw==''){
-				custPw=null;
-			}
-			
-			if('<%=loginMember.getCustName()%>'==custName.value && '<%=loginMember.getCustNickname()%>'== custNickname.value
-					&& '<%=loginMember.getCustBirth()%>'== custBirth.value && '<%=loginMember.getCustPhone()%>'==custPhone 
-					&& '<%=loginMember.getCustPostcode()%>'== custPostcode && '<%=loginMember.getCustAddress()%>'== custAddress 
-					&& '<%=loginMember.getCustDetailAddress()%>' == custDetailAddress && custPw==null){
-				alert('변경된 내용이 없습니다.');		
-			} else {
-				const sendData = {  "custEmail":custEmail.value, 
-									"custName":custName.value,
-									"custNickname":custNickname.value,
-									"custBirth":custBirth.value,
-									"custPw":custPw, 
-									"custPostcode":custPostcode,
-									"custAddress":custAddress,
-									"custDetailAddress":custDetailAddress,
-									"custPhone":custPhone};
-				console.log(sendData);
-				$.ajax({
-					url:"<%=request.getContextPath()%>/mypage/editmember.do",
-					type:"POST",
-					data: {sendData:JSON.stringify(sendData)},
-				    /* contentType: "application/x-www-form-urlencoded; charset=UTF-8",  */
-				    success: function(editedCt) {
-				        console.log(editedCt);
-				        sessionStorage.setItem("loginMember",JSON.stringify(editedCt));
-				        location.reload();
-				    }
-					
-				});
-			}
-		} else {
-			
-			alert("제출된 정보가 유효하지 않습니다.");
-		}
-		
-		
-	}
-	 --%>
-
 
 </script>
 

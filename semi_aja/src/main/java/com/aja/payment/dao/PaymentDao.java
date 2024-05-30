@@ -17,17 +17,17 @@ import com.aja.member.model.dto.ProductInfo;
 import com.aja.payment.model.dto.Order;
 
 public class PaymentDao {
-	
-	Properties driver = new Properties();
-	
-	{		
-		String path = PaymentDao.class.getResource("/sql/payment/sql_payment.properties").getPath();
-		try(FileReader fr = new FileReader(path)) {
-			driver.load(fr);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+
+//	Properties driver = new Properties();
+//	
+//	{		
+//		String path = PaymentDao.class.getResource("/sql/payment/sql_payment.properties").getPath();
+//		try(FileReader fr = new FileReader(path)) {
+//			driver.load(fr);
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public int updatePaymentInfo(Connection conn, Order orderInfo, List<ProductInfo> purchaseList, int custKey) {
 		PreparedStatement pstmt = null;

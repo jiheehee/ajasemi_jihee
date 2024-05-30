@@ -46,6 +46,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 		//String cartKies = request.getParameter("cartKies");
 		
 		Order orderInfo = (Order)session.getAttribute("orderInfo");
+		System.out.println("성공 후 orderInfo : " + orderInfo);
 		request.setAttribute("orderInfo", orderInfo);
 		List<ProductInfo> purchaseList = (List<ProductInfo>)session.getAttribute("productInfo");
 		purchaseList.forEach(e -> System.out.println(e));
@@ -73,11 +74,9 @@ public class PaymentSuccessServlet extends HttpServlet {
 		String cartKeyString = request.getParameter("cartKey");
 		new PaymentService().deleteCartAfterPay(cartKeyString, custKey);
 		
-		
-		
 		session.removeAttribute("productInfo");
 		
-		request.getRequestDispatcher("/WEB-INF/views/payment/paysuccess.jsp");
+		request.getRequestDispatcher("/WEB-INF/views/payment/paysuccess.jsp").forward(request, response);
 	}
 
 	/**

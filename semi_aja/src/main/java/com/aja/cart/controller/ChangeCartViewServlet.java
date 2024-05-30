@@ -45,7 +45,7 @@ public class ChangeCartViewServlet extends HttpServlet {
 		request.setAttribute("cartInfoList", cartInfoList);
 		cartInfoList.forEach(System.out::println);
 		
-		request.getRequestDispatcher("/testview/testcart.jsp").forward(request, response);;
+		request.getRequestDispatcher("/WEB-INF/views/cart/realcart.jsp").forward(request, response);;
 	}
 
 	/**

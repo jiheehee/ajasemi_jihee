@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
 encoding//src/main/webapp/WEB-INF/views/admin/order/orderList.jsp=UTF-8
-encoding//src/main/webapp/WEB-INF/views/member/payment.jsp=UTF-8
-encoding//src/main/webapp/testview/testcart.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/cart/realcart.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/payment/payment.jsp=UTF-8
 encoding/<project>=UTF-8
