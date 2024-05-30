@@ -20,6 +20,6 @@ public class Qna {
 	private String qnaContent;
 	private Date qnaEnrollDate;
 	private String qnaImage;
-
+	private String filePath;
 
 }
