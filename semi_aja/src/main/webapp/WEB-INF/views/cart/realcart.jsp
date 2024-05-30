@@ -64,18 +64,26 @@
             color: #777;
             margin-top: 50px;
         }
+        #ifnoCart {
+        	height:200px;
+        }
     </style>
 </head>
 <body>
-<% if(cartInfos == null) {%>
-	<h1>장바구니에 등록된 상품이 없습니다.</h1>
-<% } else {%>
 	<div class="container">
         <h1>장바구니</h1>
-            <table>
+        <% if(cartInfos.size() == 0) {%>
+				<h1 id="ifnoCart">장바구니에 등록된 상품이 없습니다.</h1>
+		<% } else { %>
+            <table id="cartInfoContainer">
                 <thead>
                     <tr>
-                    	<th>선택</th>
+                    	<th>
+                    		선택
+                    		<input type="checkbox" name="selectAllProduct" checked>
+                    		해제 
+                    		<input type="checkbox" name="releaseAllProduct">
+                    	</th>
                         <th>상품 정보</th>                        
                         <th>옵션</th>
                         <th>수량</th>
@@ -85,31 +93,34 @@
                 </thead>
                 <tbody>
                 <%for(CartInfo c : cartInfos) {%>
-                	<tr>
-                        <td>
-                            <input type="checkbox" name="selectProducts"
-                            value="<%= c.getCartKey() %>" id="<%= count %>">
-                        </td>                	                      
-                     <td><%= c.getProdName() %></td>
-                     <td>
-                     	 <p>향 : <%= c.getOptionFlavor() %></p>
-                         <p>용량 : <%= c.getOptionSize() %></p>
-                     </td>             
-                     <td>
-                         <div class="stock-container">
-                             <button class="amountUp" id="<%= count %>" type='button' value="incre">+</button>
-                             <input type="number" min='1' max='<%= c.getProdStock() %>' value='<%= c.getCartQuantity() %>' size="2" class="amountInput">
-                             <button class="amountDown" type='button' value="decre" id="<%= count %>">-</button>
-                         </div>
-                     </td>
-                     <td class='cart-total'>
-                        <span>상품가격 : </span><span id="prodPrice<%= count %>"><%= c.getProdPrice() %></span> + <span>옵션가격 : </span><span id="optionPrice<%= count %>"><%= c.getOptionPrice() %></span><br>
-                        <span>총 가격 : </span><span id="totalProdPrice<%= count %>" class="totalPriceSpan"><%= (c.getProdPrice() + c.getOptionPrice()) * c.getCartQuantity() %></span>
-                     </td>								
-                     <td>                             
-                         <a href="" class="btn">삭제</a>
-                     </td>
-                  </tr>
+             	<tr>
+	                <td>
+	                    <input type="checkbox" name="selectProducts"
+	                    value="<%= c.getCartKey() %>" id="<%= count %>">
+	                </td>
+	                <td>
+	                	<%= c.getProdName() %>
+	                	<img src="<%= request.getContextPath() %>/upload/product/<%= c.getCartImage1() %>" width="100" height="100">
+	                </td>
+	                <td>
+	                	 <p>향 : <%= c.getOptionFlavor() %></p>
+	                    <p>용량 : <%= c.getOptionSize() %></p>
+	                </td>             
+	                <td>
+	                    <div class="stock-container">
+	                        <button class="amountUp" id="<%= count %>" type='button' value="incre">+</button>
+	                        <input type="number" min='1' max='<%= c.getProdStock() %>' value='<%= c.getCartQuantity() %>' size="2" class="amountInput">
+	                        <button class="amountDown" type='button' value="decre" id="<%= count %>">-</button>
+	                    </div>
+	                </td>
+	                <td class='cart-total'>
+	                   <span>상품가격 : </span><span id="prodPrice<%= count %>"><%= c.getProdPrice() %></span> + <span>옵션가격 : </span><span id="optionPrice<%= count %>"><%= c.getOptionPrice() %></span><br>
+	                   <span>총 가격 : </span><span id="totalProdPrice<%= count %>" class="totalPriceSpan"><%= (c.getProdPrice() + c.getOptionPrice()) * c.getCartQuantity() %></span>
+	                </td>								
+	                <td>                             
+	                    <button class="btn btn-primary" id="<%= count %>" name="deleteButton">삭제</button>
+	                </td>
+                </tr>
                 <%count++;
                 } %>
                 </tbody>
@@ -128,17 +139,19 @@
                     <tr>
                         <td id="totalCheckedPriceTd">0</td>
                         <td><strong>+</strong></td>
-                        <td id="deliveryPriceTd">3000</td>
+                        <td id="deliveryPriceTd">0</td>
                         <td><strong>=</strong></td>
                         <td><h5><span id="finalPriceSpan">0</span></h5></td>
                     </tr>
                 </tbody>           	           
             </table>
+         <p>총 주문금액이 50000원 보다 많을경우 배송비는 무료입니다.</p>
         <button id="paymentDoButton">결제하러가기</button>
     </div>
 <% } %>
 
 <script>
+
 	//장바구니에 있는 수량을 update해주는 함수입니다.
 	function callUpdateCartFetch(modifyAmount, cartKey) {
 		fetch("<%= request.getContextPath() %>/cart/updateQuantity.do", {
@@ -176,22 +189,51 @@
 	}
 	
 	//전체비용에 대한 데이터를 넣어주는 함수입니다. check박스가 check되어있을때 수량변경을 시도할때 실행시킬 함수입니다.
-	function innerDataForPrice(buttonId) {
+	/* function innerDataForPrice(buttonId) {
 		if(document.querySelectorAll("input[name='selectProducts']")[buttonId].checked == true) {
 			document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
 			
 			const totalPriceTd = document.getElementById("totalCheckedPriceTd");
 			const deliveryElement = document.getElementById("deliveryPriceTd");
 			
+			
 			//호출한 함수가 배송비를 보함한 전체비용을 리턴합니다. 리턴된 가격이 53000원 이하면 배송비가 붙은 가격이고 아니면 붙지않은 가격입니다.
-			checkedTotalPrice < 53000 ? 
+			totalCheckedPrice() < 53000 ? 
 					totalPriceTd.innerText = totalCheckedPrice() - 3000  : totalPriceTd.innerText = totalCheckedPrice();
 			
 			//위 조건으로 배송비여부를 선택합니다.
-			checkedTotalPrice < 53000 ? 
+			totalCheckedPrice() < 53000 ? 
 					deliveryElement.innerText = 3000 :  deliveryElement.innerText = 0;
 		}
-	}
+	} */
+	
+	//전체선택 버튼을 눌렀을때 로직입니다.
+	document.querySelector("input[name='selectAllProduct']").addEventListener("click", e => {
+		document.querySelectorAll("input[name='selectProducts']").forEach(e => {
+			e.checked = true;
+		})
+		document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
+				
+		if(totalCheckedPrice() > 50000) {
+			document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+			document.getElementById("deliveryPriceTd").innerText = 0;
+		} else {
+			document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+			document.getElementById("deliveryPriceTd").innerText = 3000;
+		}
+		e.target.checked = true;
+	})
+	
+	//전체해제 버튼을 눌렀을때 로직입니다.
+	document.querySelector("input[name='releaseAllProduct']").addEventListener("click", e => {
+		document.querySelectorAll("input[name='selectProducts']").forEach(e => {
+			e.checked = false;
+		})
+		document.getElementById("totalCheckedPriceTd").innerText = 0;
+		document.getElementById("finalPriceSpan").innerText = 0
+		document.getElementById("deliveryPriceTd").innerText = 0;
+		e.target.checked = false;
+	})
 	
 	//수량 +버튼을 눌렀을때입니다.
 	document.querySelectorAll(".amountUp").forEach(e => {
@@ -202,18 +244,33 @@
 			const maxAmount = document.querySelectorAll(".amountInput")[buttonId].max;
 			console.log("maxAmount : " + maxAmount);
 			console.log("modifyAmount : " + modifyAmount);
+			//수정된 수량이 재고량보다 많을때입니다.
 			if(modifyAmount > maxAmount) {
 				alert("재고량 이상입니다.");
 			} else {
-				const cartKey = document.querySelectorAll("input[type='checkbox']")[buttonId].value;
+				const cartKey = document.querySelectorAll("input[name='selectProducts']")[buttonId].value;
 				e.target.nextElementSibling.value = modifyAmount;
 				const prodPrice = Number(document.getElementById("prodPrice" + buttonId).innerText);
 				const optionPrice = Number(document.getElementById("optionPrice" + buttonId).innerText);
 				document.getElementById("totalProdPrice" + buttonId).innerText = (prodPrice + optionPrice) * modifyAmount;
 				
-				innerDataForPrice(buttonId);
+				document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
 				
-				//callUpdateCartFetch(modifyAmount, cartKey);
+				//상품가격이에 따라 배송비 추가여부를 확인합니다.
+				if(totalCheckedPrice() == 0) {
+					document.getElementById("finalPriceSpan").innerText = 0;
+					document.getElementById("deliveryPriceTd").innerText = 0;
+				} else {
+					if(totalCheckedPrice() > 50000) {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+						document.getElementById("deliveryPriceTd").innerText = 3000;
+					}
+				}
+				
+				callUpdateCartFetch(modifyAmount, cartKey);
 			}
 		})
 	});
@@ -224,21 +281,32 @@
 			const buttonId = e.target.id;
 			const oriAmount = Number(e.target.previousElementSibling.value); 
 			const modifyAmount = oriAmount - 1;
-			const cartKey = document.querySelectorAll("input[type='checkbox']")[buttonId].value;
+			const cartKey = document.querySelectorAll("input[name='selectProducts']")[buttonId].value;
+			console.log(cartKey);
 			if(modifyAmount < 1) {
-				alert("그만하세요 ^^");
+				alert("1이하는 선택할 수 없습니다.");
 			} else {
 				e.target.previousElementSibling.value = modifyAmount;
 				const prodPrice = Number(document.getElementById("prodPrice" + buttonId).innerText);
 				const optionPrice = Number(document.getElementById("optionPrice" + buttonId).innerText);
 				document.getElementById("totalProdPrice" + buttonId).innerText = (prodPrice + optionPrice) * modifyAmount;
 				
-				innerDataForPrice(buttonId);
+				document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
 				
-				if(totalCheckedPrice() > 50000) document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
-				else document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
-				//callUpdateCartFetch(modifyAmount, cartKey);
+				if(totalCheckedPrice() == 0) {
+					document.getElementById("finalPriceSpan").innerText = 0;
+					document.getElementById("deliveryPriceTd").innerText = 0;
+				} else {
+					if(totalCheckedPrice() > 50000) {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+						document.getElementById("deliveryPriceTd").innerText = 3000;
+					}
+				}
 				
+				callUpdateCartFetch(modifyAmount, cartKey);
 			}
 		})
 	});
@@ -249,24 +317,36 @@
 			const inputAmount = e.target.value;
 			const pk = e.target.previousElementSibling.id;
 			const cartKey = document.querySelectorAll("input[name='selectProducts']")[pk].value;
-			console.log("max수량 : " + e.target.max);
-			console.log("inputAmount : " + inputAmount);
 			//입력한 수량이 1보다 작을때입니다.
 			if(inputAmount < 1) {
 				e.target.value = 1;
 			} else {
 				//입력한 수량이 재고수량보다 클때입니다.
 				if(Number(inputAmount) > Number(e.target.max)) {
-					alert("재고 없어요. 돌아가세요");
+					alert("재고보다 많은수를 입력했습니다.");
 					e.target.value = 1;
 				} else {
 					const prodPrice = Number(document.getElementById("prodPrice" + pk).innerText);
 					const optionPrice = Number(document.getElementById("optionPrice" + pk).innerText);
 					document.getElementById("totalProdPrice" + pk).innerText = (prodPrice + optionPrice) * e.target.value;
 					
-					innerDataForPrice(pk);
+					document.getElementById("totalCheckedPriceTd").innerText = totalCheckedPrice();
+					
+					if(totalCheckedPrice() == 0) {
+						document.getElementById("finalPriceSpan").innerText = 0;
+						document.getElementById("deliveryPriceTd").innerText = 0;
+					} else {
+						if(totalCheckedPrice() > 50000) {
+							document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
+							document.getElementById("deliveryPriceTd").innerText = 0;
+						} else {
+							document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
+							document.getElementById("deliveryPriceTd").innerText = 3000;
+						}
+					}
 				}
 			}
+			callUpdateCartFetch(inputAmount, cartKey);
 		})
 	})
 	
@@ -310,8 +390,24 @@
 		})
 	});
 	
+	//삭제하기 버튼입니다.
+	document.getElementsByName("deleteButton").forEach(e => {
+		e.addEventListener("click", e => {
+			console.log("아니 된거맞아?");
+			console.log(e.target.id);
+			const pk = e.target.id;
+			const cartKey = document.querySelectorAll("input[name='selectProducts']")[pk].value;
+			location.assign("<%= request.getContextPath() %>/cart/deletecart.do?cartKey=" + cartKey);
+		})
+	});
+	
 	//결제하기 버튼을 눌렀을때입니다.
 	document.getElementById("paymentDoButton").addEventListener("click", e => {
+		const prodPrice = Number(document.getElementById("totalCheckedPriceTd").innerText);
+		if(prodPrice == 0) {
+			alert("결제할 상품을 선택하지 않았습니다.");
+			return;
+		}
 		let cartKies = "";
 		let count = 1;
 		const checkedNumber = document.querySelectorAll("input[name='selectProducts']").length;

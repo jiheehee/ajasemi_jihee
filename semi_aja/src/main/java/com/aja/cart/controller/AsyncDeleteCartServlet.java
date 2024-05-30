@@ -1,7 +1,6 @@
 package com.aja.cart.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,21 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.aja.cart.model.dto.CartInfo;
 import com.aja.cart.service.CartService2;
 import com.aja.member.model.dto.Customer;
 
 /**
- * Servlet implementation class ChangeCartViewServlet
+ * Servlet implementation class AsyncDeleteCartServlet
  */
-@WebServlet("/member/cartview.do")
-public class ChangeCartViewServlet extends HttpServlet {
+@WebServlet("/cart/deletecart.do")
+public class AsyncDeleteCartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChangeCartViewServlet() {
+    public AsyncDeleteCartServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,16 +34,15 @@ public class ChangeCartViewServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		Customer loginMember = (Customer)session.getAttribute("loginMember");
 		int custKey = loginMember.getCustKey();
-		System.out.println("session에서 가져온 custKey : " + custKey);
+		int cartKey = Integer.parseInt(request.getParameter("cartKey"));
 		
-
-		
-		session.setAttribute("custKey", custKey);
-		List<CartInfo> cartInfoList =  new CartService2().getCartInfo(custKey);
-		request.setAttribute("cartInfoList", cartInfoList);
-		cartInfoList.forEach(System.out::println);
-		
-		request.getRequestDispatcher("/WEB-INF/views/cart/realcart.jsp").forward(request, response);;
+		//삭제하기 버튼을 누르면 db에서 데이터 삭제
+		new CartService2().asynDeleteCart(custKey, cartKey);
+		response.sendRedirect(request.getContextPath() + "/member/cartview.do");
+//		List<CartInfo> cartInfo = new CartService2().getCartInfo(custKey);
+//		
+//		request.setAttribute("cartInfo", cartInfo);
+//		request.getRequestDispatcher("/testview/cartInfoHtml.jsp").include(request, response);
 	}
 
 	/**

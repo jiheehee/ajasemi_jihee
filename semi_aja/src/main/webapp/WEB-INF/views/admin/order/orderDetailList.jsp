@@ -74,7 +74,7 @@
             	for(OrderDetail od : orderDetailList){%>
                 <tr>
                     <td><%= od.getOdKey() %></td>
-                    <td><%= od.getOptionName() %></td>
+                    <td><%= od.getOptionFlavor() %></td>
                     <td><%= od.getProdName() %></td>
                     <td><%= od.getOdPrice() %></td>
                     <td><%= od.getOdQuantity() %></td>

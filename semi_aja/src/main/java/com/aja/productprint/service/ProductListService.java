@@ -37,12 +37,14 @@ public class ProductListService {
 		return result;
 	}
 
-	public Product selectProductImage(int prodKey) {
-		Connection conn = getConnection();
-		Product p = dao.selectProductImage(conn,prodKey);
-		close(conn);
-		return p;
-	}
+	
+//	public Product selectProductImage(int prodKey) {
+//		Connection conn = getConnection();
+//		Product p = dao.selectProductImage(conn,prodKey);
+//		close(conn);
+//		return p;
+//	}
+	
 
 	
 	

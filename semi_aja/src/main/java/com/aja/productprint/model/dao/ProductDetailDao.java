@@ -31,6 +31,7 @@ public class ProductDetailDao {
 	
 	
 	public Product selectDetailProduct(Connection conn ,int prodKey) {
+		//System.out.println("PRODKEY : " + prodKey);
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Product result = new Product();
@@ -46,12 +47,13 @@ public class ProductDetailDao {
 		}finally {
 			close(rs);
 			close(pstmt);
-		}return result;
+		}
+		System.out.println("Dao p : " + result);
+		return result;
 	}
 	
 	
 	public List<Product> selectDetailProductList(Connection conn, int cateKey){
-		
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Product> list = new ArrayList<>();
@@ -125,6 +127,30 @@ public List<Integer> selectDetailProductCount(Connection conn, String prodName){
 	}
 	
 	
+//	public Product selectProductImage(Connection conn,int prodKey) {
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		Product p = new Product();
+//		
+//		try {
+//			pstmt = conn.prepareStatement(sql.getProperty("selectProductImage"));
+//			pstmt.setInt(1, prodKey);
+//			rs = pstmt.executeQuery();
+//			if(rs.next()) {
+//				p = getProductImage(rs);
+//			}
+//			
+//		}catch(SQLException e) {
+//			e.printStackTrace();
+//		}finally {
+//			close(rs);
+//			close(pstmt);
+//		}
+//		
+//		return p;
+//	}
+
+
 	
 	
 	
@@ -152,10 +178,25 @@ public List<Integer> selectDetailProductCount(Connection conn, String prodName){
 					.optionFlavor(rs.getString("OPTION_FLAVOR"))
 					.optionSize(rs.getInt("OPTION_SIZE"))
 					.optionPrice(rs.getInt("OPTION_PRICE"))
+					
+					.prodImage1(rs.getString("PROD_IMAGE1"))
+					.prodImage2(rs.getString("PROD_IMAGE2"))
+					.prodImage3(rs.getString("PROD_IMAGE3"))
+					.prodImage4(rs.getString("PROD_IMAGE4"))
+					.prodImage5(rs.getString("PROD_IMAGE5"))
+					
 					.build();
 		}
 	
-	
+//		private Product getProductImage(ResultSet rs)throws SQLException{
+//			return Product.builder()
+//					.prodImage1(rs.getString("PROD_IMAGE1"))
+//					.prodImage2(rs.getString("PROD_IMAGE2"))
+//					.prodImage3(rs.getString("PROD_IMAGE3"))
+//					.prodImage4(rs.getString("PROD_IMAGE4"))
+//					.prodImage5(rs.getString("PROD_IMAGE5"))
+//					.build();
+//		}
 		
 	
 }

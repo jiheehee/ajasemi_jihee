@@ -17,17 +17,17 @@ import com.aja.member.model.dto.ProductInfo;
 import com.aja.payment.model.dto.Order;
 
 public class PaymentDao {
-	
-	Properties driver = new Properties();
-	
-	{		
-		String path = PaymentDao.class.getResource("/sql/payment/sql_payment.properties").getPath();
-		try(FileReader fr = new FileReader(path)) {
-			driver.load(fr);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+
+//	Properties driver = new Properties();
+//	
+//	{		
+//		String path = PaymentDao.class.getResource("/sql/payment/sql_payment.properties").getPath();
+//		try(FileReader fr = new FileReader(path)) {
+//			driver.load(fr);
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public int updatePaymentInfo(Connection conn, Order orderInfo, List<ProductInfo> purchaseList, int custKey) {
 		PreparedStatement pstmt = null;
@@ -97,10 +97,10 @@ public class PaymentDao {
 			close(pstmt);
 			
 			if(usingPoint > 0) {
-				System.out.println("usingPoint : " + usingPoint);
+				String usingPointToString = "" + (usingPoint * -1);
 				pstmt = conn.prepareStatement("INSERT INTO POINT VALUES(SEQ_POINT.NEXTVAL,?,?,DEFAULT,NULL)");
 				pstmt.setInt(1, custKey);
-				pstmt.setInt(2, usingPoint);
+				pstmt.setString(2, usingPointToString);
 				result = pstmt.executeUpdate();
 			}
 		} catch(SQLException e) {
@@ -155,6 +155,26 @@ public class PaymentDao {
 			}
 			pstmt.setInt(numForPrepareSt, custKey);
 			result = pstmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	public int updateProductStock(Connection conn, List<ProductInfo> purchaseList) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			for(ProductInfo p : purchaseList) {
+				pstmt = conn.prepareStatement("UPDATE PRODUCT SET PROD_STOCK = PROD_STOCK - ? WHERE PROD_KEY = ?");
+				pstmt.setInt(1, p.getCartQuantity());
+				pstmt.setInt(2, p.getProdKey());
+				pstmt.executeUpdate();
+				close(pstmt);
+			}
+			result = 1;
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally {

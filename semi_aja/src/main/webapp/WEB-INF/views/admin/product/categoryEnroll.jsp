@@ -9,86 +9,94 @@
 
    <style>
         /* 공통 테이블 스타일 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #ddd;
-        }
-
-        td form {
-            display: inline;
-        }
-
-        /* 공통 폼 스타일 */
-        .admin_middle_content {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 300px;
-            margin: 0 auto 20px auto;
-        }
-
-        .admin_middle_content input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .admin_middle_content input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .admin_middle_content input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-
-        /* 버튼 스타일 */
-        button {
-            background-color: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #d32f2f;
-        }
+	       table {
+	    width: 100%;
+	    border-collapse: collapse;
+	    margin-bottom: 20px;
+	}
+	
+	th, td {
+	    border: 1px solid #ddd;
+	    padding: 8px;
+	    text-align: left;
+	}
+	
+	th {
+	    background-color: #f2f2f2;
+	    font-weight: bold;
+	}
+	
+	tr:nth-child(even) {
+	    background-color: #f9f9f9;
+	}
+	
+	tr:hover {
+	    background-color: #ddd;
+	}
+	
+	td form {
+	    display: inline;
+	}
+	
+	/* 공통 폼 스타일 */
+	.admin_middle_content {
+	    background-color: #f9f9f9;
+	    padding: 20px;
+	    border: 1px solid #ddd;
+	    border-radius: 5px;
+	    width: 300px;
+	    margin: 20px auto 20px auto;
+	}
+	
+	.admin_middle_content input[type="text"] {
+	    width: 100%;
+	    padding: 10px;
+	    margin: 5px 0 10px 0;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    box-sizing: border-box;
+	}
+	
+	.admin_middle_content input[type="submit"] {
+	    width: 100%;
+	    background-color: #4CAF50;
+	    color: white;
+	    padding: 10px 20px;
+	    margin: 8px 0;
+	    border: none;
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
+	
+	.admin_middle_content input[type="submit"]:hover {
+	    background-color: #45a049;
+	}
+	
+	/* 버튼 스타일 */
+	button {
+	    background-color: #f44336;
+	    color: white;
+	    border: none;
+	    padding: 5px 10px;
+	    border-radius: 4px;
+	    cursor: pointer;
+	}
+	
+	button:hover {
+	    background-color: #d32f2f;
+	}
+	
+	/* clearfix 클래스 수정 */
+	.clearfix {
+	    display: flex;
+	    justify-content: flex-end;
+	    padding-right: 20px; /* 오른쪽으로 밀기 위한 패딩 추가 */
+	}
     </style>
           <div class="clearfix">
         <table id="tbl-category">
             <tr>
+            	<th>카테고리번호</th>
                 <th>카테고리명</th>
                 <th>삭제</th>
             </tr>
@@ -123,6 +131,7 @@
     <div class="clearfix">
         <table id="tbl-keyword">
             <tr>
+            	<th>키워드번호</th>
                 <th>키워드명</th>
                 <th>삭제</th>
             </tr>

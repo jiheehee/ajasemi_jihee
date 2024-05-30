@@ -26,4 +26,13 @@ public class OrderService {
 		close(conn);
 		return result;
 	}
+	
+	public int updateOrderStatus(int orderKey) {
+		Connection conn = getConnection();
+		int result = dao.updateOrderStatus(conn, orderKey);
+		if(result>0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
+	}
 }

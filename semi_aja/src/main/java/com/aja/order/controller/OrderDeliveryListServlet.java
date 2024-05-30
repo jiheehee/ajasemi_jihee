@@ -31,63 +31,13 @@ public class OrderDeliveryListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int cPage =1;
-		try {
-			cPage = Integer.parseInt(request.getParameter("cPage"));
-		}catch(NumberFormatException e) {}
-	
-		int numPerpage = 5;
-		try {
-			numPerpage = Integer.parseInt(request.getParameter("numPerpage"));
-		}catch(NumberFormatException e) {}
 		String status="배송준비중";
-		
 		if(request.getParameter("orderDelivery")!= null) {
 			status = request.getParameter("orderDelivery");
 		}
-		List<CustomerOrder> orderList = new OrderService().selectOrderAll(cPage,numPerpage,status);
+		List<CustomerOrder> orderList = new OrderService().selectOrderAll1(status);
 		
 		request.setAttribute("orderList", orderList);
-		
-		int totalData = new OrderService().selectOrderCount(status);
-		int totalPage = (int)Math.ceil((double)totalData/numPerpage);
-		int pageBarSize = 5;
-		int pageNo = ((cPage-1)/pageBarSize)*pageBarSize+1;
-		int pageEnd = pageNo+pageBarSize-1;
-		
-		String pageBar="<ul class='pagination justify-content-center'>";
-		if(pageNo==1) {
-			pageBar+="<li class='page-item disabled'>";
-			pageBar+="<a class='page-link' href='#'>이전</a>";
-			pageBar+="</li>";
-		}else {
-			pageBar+="<li class='page-item'>";
-			pageBar+="<a class='page-link' href='"+request.getRequestURI()+"?cPage="+(pageNo-1)+"&numPerpage="+numPerpage+"'>이전</a>";
-			pageBar+="</li>";
-		}
-		while(!(pageNo>pageEnd||pageNo>totalPage)) {
-			if(pageNo==cPage) {
-				pageBar+="<li class='page-item active'>";
-				pageBar+="<a class='page-link' href='#'>"+pageNo+"</a>";
-				pageBar+="</li>";
-			}else {
-				pageBar+="<li class='page-item'>";
-				pageBar+="<a class='page-link' href='"+request.getRequestURI()+"?cPage="+pageNo+"&numPerpage="+numPerpage+"'>"+pageNo+"</a>";
-				pageBar+="</li>";
-			}
-			pageNo++;
-		}
-		if(pageNo>totalPage) {
-			pageBar+="<li class='page-item disabled'>";
-			pageBar+="<a class='page-link' href='#'>다음</a>";
-			pageBar+="</li>";
-		}else {
-			pageBar+="<li class='page-item'>";
-			pageBar+="<a class='page-link' href='"+request.getRequestURI()+"?cPage="+(pageNo)+"&numPerpage="+numPerpage+"'>다음</a>";
-			pageBar+="</li>";
-		}
-		pageBar+="</ul>";
-		request.setAttribute("pageBar", pageBar);
 		request.getRequestDispatcher("/WEB-INF/views/admin/order/orderDeliveryList.jsp").forward(request, response);
 	}
 	

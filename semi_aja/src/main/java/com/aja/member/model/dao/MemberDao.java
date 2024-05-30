@@ -176,10 +176,11 @@ public class MemberDao {
 		List<ProductInfo> productInCart = new ArrayList<ProductInfo>();
 		try {
 			String[] cartKey = cartKies.split(",");		
-			StringBuffer sql = new StringBuffer("SELECT P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY "
+			StringBuffer sql = new StringBuffer("SELECT P.PROD_NAME, P.PROD_CONTENT, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, P.PROD_PRICE, C.CART_QUANTITY, C.CART_KEY, C.OPTION_KEY, C.PROD_KEY, I.PROD_IMAGE1 "
 	                + "FROM CART C "
 	                + "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
 	                + "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
+	                + "LEFT JOIN PROD_IMAGE I ON P.PROD_KEY = I.PROD_KEY "
 	                + "WHERE CUST_KEY = ?");
 			
 			if(cartKies.contains(",")) {
@@ -220,6 +221,7 @@ public class MemberDao {
 										.cartKey(rs.getInt("cart_key"))
 										.optionKey(rs.getInt("option_key"))
 										.prodKey(rs.getInt("prod_key"))
+										.prodImage1(rs.getString("prod_image1"))
 										.build());
 			}
 		} catch(SQLException e) {

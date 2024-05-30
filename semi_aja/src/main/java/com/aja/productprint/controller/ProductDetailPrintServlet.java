@@ -15,6 +15,7 @@ import com.aja.product.service.ProductService;
 import com.aja.productprint.model.dto.Product;
 import com.aja.productprint.model.dto.WishDTO;
 import com.aja.productprint.service.ProductDetailService;
+import com.aja.productprint.service.ProductListService;
 import com.aja.productprint.service.ProductWishAddService;
 
 /**
@@ -43,11 +44,22 @@ public class ProductDetailPrintServlet extends HttpServlet {
 		
 		Product result = new ProductDetailService().selectDetailProduct(prodKey);
 		
+		
+		
 		request.setAttribute("product", result);
 		
 		int cateKey = Integer.parseInt(request.getParameter("cateKey"));
 		System.out.println(cateKey);
 		List<Product> list = new ProductDetailService().selectDetailProductList(cateKey);
+//		for(int i=0;i<list.size();i++) {
+//			Product p = new ProductDetailService().selectProductImage(list.get(i).getProdKey());
+//			list.get(i).setProdImage1(p.getProdImage1());
+//			list.get(i).setProdImage2(p.getProdImage2());
+//			list.get(i).setProdImage3(p.getProdImage3());
+//			list.get(i).setProdImage4(p.getProdImage4());
+//			list.get(i).setProdImage5(p.getProdImage5());
+//		};
+		
 		request.setAttribute("productlist", list);
 		
 		
