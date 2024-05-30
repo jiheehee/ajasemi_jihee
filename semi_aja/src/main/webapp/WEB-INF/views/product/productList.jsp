@@ -158,13 +158,15 @@
             <div id="product-wrap"> <!-- wrap 일정범위 넘어가면 아래줄로 넘김 -->
             
             
+            <!-- 현재는 다 출력되는데 만약 이름겹치는거 하나만 출력시킬꺼면 GROUP BY에 PROD_NAME 기준을 넣어서 조건걸어서 가져오기 -->
             	<%for(Product p : productlist){ %>
             		<!-- if(p.getProdDeleted().contains("N")){  -->
-            	
+            	<%System.out.println(p); %>
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
                     <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>">
                         <div class="product-img">
-                            <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg"
+                            <!-- <img src="https://web-resource.tamburins.com/catalog/product/1504792781/62afe28f-a6b2-47c6-bda7-315030b79f24/Thumbnail_ChainHand_65ml_000.jpg" -->
+                             <img src="<%=request.getContextPath()%>/upload/product/<%=p.getProdImage1()%>"
                              alt="상품이미지" width="100%" height="100%">
                         </div>
                     </a>
@@ -173,7 +175,7 @@
                             <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>">	
                                 <div>								<!-- 눌렀을때 구분할수 있는 값도 같이 보내기 PROD_KEY -->
                                     <p><%=p.getProdName()%></p>
-                                    <p><%=p.getKeywordName() %></p>
+                                    <p><%=p.getKeywordName()%></p>
                                 </div>
                                 <div>
                                     <span><%=p.getProdPrice() + p.getOptionPrice()%></span>
@@ -203,7 +205,7 @@
 								            }
 								        }
 								    }
-								%>		
+								%>
                                 <img src= "<%=imgSrc%>" 
                                 	alt="찜버튼" width="30px" height="30px">
                             </button>
@@ -235,7 +237,7 @@
 	<% if(loginMember !=null){%>
 	const wishadd=(e)=>{
 		let prodvalue = e.currentTarget.children[0].value;
-		console.log(prodvalue);
+		//console.log(prodvalue);
 		
 		$.ajax({
 			type: "get",
