@@ -112,8 +112,12 @@
         object-fit: cover;
     }
     .product-detail {
-        flex-grow: 1;
-        padding-left: 20px;
+    	/* border: 1px solid black; */
+    	display:flex;
+    	flex-direction:column;
+    	justify-content:space-evenly;
+        flex: 1;
+        padding-left: 30px;
     }
     .product-detail div {
         margin-bottom: 10px;
@@ -158,26 +162,20 @@
             width: 30%;
         }
     }
-    
-    
-    /* 
-    @media (max-width: 1000px) {
-        .product {
-            flex-direction: column;
-            align-items: center;
-        }
-        .product-img, .product-detail, .product-button {
-            width: 100%;
-            text-align: center;
-        }
-        .product-button {
-            flex-direction: row;
-            justify-content: space-around;
-        }
-        .product-button button {
-            width: 30%;
-        }
-    } */
+    .order-status{
+    	display:flex;
+    	align-items:center;	
+    	justify-content: center;
+    }
+    .order-delivery{
+    	display:flex;
+    	align-items:center;	
+    	justify-content: center;
+    }
+    .order-delivery, .order-status {
+       /*  border: 1px solid black; */
+        flex: 1;
+    }
 </style>
 
 <section>
@@ -190,12 +188,19 @@
             <div class="order-info">
             	<div>
 	                <p>[<%= o.getOrderDate() %>]</p>
-	                <p>주문번호[<%= o.getOrderKey() %>]</p>
+	                <p>주문번호 [<%= o.getOrderKey() %>]</p>
                 </div>
                 <div class="product-button">
-                    <button onclick="cancle('<%=o.getOrderKey()%>');">구매취소</button>
-					<button onclick="refund('<%= o.getOrderKey() %>');">환불</button>
-                    <button onclick="check();">구매확정</button>
+                	<%if(o.getOrderDelivery().equals("배송준비중")&&o.getOrderStatus().equals("결제완료")) {%>
+	                    <button onclick="cancle('<%=o.getOrderKey()%>');">구매취소</button>
+                	<%}	else if(o.getOrderDelivery().equals("배송중"))	{%>
+                		<button onclick="refund('<%= o.getOrderKey() %>');">환불</button>
+                	<%}	else if(o.getOrderDelivery().equals("배송완료")){%>
+                		<button onclick="refund('<%= o.getOrderKey() %>');">환불</button>
+                    	<button onclick="check();">구매확정</button>
+                	<%} else if(o.getOrderStatus().equals("구매확정")){%>
+                		<button onclick="review();">리뷰쓰기</button>
+                	<%} %>
                 </div>
             </div>
             <% if (!o.getOrderDetail().isEmpty()) {
@@ -205,14 +210,18 @@
                     <img src="<%=request.getContextPath() %>/upload/product/<%=od.getProduct().getProdImage() %>" alt="상품사진">
                 </div>
                 <div class="product-detail">
-                    <div><strong>상품명:</strong> <%= od.getProduct().getProdName() %></div>
+                    <div><%= od.getProduct().getProdName() %></div>
                     <div>
-                        <strong>향:</strong> <%= od.getProduct().getOptionFlavor() %><br>
-                        <strong>사이즈:</strong> <%= od.getProduct().getOptionSize() %>
+                        [flavor]<%= od.getProduct().getOptionFlavor() %><br>
+                       	[size]<%= od.getProduct().getOptionSize() %>ml
                     </div>
-                    <div><strong>가격:</strong> KRW <%= od.getProduct().getProdPrice() %></div>
-                    <div><strong><%= o.getOrderStatus() %></strong></div>
-                    <div><%= o.getOrderDelivery() %></div>
+                    <div>KRW <%= od.getProduct().getProdPrice() %></div>
+                </div>
+                <div class="order-delivery">
+                	<div><%= o.getOrderDelivery() %></div>
+                </div>
+                <div class="order-status">
+                	<div><strong><%= o.getOrderStatus() %></strong></div>
                 </div>
             </div>
             <% }
