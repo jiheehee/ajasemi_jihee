@@ -37,13 +37,14 @@ public class CouponDistributeServlet extends HttpServlet {
 		List custKeyList = new ArrayList();
 		
 		
-		if(couponName!=null ) {
+		if(couponName!=null) {
 			if(couponName.contains("생일")) {
-				
+				System.out.println(couponName);
 				custKeyList = new CouponService().selectBirthdayCustomer();
 				if(custKeyList.size()>0) {
 					for(int i=0;i<custKeyList.size();i++) {
 						result = new CouponService().birthdayCouponDistribute((int)custKeyList.get(i),couponKey);
+						System.out.println(result);
 					}
 				}
 			}

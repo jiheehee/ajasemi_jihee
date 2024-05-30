@@ -1,11 +1,14 @@
 package com.aja.productprint.service;
 
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.getConnection;
+
 import java.sql.Connection;
 import java.util.List;
 
 import com.aja.productprint.model.dao.ProductListDao;
+import com.aja.productprint.model.dto.Option;
 import com.aja.productprint.model.dto.Product;
-import static com.aja.common.JDBCTemplate.*;
 
 
 public class ProductListService {
@@ -34,8 +37,12 @@ public class ProductListService {
 		close(conn);
 		return result;
 	}
-	
-	
+	public List<Option> selectOptionAll(){
+		Connection conn = getConnection();
+		List<Option> optionList = dao.selectOptionAll(conn);
+		close(conn);
+		return optionList;
+	}
 	
 	
 }

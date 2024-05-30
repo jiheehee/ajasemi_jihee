@@ -30,9 +30,17 @@ public class KeywordEnrollServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("keywordName");
 		int result = new CategoryService().enrollKeyword(name);
-		
-		request.setAttribute("result", result);
-		request.getRequestDispatcher("/admin/product/categorylist.do").forward(request, response);
+		String msg="", loc="";
+		if(result>0) {
+			msg="등록 성공했습니다. :)";
+			loc = "/product/categorylist.do";
+		}else {
+			msg = "등록 실패했습니다. :(";
+			loc = "/product/categorylist.do";
+		}
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc",loc);
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 	}
 
 	/**

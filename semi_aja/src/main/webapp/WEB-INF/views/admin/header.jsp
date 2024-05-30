@@ -76,7 +76,7 @@
                 <img src="" alt="logo">
             </div>
             <div id="admin_header_title">
-                <p>admin header title</p>
+                <p>관리자페이지</p>
             </div>
         </div>
        
@@ -102,10 +102,9 @@
                     <ul class="list">
                         <h2>CS/혜택</h2>
                         <li><a href="<%=request.getContextPath()%>/coupon/couponlist.do"><p>쿠폰관리</p></a></li>
-                        <li><a href=""><p>쿠폰발급?</p></a></li>
-                        <li><a href=""><p>1 : 1 답변관리</p></a></li>
-                        <li><a href=""><p>Q&A 관리</p></a></li>
-                        <li><a href=""><p>공지사항관리</p></a></li>
+                        <li><a href=""><p>1 : 1 답변관리(아직..)</p></a></li>
+                        <li><a href=""><p>Q&A 관리(나중에..)</p></a></li>
+                        <li><a href=""><p>공지사항관리(천천히..)</p></a></li>
                     </ul>
                 </div>
             </div>

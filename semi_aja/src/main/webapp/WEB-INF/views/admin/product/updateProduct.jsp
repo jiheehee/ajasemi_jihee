@@ -159,6 +159,7 @@
         	    formData.append("prodStock", $("#prodStock").val());
         	    formData.append("prodDetailCon", $("#prodDetailCon").val());
         	    formData.append("prodComponent", $("#prodComponent").val());
+        	    formData.append("prodKey",$("#prodKey").val());
         		$.ajax({
         			url: '<%=request.getContextPath()%>/product/updateproductend.do',
         			type: 'post',
@@ -175,7 +176,7 @@
         				}
         			},
         			complete:()=>{
-        				/* close(); */
+        				close(); 
         			}
         		
         		});
