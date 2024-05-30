@@ -1,11 +1,15 @@
 package com.aja.mypage.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.aja.member.model.dto.Customer;
 
 /**
  * Servlet implementation class MypageProfileServlet
@@ -26,7 +30,15 @@ public class MypageProfileServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/mypage/profileCheck.jsp").forward(request, response);
+		HttpSession session = request.getSession();
+		String custPw=((Customer)session.getAttribute("loginMember")).getCustPw();
+		
+		if(custPw==null) {
+			request.getRequestDispatcher("/WEB-INF/views/mypage/editkakao.jsp").forward(request, response);
+		} else {
+			request.getRequestDispatcher("/WEB-INF/views/mypage/profileCheck.jsp").forward(request, response);
+		}
+		
 
 	}
 

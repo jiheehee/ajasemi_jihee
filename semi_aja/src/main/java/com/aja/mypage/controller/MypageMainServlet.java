@@ -30,15 +30,8 @@ public class MypageMainServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		String custPw = ((Customer)session.getAttribute("loginMember")).getCustPw();
-		if(custPw==null) {
-			// 카카오 -> 비밀번호 확인하지 않고 개인정보 수정
-			request.getRequestDispatcher("/WEB-INF/views/mypage/editkakao.jsp").forward(request, response);
-		} else {
-			// 일반 -> 비밀번호 확인 후 개인정보 수정
-			request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp").forward(request, response);			
-		}
+		
+		request.getRequestDispatcher("/WEB-INF/views/mypage/mypage.jsp").forward(request, response);		
 	}
 
 	/**

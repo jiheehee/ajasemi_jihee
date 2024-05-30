@@ -266,22 +266,23 @@
     		location.assign("<%=request.getContextPath()%>/member/signup.do");
     	};
     	// 로그인 버튼 클릭시 프론트에서 js 로 처리해야 할 것 : 유효성 검사, 사용자에게 간단한 오류알림 등
-        const isValid = () => {
-            const custEmail = $("input[name='custEmail']").val();
-            const custPw = $("input[name='custPw']").val();
-            
-           	if(custEmailId.trim()===''|| custPw.trim()=== '') {
-           		// 아이디나 패스워드를 입력하지 않고 로그인 버튼 클릭 시, 자바스크립트로 프론트에서 걸러줌.
-           	 	openModal("아이디 또는 패스워드를 입력하세요.");
-           		return false;
-           	} 
-           	
-           	if(!custEmail.contains("@") || !custEmail.contains(".")){
-           		openModal("아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
-           		return false;
-           	}
-           	
-        }
+       const isValid = () => {
+	        const custEmail = document.querySelector("input[name='custEmail']").value;
+	        const custPw = document.querySelector("input[name='custPw']").value;
+	
+	        if (custEmail.trim() === '' || custPw.trim() === '') {
+	            // 아이디나 패스워드를 입력하지 않고 로그인 버튼 클릭 시, 자바스크립트로 프론트에서 걸러줌.
+	            openModal("아이디 또는 패스워드를 입력하세요.");
+	            return false;
+	        }
+	
+	        if (!custEmail.includes("@") || !custEmail.includes(".")) {
+	            openModal("아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
+	            return false;
+	        }
+	
+	        return true; // 유효성 검사를 모두 통과하면 true 반환
+	    }
        
      	// 모달 창 열기
         function openModal(message) {
