@@ -76,6 +76,45 @@ public class ProductDao {
 //		return result;
 	}
 	
+	public int updateImages(Connection conn,MultipartRequest mr,int prodKey) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql1="";
+		int count = 0;
+		
+		Enumeration files = mr.getFileNames();
+		while(files.hasMoreElements()) {
+			files.nextElement();
+			count++;
+		}
+		switch(count){
+			case 0: return result = 1; 
+			case 1: sql1 = "UPDATE PROD_IMAGE SET PROD_IMAGE1 = ?, PROD_IMAGE2 = DEFAULT, PROD_IMAGE3 = DEFAULT, PROD_IMAGE4 = DEFAULT, PROD_IMAGE5 = DEFAULT WHERE PROD_KEY=?";break;
+			case 2: sql1 = "UPDATE PROD_IMAGE SET PROD_IMAGE1 = ?, PROD_IMAGE2 = ?, PROD_IMAGE3 = DEFAULT, PROD_IMAGE4 = DEFAULT, PROD_IMAGE5 = DEFAULT WHERE PROD_KEY=?";break;
+			case 3: sql1 = "UPDATE PROD_IMAGE SET PROD_IMAGE1 = ?, PROD_IMAGE2 = ?, PROD_IMAGE3 = ?, PROD_IMAGE4 = DEFAULT, PROD_IMAGE5 = DEFUALT WHERE PROD_KEY=?";break;
+			case 4: sql1 = "UPDATE PROD_IMAGE SET PROD_IMAGE1 = ?, PROD_IMAGE2 = ?, PROD_IMAGE3 = ?, PROD_IMAGE4 = ?, PROD_IMAGE5 = DEFAULT WHERE PROD_KEY=?";break;
+			case 5: sql1 = "UPDATE PROD_IMAGE SET PROD_IMAGE1 = ?, PROD_IMAGE2 = ?, PROD_IMAGE3 = ?, PROD_IMAGE4 = ?, PROD_IAMGE5 =? WHERE PROD_KEY=?";break;
+			default : return result;
+		}
+		try {
+			pstmt = conn.prepareStatement(sql1);
+			files = mr.getFileNames();
+			int index=1;
+			while(files.hasMoreElements()) {
+				String fileName = (String)files.nextElement();
+				String fileSystemName = mr.getFilesystemName(fileName);
+				pstmt.setString(index,fileSystemName);
+				index++;
+			}
+			pstmt.setInt(index, prodKey);
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	public int enrollImages(Connection conn,MultipartRequest mr, int prodKey) {
 		PreparedStatement pstmt= null;
 		int result = 0 ;
@@ -143,7 +182,7 @@ public class ProductDao {
 			pstmt.setInt(1, prodKey);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				p = getProduct(rs);
+				p = getProductWithImage(rs);
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -225,6 +264,29 @@ public class ProductDao {
 				.prodPrice(rs.getInt("PROD_PRICE"))
 				.prodStock(rs.getInt("PROD_STOCK"))
 				.prodContent(rs.getString("PROD_CONTENT"))
+				.prodDetailCon(rs.getString("PROD_DETAILCON"))
+				.prodComponent(rs.getString("PROD_COMPONENT"))
+				.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))
+				.prodDeleted(rs.getBoolean("PROD_DELETED"))
+				.build();
+	}
+	private Product2 getProductWithImage(ResultSet rs) throws SQLException{
+		return Product2.builder()
+				.prodKey(rs.getInt("PROD_KEY"))
+				.prodName(rs.getString("PROD_NAME"))
+				.optionFlavor(rs.getString("OPTION_FLAVOR"))
+				.optionSize(rs.getInt("OPTION_SIZE"))
+				.optionPrice(rs.getInt("OPTION_PRICE"))
+				.cateName(rs.getString("CATE_NAME"))
+				.keywordName(rs.getString("KEYWORD_NAME"))
+				.prodPrice(rs.getInt("PROD_PRICE"))
+				.prodStock(rs.getInt("PROD_STOCK"))
+				.prodContent(rs.getString("PROD_CONTENT"))
+				.prodImage1(rs.getString("PROD_IMAGE1"))
+				.prodImage2(rs.getString("PROD_IMAGE2"))
+				.prodImage3(rs.getString("PROD_IMAGE3"))
+				.prodImage4(rs.getString("PROD_IMAGE4"))
+				.prodImage5(rs.getString("PROD_IMAGE5"))
 				.prodDetailCon(rs.getString("PROD_DETAILCON"))
 				.prodComponent(rs.getString("PROD_COMPONENT"))
 				.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))

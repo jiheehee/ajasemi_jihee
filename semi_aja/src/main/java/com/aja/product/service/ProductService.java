@@ -20,6 +20,12 @@ public class ProductService {
 		close(conn);
 		return result;
 	}
+	public int updateImages(MultipartRequest mr,int prodKey) {
+		Connection conn = getConnection();
+		int result = dao.updateImages(conn,mr,prodKey);
+		close(conn);
+		return result;
+	}
 	public int enrollImages(MultipartRequest mr,int prodKey) {
 		Connection conn = getConnection();
 		int result = dao.enrollImages(conn,mr,prodKey);

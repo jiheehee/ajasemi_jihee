@@ -21,6 +21,11 @@ public class Product2 {
 	private String keywordName;
 	private int prodPrice;
 	private int prodStock;
+	private String prodImage1;
+	private String prodImage2;
+	private String prodImage3;
+	private String prodImage4;
+	private String prodImage5;
 	private String prodContent;
 	private String prodDetailCon;
 	private String prodComponent;
