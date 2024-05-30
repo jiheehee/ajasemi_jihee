@@ -50,7 +50,7 @@ public class PaymentDao {
 			
 			//TEST를 위해 DB에서 주문고유번호를 가져옵니다.
 			pstmt = conn.prepareStatement("SELECT ORDER_KEY FROM PROD_ORDER WHERE CUST_KEY = ? ORDER BY ORDER_KEY DESC");
-			pstmt.setInt(1, 46);
+			pstmt.setInt(1, 52);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				orderKey = rs.getInt("order_key");

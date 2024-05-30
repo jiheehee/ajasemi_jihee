@@ -1,14 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ page import="java.util.List, com.aja.cart.model.dto.CartInfo" %>
 <%
 	List<CartInfo> cartInfos = (List<CartInfo>)request.getAttribute("cartInfoList");
 	int count = 0;
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
         body {
@@ -333,5 +330,4 @@
 		location.assign("<%= request.getContextPath() %>/member/gopayview.do?cartKies=" + cartKies);
 	});
 </script>
-</body>
-</html>
+<%@include file="/WEB-INF/views/common/footer.jsp" %>

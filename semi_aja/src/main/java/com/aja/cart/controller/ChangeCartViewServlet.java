@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import com.aja.cart.model.dto.CartInfo;
 import com.aja.cart.service.CartService2;
+import com.aja.member.model.dto.Customer;
 
 /**
  * Servlet implementation class ChangeCartViewServlet
@@ -32,12 +33,13 @@ public class ChangeCartViewServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession session = request.getSession();
+		HttpSession session = request.getSession();
 //		Customer loginMember = (Customer)session.getAttribute("loginMember");
 //		int custKey = loginMember.getCustKey();
+//		System.out.println("session에서 가져온 custKey : " + custKey);
 		
-		int custKey = 48;
-		HttpSession session = request.getSession();
+		int custKey = 52;
+		
 		session.setAttribute("custKey", custKey);
 		List<CartInfo> cartInfoList =  new CartService2().getCartInfo(custKey);
 		request.setAttribute("cartInfoList", cartInfoList);

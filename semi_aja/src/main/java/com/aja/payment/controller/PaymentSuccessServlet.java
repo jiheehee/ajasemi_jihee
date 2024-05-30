@@ -39,7 +39,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 //		int custKey = loginMember.getCustKey();
 		System.out.println("paySuccessServlet 실행");
 		
-		int custKey = 48;
+		int custKey = 52;
 		System.out.println("session에서 받아온 custKey : " + custKey);
 		
 		//int dcKey = Integer.parseInt(request.getParameter("dcKey"));
@@ -68,13 +68,13 @@ public class PaymentSuccessServlet extends HttpServlet {
 		
 		//결제 완료시 주문된 상품 DELETE CART TABLE
 		String cartKeyString = request.getParameter("cartKey");
-		System.out.println("cartKeyString : " + cartKeyString);
 		new PaymentService().deleteCartAfterPay(cartKeyString, custKey);
 		
 		
 		
 		session.removeAttribute("productInfo");
 		
+		request.getRequestDispatcher("/WEB-INF/views/payment/paysuccess.jsp");
 	}
 
 	/**
