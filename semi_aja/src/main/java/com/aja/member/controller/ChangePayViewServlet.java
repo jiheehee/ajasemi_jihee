@@ -40,7 +40,7 @@ public class ChangePayViewServlet extends HttpServlet {
 //		int memberNo = loginMember.getCustKey();
 //		session.setAttribute("cust_key", memberNo);
 		
-		int memberNo = 46;
+		int memberNo = 48;
 		
 		String cartKies = request.getParameter("cartKies");
 		

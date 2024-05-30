@@ -39,7 +39,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 //		int custKey = loginMember.getCustKey();
 		System.out.println("paySuccessServlet 실행");
 		
-		int custKey = 46;
+		int custKey = 48;
 		System.out.println("session에서 받아온 custKey : " + custKey);
 		
 		//int dcKey = Integer.parseInt(request.getParameter("dcKey"));
@@ -50,6 +50,7 @@ public class PaymentSuccessServlet extends HttpServlet {
 		request.setAttribute("orderInfo", orderInfo);
 		List<ProductInfo> purchaseList = (List<ProductInfo>)session.getAttribute("productInfo");
 		System.out.println("session에서 받아온 orderInfo : " + orderInfo);
+		
 		//주문 테이블과 주문상세 테이블 업데이트
 		new PaymentService().updatePaymentInfo(orderInfo, purchaseList, custKey);
 		

@@ -38,7 +38,7 @@ public class CartDao2 {
 					+ "FROM CART C "
 					+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
 					+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
-					+ "WHERE CUST_KEY = 46 ORDER BY CART_KEY) N ) "
+					+ "WHERE CUST_KEY = 48 ORDER BY CART_KEY) N ) "
 					+ "WHERE RNUM BETWEEN 1 AND 5");
 			//pstmt.setInt(1, custKey);
 			rs = pstmt.executeQuery();

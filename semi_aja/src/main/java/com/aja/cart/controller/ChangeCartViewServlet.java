@@ -36,7 +36,7 @@ public class ChangeCartViewServlet extends HttpServlet {
 //		Customer loginMember = (Customer)session.getAttribute("loginMember");
 //		int custKey = loginMember.getCustKey();
 		
-		int custKey = 46;
+		int custKey = 48;
 		HttpSession session = request.getSession();
 		session.setAttribute("custKey", custKey);
 		List<CartInfo> cartInfoList =  new CartService2().getCartInfo(custKey);
