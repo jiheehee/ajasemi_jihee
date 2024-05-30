@@ -31,11 +31,9 @@ public class ModifyCartQuantityServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		HttpSession session = request.getSession();
-//		Customer loginMember = (Customer)session.getAttribute("loginMember");
-//		int custKey = loginMember.getCustKey();
-		
-		int custKey = 46;
+		HttpSession session = request.getSession();
+		Customer loginMember = (Customer)session.getAttribute("loginMember");
+		int custKey = loginMember.getCustKey();
 		
 		int cartKey = Integer.parseInt(request.getParameter("cartKey"));
 		

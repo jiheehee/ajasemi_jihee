@@ -316,7 +316,7 @@
 	
 	//삭제하기 버튼입니다.
 	document.getElementsByName("deleteButton").forEach(e => {
-		e.addEventListener("click", e => {
+		e.addEventListener("click", e => {mn
 			console.log("아니 된거맞아?");
 			console.log(e.target.id);
 			const pk = e.target.id;
