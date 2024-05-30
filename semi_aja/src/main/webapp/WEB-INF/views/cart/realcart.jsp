@@ -64,14 +64,17 @@
             color: #777;
             margin-top: 50px;
         }
+        #ifnoCart {
+        	height:200px;
+        }
     </style>
 </head>
 <body>
-<% if(cartInfos == null) {%>
-	<h1>장바구니에 등록된 상품이 없습니다.</h1>
-<% } else {%>
 	<div class="container">
         <h1>장바구니</h1>
+        <% if(cartInfos.size() == 0) {%>
+				<h1 id="ifnoCart">장바구니에 등록된 상품이 없습니다.</h1>
+		<% } else { %>
             <table id="cartInfoContainer">
                 <thead>
                     <tr>
