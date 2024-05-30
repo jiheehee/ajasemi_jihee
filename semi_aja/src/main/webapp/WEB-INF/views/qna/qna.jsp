@@ -3,8 +3,8 @@
 <%@ page import="java.util.List,com.aja.qna.model.dto.Qna,java.text.SimpleDateFormat" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
-	List<Qna> qnaList=(List<Qna>)request.getAttribute("qna");
- 	out.print(qnaList.get(0).getQnaTitle());
+	List<Qna> qna=(List<Qna>)request.getAttribute("qna");
+ 	/* out.print(qnaList.get(0).getQnaTitle()); */
 	
 %>
 
@@ -116,12 +116,14 @@ main {
                     </tr>
                 </thead>
                 <tbody>
+                <%for(Qna q : qna) {%>
                     <tr>
                         <td></td>
-                        <td>주문한 상품의 배송이 지연되고 있습니다. 확인 부탁드립니다.</td>
-                        <td>2024-05-20</td>
-                        <td>답변 완료</td>
+                        <td><%=q.getQnaTitle() %></td>
+                        <td><%=q.getQnaEnrollDate() %></td>
+                        <td>답변 완료</td> 
                     </tr>
+                    <%} %>
                 </tbody>
             </table>
         </div>
