@@ -20,7 +20,7 @@ public class ProductListService {
 		List<Product> result = dao.selectAllProduct(conn, cateKey, cPage, numPerpage);
 		close(conn);
 		return result;
-	}
+	}S
 	
 	
 	public int selectAllProductCount(int cateKey){
