@@ -35,10 +35,10 @@ public class DeleteKeywordServlet extends HttpServlet {
 		String msg="", loc="";
 		if(result>0) {
 			msg="삭제 성공했습니다. :)";
-			loc = "/";
+			loc = "/product/categorylist.do";
 		}else {
 			msg = "삭제 실패했습니다. :(";
-			loc = "/";
+			loc = "/product/categorylist.do";
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc",loc);

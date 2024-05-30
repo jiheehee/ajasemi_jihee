@@ -27,8 +27,7 @@ public class QnaWriteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath"))
-//		+"qna/qnaWrite.jsp").forward(request,response);
+		request.getRequestDispatcher("/WEB-INF/views/qna/qnaWrite.jsp").forward(request,response);
 		
 	}
 

@@ -1,4 +1,4 @@
-package com.aja.product.controller;
+package com.aja.qna.controller;
 
 import java.io.IOException;
 
@@ -8,20 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.product.model.dto.Category;
-import com.aja.product.service.CategoryService;
+import com.aja.qna.model.dto.Qna;
+import com.aja.qna.service.QnaService;
 
 /**
- * Servlet implementation class CategoryEnrollServlet
+ * Servlet implementation class QnaUpdateServlet
  */
-@WebServlet("/product/categoryenroll.do")
-public class CategoryEnrollServlet extends HttpServlet {
+@WebServlet("/qna/qnaupdate.do")
+public class QnaUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CategoryEnrollServlet() {
+    public QnaUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,20 +30,12 @@ public class CategoryEnrollServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("cateName");
-		int result = new CategoryService().enrollCategory(name);
 		
-		String msg="", loc="";
-		if(result>0) {
-			msg="등록 성공했습니다. :)";
-			loc = "/product/categorylist.do";
-		}else {
-			msg = "등록 실패했습니다. :(";
-			loc = "/product/categorylist.do";
-		}
-		request.setAttribute("msg", msg);
-		request.setAttribute("loc",loc);
-		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+		int no=Integer.parseInt(request.getParameter("no"));
+		Qna q=new QnaService().selectQnaByNo(no);
+		request.setAttribute("qna", q);
+		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath")
+				+"qna/qnaUpdate.jsp").forward(request, response);						
 	}
 
 	/**

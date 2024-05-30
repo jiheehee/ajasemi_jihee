@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.aja.product.model.dto.Product;
+import com.aja.product.service.OptionService;
 import com.aja.product.service.ProductService;
 import com.google.gson.Gson;
 import com.oreilly.servlet.MultipartRequest;
@@ -53,11 +54,14 @@ public class UpdateProductEndServlet extends HttpServlet {
 		String detailCon = mr.getParameter("prodDetailCon");
 		int stock = Integer.parseInt(mr.getParameter("prodStock"));
 		int prodKey = Integer.parseInt(mr.getParameter("prodKey"));
-		
-		
+		int size = Integer.parseInt(mr.getParameter("prodOptionSize"));
+		String flavor = mr.getParameter("prodOptionFlavor");
+		int optionKey = new ProductService().selectOption(flavor, size);
+		 
 		Product p= Product.builder()
 				.prodKey(prodKey)
 				.cateKey(cateKey)
+				.optionKey(optionKey)
 				.keywordKey(keywordKey)
 				.prodName(name)
 				.prodPrice(price)
@@ -81,7 +85,7 @@ public class UpdateProductEndServlet extends HttpServlet {
 		if(result>0) {
 			fileInsertResult = new ProductService().updateImages(mr, p.getProdKey());
 		}
-		
+		if(fileInsertResult>0)
 		new Gson().toJson(Map.of("result",true),response.getWriter());
 		
 	}

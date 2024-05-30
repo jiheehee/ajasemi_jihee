@@ -23,4 +23,10 @@ public class OptionService {
 		close(conn);
 		return result;
 	}
+	public int deleteOption(int optionKey) {
+		Connection conn = getConnection();
+		int result = dao.deleteOption(conn,optionKey);
+		close(conn);
+		return result;
+	}
 }

@@ -60,6 +60,20 @@ public class OptionDao {
 		}
 		return result;
 	}
+	public int deleteOption(Connection conn,int optionKey) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("deleteOption"));
+			pstmt.setInt(1, optionKey);
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	private ProdOption getOption(ResultSet rs) throws SQLException{
 		return ProdOption.builder()
 				.optionKey(rs.getInt("OPTION_KEY"))

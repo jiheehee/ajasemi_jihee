@@ -1,11 +1,13 @@
 package com.aja.productprint.service;
 
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.getConnection;
+
 import java.sql.Connection;
 import java.util.List;
 
 import com.aja.productprint.model.dao.ProductListDao;
 import com.aja.productprint.model.dto.Product;
-import static com.aja.common.JDBCTemplate.*;
 
 
 public class ProductListService {
@@ -34,6 +36,7 @@ public class ProductListService {
 		close(conn);
 		return result;
 	}
+
 	
 //	public Product selectProductImage(int prodKey) {
 //		Connection conn = getConnection();
@@ -42,6 +45,7 @@ public class ProductListService {
 //		return p;
 //	}
 	
+
 	
 	
 }
