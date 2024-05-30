@@ -13,20 +13,29 @@
 <section id="qna-container">
 	<form action="<%=request.getContextPath()%>/qna/qnawriteend.do"
 		method="post" enctype="multipart/form-data">
+		<input type="hidden" name="custKey" value="<%=loginMember.getCustKey()%>"> 
 		<table id="tbl-qna">
 			<tr>
 				<th>제목</th>
-				<<td><input class="form-control" type="text" name="title" required></td>
+				<td><input class="form-control" type="text" name="title" required></td>
 			</tr>
-			<tr>내용</tr>
-			<td><input class="form-control" type="file" name="uptile">
-			<input class="form-control" type="file" name="uptile2"></td>
+			<tr>
+				<td>내용</td>
+				<td><input class="form-control" type="text" name="content" required></td>
+				
+			</tr>
+			<tr>
+				<td>
+					<input class="form-control" type="file" name="uptile">
+					<input class="form-control" type="file" name="uptile2">
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">
+					<button type="submit" value="등록하기">등록하기</button>
+				</th>
+			</tr>		
 		</table>
-		<tr>
-			<th colspan="2">
-				<input type="submit" value="등록하기" onclick="">
-			</th>
-		</tr>		
 	</form>
 </section>
     

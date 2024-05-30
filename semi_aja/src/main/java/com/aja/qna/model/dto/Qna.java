@@ -16,7 +16,7 @@ public class Qna {
 	
 	private int qnaKey;
 	private int custKey;
-	private String qnaTitle;
+	private String custTitle;
 	private String qnaContent;
 	private Date qnaEnrollDate;
 	private String qnaImage;

@@ -62,12 +62,27 @@ public class QnaWriteEndServlet extends HttpServlet {
 		System.out.println(title+content+oriname+rename);
 		
 		Qna q=Qna.builder()
-				.qnaTitle(title)
+				.custTitle(title)
 				.qnaContent(content)
 				.filePath(rename)
 				.build();
 		
-		int result=new QnaService().insertQna(q);
+		int custKey=Integer.parseInt(mr.getParameter("custKey"));
+		int result=new QnaService().insertQna(q,custKey);
+		String msg,loc;
+		if(result>0) {
+			msg="문의가 등록 되었습니다. 곧 답변 드리겠습니다:)";
+			loc="/qna/qnalist.do";										
+		}else {
+			msg="문의 등록 실패";
+			loc="/qna/qnawrite.do";
+			File delFile=new File(path+"/"+rename);
+			if(delFile.exists()) delFile.delete();			
+		}
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc", loc);
+		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp")
+		.forward(request, response);
 		
 		
 		

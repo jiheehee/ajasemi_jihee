@@ -38,7 +38,7 @@ public class QnaListServlet extends HttpServlet {
 		
 		List<Qna> qna=new QnaService().qnaList(custKey);			
 		
-		request.setAttribute(getServletName(), response);
+		request.setAttribute("qna", qna);
 		request.getRequestDispatcher("/WEB-INF/views/qna/qna.jsp").forward(request, response);
 		
 	}

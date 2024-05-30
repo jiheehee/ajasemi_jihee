@@ -20,9 +20,18 @@ public class QnaService {
 		return qna;
 	}
 	
-	public int insertQna(Qna q) {
-		Connection conn=null;
-		int result=dao.insertQna(conn, q);
+	public Qna selectQnaByNo(int qnaKey) {
+		
+		Connection conn=getConnection();
+		Qna q=dao.selectQnaByNo(conn,qnaKey);
+		close(conn);
+		return q;		
+	}
+	
+	
+	public int insertQna(Qna q,int custKey) {
+		Connection conn=getConnection();
+		int result=dao.insertQna(conn, q,custKey);
 		if(result>0) commit(conn);
 		else rollback(conn);
 		close(conn);

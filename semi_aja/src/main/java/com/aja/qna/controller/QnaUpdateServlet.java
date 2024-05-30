@@ -1,23 +1,27 @@
 package com.aja.qna.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.aja.qna.model.dto.Qna;
+import com.aja.qna.service.QnaService;
+
 /**
- * Servlet implementation class QnaWriteServlet
+ * Servlet implementation class QnaUpdateServlet
  */
-@WebServlet("/qna/qnawrite.do")
-public class QnaWriteServlet extends HttpServlet {
+@WebServlet("/qna/qnaupdate.do")
+public class QnaUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public QnaWriteServlet() {
+    public QnaUpdateServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -27,8 +31,11 @@ public class QnaWriteServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.getRequestDispatcher("/WEB-INF/views/qna/qnaWrite.jsp").forward(request,response);
-		
+		int no=Integer.parseInt(request.getParameter("no"));
+		Qna q=new QnaService().selectQnaByNo(no);
+		request.setAttribute("qna", q);
+		request.getRequestDispatcher(getServletContext().getInitParameter("viewpath")
+				+"qna/qnaUpdate.jsp").forward(request, response);						
 	}
 
 	/**
