@@ -21,9 +21,9 @@ public class OrderService {
 	close(conn);
 	return orderList;
 	}
-	public List<CustomerOrder> selectOrderAll(int cPage,int numPerpage, String status){
+	public List<CustomerOrder> selectOrderAll1(String status){
 		Connection conn = getConnection();
-		List<CustomerOrder> orderList = dao.selectOrderAll(conn,cPage,numPerpage,status);
+		List<CustomerOrder> orderList = dao.selectOrderAll1(conn,status);
 		close(conn);
 		return orderList;
 		}

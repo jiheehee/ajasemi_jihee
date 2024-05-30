@@ -34,8 +34,8 @@ public class OrderDeliveryAjaxServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String type = request.getParameter("deliveryType");
-		int cPage = 1; int numPerpage =5;
-		List<CustomerOrder> orderList = new OrderService().selectOrderAll(cPage,numPerpage,type);
+
+		List<CustomerOrder> orderList = new OrderService().selectOrderAll1(type);
 		Gson gson = new Gson();
 		String jsonResponse = gson.toJson(orderList);
 		
