@@ -113,7 +113,7 @@
     </section>
     <script>
     		orderStatus=()=>{
-    			var url = "<%=request.getContextPath()%>/order/orderStatuslist.do"
+    			var url = "<%=request.getContextPath()%>/order/orderstatuslist.do"
     			var windowFeatures = "width=1000,height=1200,resizable=yes,scrollbars=yes";
     			window.open(url,"_blank",windowFeatures);
     		}

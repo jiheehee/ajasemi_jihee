@@ -4,7 +4,14 @@
 	List<Category> categoryList= (List<Category>)request.getAttribute("categoryList");
 	List<Keyword> keywordList = (List<Keyword>)request.getAttribute("keywordList");
 	Product2 p =(Product2)request.getAttribute("Product");
+	String image1 = (p.getProdImage1() != null) ? p.getProdImage1() : "";
+    String image2 = (p.getProdImage2() != null) ? p.getProdImage2() : "";
+    String image3 = (p.getProdImage3() != null) ? p.getProdImage3() : "";
+    String image4 = (p.getProdImage4() != null) ? p.getProdImage4() : "";
+    String image5 = (p.getProdImage5() != null) ? p.getProdImage5() : "";
 %>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -59,7 +66,7 @@
             background-color: #45a049;
         }
     </style>
-        <form action="<%=request.getContextPath()%>/product/updateproductend.do" method="get">
+        <form action="<%=request.getContextPath()%>/product/updateproductend.do" method="post" enctype="multipart/form-data">
             <div id="admin_middle_content">  <!-- 내용물 -->
                 <div>
                       <label for="prodCategory">상품 카테고리</label>
@@ -85,16 +92,95 @@
                         <% } %>	
                     </select>
                 	<% } %>
-                	<input type="hidden" name="prodKey" value="<%=p.getProdKey() %>">
-                    상품이름<input type="text" name="prodName" placeholder="상품이름" value ="<%=p.getProdName() %>" required><br>
-                    상품가격<input type="number" name="prodPrice" placeholder="상품가격" value ="<%=p.getProdPrice() %>" required min="0"><br>
-                    상품설명<input type="text" name="prodContent" placeholder="상품설명" value ="<%=p.getProdContent() %>" required><br>
-                    재고<input type="number" name="prodStock" placeholder="재고" value ="<%=p.getProdStock() %>" required min="0"><br>
-                    상세설명<textarea name="prodDetailCon" placeholder="상품상세설명" required><%=p.getProdDetailCon() %></textarea><br>
-                    전성분<textarea name="prodComponent" placeholder="전성분"  required><%=p.getProdComponent() %></textarea><br>
+                	<input type="hidden" id="prodKey" value="<%=p.getProdKey() %>">
+                    상품이름<input type="text" id="prodName" placeholder="상품이름" value ="<%=p.getProdName() %>" required><br>
+                    상품가격<input type="number" id="prodPrice" placeholder="상품가격" value ="<%=p.getProdPrice() %>" required min="0"><br>
+                    상품설명<input type="text" id="prodContent" placeholder="상품설명" value ="<%=p.getProdContent() %>" required><br>
+                    재고<input type="number" id="prodStock" placeholder="재고" value ="<%=p.getProdStock() %>" required min="0"><br>
+                    상세설명<textarea id="prodDetailCon" placeholder="상품상세설명" required><%=p.getProdDetailCon() %></textarea><br>
+                    전성분<textarea id="prodComponent" placeholder="전성분"  required><%=p.getProdComponent() %></textarea><br>
                     상품이미지<input type="file" name="upfiles" id="prodImages" multiple><br>
+                    <div id="preview"></div>
                 </div>
             </div>
-            <input type="submit" value="수정">
+            <input type="button" value="수정" id="productUpload">
         </form>
+        
+        <script>
+	        $(document).ready(function() {
+	            // JSP에서 전달받은 이미지 파일 이름 리스트
+	            var imageNames = [
+	                "<%= image1 %>",
+	                "<%= image2 %>",
+	                "<%= image3 %>",
+	                "<%= image4 %>",
+	                "<%= image5 %>"
+	            ];
+
+	            // 이미지 파일 이름을 사용하여 div에 이미지 추가
+	            imageNames.forEach(function(image) {
+	                if (image) {
+	                	console.log(image);
+	                    $('#preview').append(`<img src="<%=request.getContextPath()%>/upload/product/\${image}" alt="\${image}" width="200" height="200">`);
+	                    
+	                }
+	            });
+	        });
+	        $("#prodImages").change(e=>{
+        		$("#preview").empty();
+        		$.each(e.target.files,(i,file)=>{
+        			const fileReader = new FileReader();
+        			fileReader.readAsDataURL(file);
+        			fileReader.onload=(e)=>{
+        				const path = e.target.result;
+        				const img=$("<img>").attr({
+        					src:path,
+        					width:"200",
+        					height:"200"
+        				});
+        				$("#preview").append(img);
+        			}
+        		})
+        	});
+        	$("#productUpload").click(e=> {
+        	
+        		
+        		const formData = new FormData();
+        		const files = $("#prodImages")[0].files;
+        		for(let i=0;i<files.length;i++){
+        			formData.append("upFile"+i,files[i]);
+        		}
+        	    formData.append("prodCategory", $("#prodCategory").val());
+        	    console.log($("#prodCategory").val());
+        	    formData.append("prodKeyword", $("#prodKeyword").val());
+        	    formData.append("prodName", $("#prodName").val());
+        	    formData.append("prodPrice", $("#prodPrice").val());
+        	    formData.append("prodContent", $("#prodContent").val());
+        	    formData.append("prodStock", $("#prodStock").val());
+        	    formData.append("prodDetailCon", $("#prodDetailCon").val());
+        	    formData.append("prodComponent", $("#prodComponent").val());
+        		$.ajax({
+        			url: '<%=request.getContextPath()%>/product/updateproductend.do',
+        			type: 'post',
+        			data: formData,
+        			processData: false,
+        			contentType: false,
+        			success:data=>{
+        				const responseData = JSON.parse(data);
+        				if(responseData.result){
+        					alert("업로드 성공");
+        					
+        				}else{
+        					alert("업로드 실패");
+        				}
+        			},
+        			complete:()=>{
+        				/* close(); */
+        			}
+        		
+        		});
+		
+        	});        
+        
+        </script>
         

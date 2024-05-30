@@ -1,7 +1,7 @@
 package com.aja.product.service;
 
-import static com.aja.admin.common.JDBCTemplate.close;
-import static com.aja.admin.common.JDBCTemplate.getConnection;
+import static com.aja.common.JDBCTemplate.close;
+import static com.aja.common.JDBCTemplate.getConnection;
 
 import java.sql.Connection;
 import java.util.List;
@@ -17,6 +17,12 @@ public class ProductService {
 	public int[] enrollProduct(Product p) {
 		Connection conn = getConnection();
 		int[] result = dao.enrollProduct(conn,p);
+		close(conn);
+		return result;
+	}
+	public int updateImages(MultipartRequest mr,int prodKey) {
+		Connection conn = getConnection();
+		int result = dao.updateImages(conn,mr,prodKey);
 		close(conn);
 		return result;
 	}
