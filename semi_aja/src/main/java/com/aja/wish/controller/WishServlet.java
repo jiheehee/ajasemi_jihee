@@ -1,4 +1,4 @@
-package com.aja.order.controller;
+package com.aja.wish.controller;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,20 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.aja.order.model.dto.CustomerOrder;
-import com.aja.order.service.OrderService;
+import com.aja.member.model.dto.Customer;
+import com.aja.wish.model.dto.Wish;
+import com.aja.wish.service.WishService;
 
 /**
- * Servlet implementation class OrderStatusListServlet
+ * Servlet implementation class WishServlet
  */
-@WebServlet("/order/orderstatuslist.do")
-public class OrderStatusListServlet extends HttpServlet {
+@WebServlet("/wish/wish.do")
+public class WishServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public OrderStatusListServlet() {
+    public WishServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,10 +32,14 @@ public class OrderStatusListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<CustomerOrder> orderList = new OrderService().selectOrderAll();
-		request.setAttribute("orderList",orderList);
-		request.getRequestDispatcher("/WEB-INF/views/admin/order/orderStatusList.jsp").forward(request, response);
 		
+		Customer c=(Customer)request.getSession().getAttribute("loginMember");
+		int custKey=c.getCustKey();
+		
+		System.out.println(custKey);
+		List<Wish> wish=new WishService().wishList(custKey);
+		request.setAttribute("wish", wish);
+		request.getRequestDispatcher("/WEB-INF/views/wishlist/wishlist.jsp").forward(request, response);
 	}
 
 	/**

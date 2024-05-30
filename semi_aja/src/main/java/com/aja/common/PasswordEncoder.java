@@ -16,7 +16,7 @@ public class PasswordEncoder extends HttpServletRequestWrapper{
 	@Override
 	public String getParameter(String name) {
 		String oriVal=super.getParameter(name);
-		if(name.equals("custPw")) {
+		if(oriVal != null && name.equals("custPw")) {
 			//암호화처리
 			System.out.println("암호화 전 : "+oriVal);
 			String encode=getSHA512(oriVal);
@@ -37,8 +37,9 @@ public class PasswordEncoder extends HttpServletRequestWrapper{
 		//bit연산처리 -> String -> byte로 변환
 		byte[] oriValByte=oriVal.getBytes();
 		md.update(oriValByte);//내부 변경할 값을 설정
-		byte[] encryptVal=md.digest();//변경된 값을 가져옴.
-		//String변환 -> Base64인코더를 이용해서 변환
+		byte[] encryptVal=md.digest();
+		// 변경된 값을 가져옴.
+		// String변환 -> Base64인코더를 이용해서 변환
 		String encryptStr=Base64.getEncoder().encodeToString(encryptVal);
 		return encryptStr;
 		

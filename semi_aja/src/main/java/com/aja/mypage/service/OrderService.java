@@ -13,9 +13,9 @@ public class OrderService {
 	
 	private MypageDao dao = new MypageDao();
 	
-	public List<Order> selectOrderAll(int cPage,int numPerpage){
+	public List<Order> selectOrderAll(int custKey, int cPage,int numPerpage){
 		Connection conn=getConnection();
-		List<Order> result=dao.selectOrderAll(conn,cPage,numPerpage);
+		List<Order> result=dao.selectOrderAll(conn,custKey,cPage,numPerpage);
 		close(conn);
 		return result;
 	}

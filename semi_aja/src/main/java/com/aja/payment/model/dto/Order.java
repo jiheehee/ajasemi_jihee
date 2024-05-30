@@ -16,8 +16,10 @@ import lombok.NoArgsConstructor;
 public class Order {
 	private int orderKey;
 	private int custKey;
+	private int dcKey;
 	private int orderPrice;
 	private int orderSale;
+	private int orderPoint;
 	private Date orderDate;
 	private String orderState;
 	private String orderReason;

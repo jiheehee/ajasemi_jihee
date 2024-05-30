@@ -64,7 +64,7 @@
                 </div>
                 <div>
 
-                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+                    <a href="<%=request.getContextPath() %>/member/cartview.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
                     	alt="쇼핑백" height="25"></a>
                 </div>
                 <div>
@@ -113,11 +113,11 @@
 	                        alt="마이페이지" height="25"></a>
 	                </div>
 	                <div>
-	                    <a href=""><img src="https://cdn-icons-png.flaticon.com/512/25/25424.png" 
+	                    <a href="<%=request.getContextPath()%>/wish/wish.do"><img src="https://cdn-icons-png.flaticon.com/512/25/25424.png" 
 	                        alt="위시리스트" height="25"></a>
 	                </div>
 	                <div>
-	                    <a href="<%=request.getContextPath() %>/cart/cartlist.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
+	                    <a href="<%=request.getContextPath() %>/member/cartview.do"><img src="https://cdn.icon-icons.com/icons2/1673/PNG/512/shoppingcartoutline_110834.png" 
 	                        alt="쇼핑백" height="25"></a>
 	                </div>
 	                <div>

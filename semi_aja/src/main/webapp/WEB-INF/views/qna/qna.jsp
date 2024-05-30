@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="java.util.List,com.aja.qna.model.dto.Qna,java.text.SimpleDateFormat" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%
+	List<Qna> qnaList=(List<Qna>)request.getAttribute("qna");
+ 	out.print(qnaList.get(0).getQnaTitle());
+	
+%>
 
 <style>
 h3{
@@ -111,7 +117,7 @@ main {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>배송 문의</td>
+                        <td></td>
                         <td>주문한 상품의 배송이 지연되고 있습니다. 확인 부탁드립니다.</td>
                         <td>2024-05-20</td>
                         <td>답변 완료</td>

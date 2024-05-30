@@ -403,7 +403,7 @@
 					url:"<%=request.getContextPath()%>/mypage/editmember.do",
 					type:"POST",
 					/* data: {sendData:JSON.stringify(sendData)}, */
-					data: sebdData,
+					data: sendData,
 				    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				    success: function(editedCt) {
 				        console.log(editedCt);
