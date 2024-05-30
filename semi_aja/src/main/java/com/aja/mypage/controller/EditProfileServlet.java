@@ -82,6 +82,9 @@ public class EditProfileServlet extends HttpServlet {
         if(result>0) {
         	Customer editedCt = new MemberService().searchMemberById(editCt.getCustEmail());
         	request.getSession().setAttribute("loginMember", editedCt);
+        } else {
+        	// 실패 에러메시지 ? 
+        	System.out.println("실패");
         }
         
 		
