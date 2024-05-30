@@ -33,10 +33,7 @@ public class LoginEndServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String custEmailId=request.getParameter("custEmailId");
-		String emailDomain = request.getParameter("emailDomain");
-		
-		String custEmail = custEmailId+emailDomain;
+		String custEmail=request.getParameter("custEmail");
 		
 		System.out.println(custEmail);
 		

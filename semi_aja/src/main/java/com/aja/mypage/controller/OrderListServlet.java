@@ -8,9 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.aja.mypage.service.OrderService;
+import com.aja.member.model.dto.Customer;
 import com.aja.mypage.model.dto.Order;
+import com.aja.mypage.service.OrderService;
 
 /**
  * Servlet implementation class OrderListServlet
@@ -31,7 +33,9 @@ public class OrderListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		HttpSession session = request.getSession();
+		Customer ct = (Customer)session.getAttribute("loginMember");
+		
 		int cPage=1;
 //		String su=request.getParameter("cPage");
 //		if(su!=null) {
@@ -46,7 +50,7 @@ public class OrderListServlet extends HttpServlet {
 			numPerpage=Integer.parseInt(request.getParameter("numPerpage"));			
 		}catch(NumberFormatException e) {}
 		
-		List<Order> orders=new OrderService().selectOrderAll(cPage,numPerpage);
+		List<Order> orders=new OrderService().selectOrderAll(ct.getCustKey(),cPage,numPerpage);
 		
 		request.setAttribute("orders",orders);
 		
@@ -95,7 +99,7 @@ public class OrderListServlet extends HttpServlet {
 		pageBar+="</ul>";
 		request.setAttribute("pageBar",pageBar);
 		
-		request.getRequestDispatcher("/WEB-INF/views/mypage/order.jsp").forward(request,response);
+		request.getRequestDispatcher("/WEB-INF/views/mypage/order2.jsp").forward(request,response);
 	}
 
 	/**
