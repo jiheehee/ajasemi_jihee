@@ -7,12 +7,6 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
-	
-	String fullUrl = request.getRequestURL().toString();
-	String wantURL = "";
-    int index = fullUrl.indexOf("/semi_aja");
-    wantURL = fullUrl.substring(0, index + "/semi_aja".length());
-    System.out.println("wantURL : " + wantURL);
 %>
     <section>
         <div id="totalPaymentContainer">
@@ -112,9 +106,9 @@
 	                                </div>
 	                            </td>
 	                            <td class="numtd">
-	                                <p><%= p.getOptionFlavor()%></p>
-	                                <p><%= p.getOptionSize() %></p>
-	                                <p><%= p.getOptionPrice() %></p>
+	                                <p>향 : <%= p.getOptionFlavor()%></p>
+	                                <p>크기 : <%= p.getOptionSize() %></p>
+	                                <p>옵션가격 : <%= p.getOptionPrice() %></p>
 	                            </td>
 	                            <td class="numtd">
 	                                <p><%= p.getProdPrice() %></p>
@@ -159,8 +153,8 @@
                                     		<input type="number" name="getDcKey" value="<%= c.getDcKey() %>" readOnly hidden="true">
                                     	<% } %>
                                     <% } %>
-                                    <input type="checkbox" id="checkUsingCoupon" disabled>
-                                    <input type="checkbox" id="checkUsingPoint" disabled>
+                                    <input type="checkbox" id="checkUsingCoupon" disabled hidden="true">
+                                    <input type="checkbox" id="checkUsingPoint" disabled hidden="true">
                                 </td>
                             </tr>
                             <tr>
@@ -629,7 +623,7 @@
 		let totalPay = 0;
 	    let totalQuantity = 0;
 	    let totalProdName = "";
-	    let deliveryPrice = Number(document.getElementById("deliveryPriceSpan").innerText);
+	    
 	    //결제할 총 금액 정보를 담아줄 총 수량, 금액 등등...을 구하고 list태그의 자식태그인 span태그에 값을 넣어주는 로직입니다.
 	    //다른 정보들은 카카오api결제 request에 필요한 body data를 전달하기위한 로직입니다.
 	    <%
@@ -673,6 +667,7 @@
     	} else {
     		document.getElementById("deliveryPriceSpan").innerText = 3000;
     	}
+    	let deliveryPrice = Number(document.getElementById("deliveryPriceSpan").innerText);
     	
     	//쿠폰을 선택하면 그에맞는 수치들을 수정합니다.(전체금액, 쿠폰 할인금액, 총 결제금액)
     	document.getElementById("choiceCoupon").addEventListener("change", e => {
@@ -684,7 +679,6 @@
     		document.querySelector("#checkUsingCoupon").checked = true;
     	})
     	 
-    	
     	//쿠폰이 존재하면 할인율이 가장 높은 쿠폰이 선택되어있는 상태로 페이지가 나옵니다.
     	<% if(coupons.get(0).getCouponName() != null) { %>
    			const couponSelect = document.querySelector("#choiceCoupon");
@@ -692,11 +686,11 @@
    			let num = 0;
    			//쿠폰중 가장높은 할인율을 변수 num에 저장합니다.
    			for(let i = 1; i < couponSelect.length; i++) {
-   				if(num < couponSelect[i].value) {
-   					num = couponSelect[i].value;
+   				if(num < Number(couponSelect[i].value)) {
+   					num = Number(couponSelect[i].value);
    				}
    			}
-   			
+
    			//가장높은 할인율을 가지고있는 쿠폰을 select 합니다.
    			for(let i = 1; i < couponSelect.length; i++) {
    				if(couponSelect[i].value == num) {
@@ -961,7 +955,7 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "<%= wantURL %>/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
                     + "&cartKey=" + "<%= cartKey %>",
                     <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
                     + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)

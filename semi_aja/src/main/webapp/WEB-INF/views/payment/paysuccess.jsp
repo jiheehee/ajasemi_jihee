@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%@ page import="com.aja.payment.model.dto.Order" %>
 <%
-    Order orderInfo = (Order)request.getAttribute("ordefInfo");
+    Order orderInfo = (Order)request.getAttribute("orderInfo");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,7 +33,7 @@
                         </tr>
                         <tr>
                             <td>주소</td>
-                            <td><%= orderInfo.getOrderPostcode()%> : <%= orderInfo.getOrderAddress() %> <%= orderInfo.getOrderDetailaddr() %></td>
+                            <td>우편번호 : <%= orderInfo.getOrderPostcode()%> 주소 : <%= orderInfo.getOrderAddress() %> <%= orderInfo.getOrderDetailaddr() %></td>
                         </tr>
                         <tr>
                             <td>전화번호</td>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <div id="buttonContainer" class="mt-3 text-center">
-            <button onclick="goMain()" class="btn btn-primary">메인으로</button>
+            <button onclick="location.assign('<%= request.getContextPath() %>/main/mainview.do')" class="btn btn-primary">메인으로</button>
             <button onclick="window.location.href='#'" class="btn btn-secondary">어디론가</button>
         </div>
     </div>
@@ -64,9 +64,4 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-    	const goMain = () => {
-    		
-    	}
-    </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
