@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import com.aja.member.model.dao.MemberDao;
 import com.aja.qna.model.dto.Qna;
+//import com.web.board.model.dto.Board;
 
 public class QnaDao {		
 	
@@ -106,5 +107,31 @@ public class QnaDao {
 				.filePath(rs.getString("qna_image2"))
 				.build();		
 	 }	 
+	 
+//		public static void getQnaComment(List<Qna> qna,ResultSet rs)throws SQLException{
+//			int pk=rs.getInt("board_no");
+////			List<Board> boards=new ArrayList<>();
+//			if(qna.stream().anyMatch(b->b.getBoardNo()==pk)) {
+//				qna.stream().filter(b->b.getBoardNo()==pk)
+//				.forEach(b->{
+//					try {
+//						if(rs.getString("board_comment_no")!=null) {
+//							b.getComments().add(getBoardComment(rs));
+//						}
+//					}catch(SQLException e) {
+//						e.printStackTrace();
+//					}
+//				});
+//			}else {
+//				Qna b=getQna(rs);
+//				if(rs.getString("board_comment_no")!=null) {
+//					b.getComments().add(getBoardComment(rs));
+//				}
+//				qna.add(b);
+//			}
+//		}
+		
+	 
+	 
 
 }

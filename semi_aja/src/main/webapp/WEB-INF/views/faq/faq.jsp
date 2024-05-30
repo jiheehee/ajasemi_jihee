@@ -119,7 +119,6 @@
 </form>
 
 <div class="faq-categories">
-	<button class="faq-button" data-category="자주찾는 FAQ" onclick="submitCategory(this)">자주찾는 FAQ</button>
 	<button class="faq-button" data-category="배송" onclick="submitCategory(this)">배송</button>
 	<button class="faq-button" data-category="주문결제" onclick="submitCategory(this)">주문/결제</button>
 	<button class="faq-button" data-category="취소/환불" onclick="submitCategory(this)">취소/환불</button>
@@ -142,7 +141,7 @@
 	<td><%=faq.getFaqTitle() %></td>
 </tr>	
 <tr class="popup">
-	<td colspan="2"><%=faq.getFaqContent() %></td>
+	<td colspan="3"><%=faq.getFaqContent() %></td>
 </tr>
 <%
 		}
@@ -151,18 +150,18 @@
 </table>
 
 <script>
-	const pop_up = function(e) {
+  	const pop_up = function(e) {
 		const $tr = e.target.parentElement;
 		const $popup = $tr.nextElementSibling;
 		console.log($popup);		
 		$popup.classList.toggle("popup");
 		$popup.classList.toggle("popup_show");		
-	}	
+	} 	
 	function submitCategory(button) {
 		const category = button.getAttribute('data-category');
 		document.getElementById('category-input').value = category;
 		document.getElementById('category-form').submit();
-	}
+	} 
 </script>
 
 
