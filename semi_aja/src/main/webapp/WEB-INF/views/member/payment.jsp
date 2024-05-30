@@ -7,7 +7,12 @@
 	Address defaultAddressInfo = (Address)request.getAttribute("defaultAddress");
 	List<ProductInfo> cartInfo = (List<ProductInfo>)request.getAttribute("cartInfo");
 	List<CouponInfo> coupons = (List<CouponInfo>)request.getAttribute("coupons");
-	System.out.println("jsp에서 받아온 session값 : " + session.getAttribute("cust_key"));
+	
+	String fullUrl = request.getRequestURL().toString();
+	String wantURL = "";
+    int index = fullUrl.indexOf("/semi_aja");
+    wantURL = fullUrl.substring(0, index + "/semi_aja".length());
+    System.out.println("wantURL : " + wantURL);
 %>
     <section>
         <div id="totalPaymentContainer">
@@ -24,19 +29,19 @@
                     <tr>
                         <th>배송지명</th>
                         <td class="needStarTd">
-                            <span class="star">*</span><input type="text" name="receptionAddName" required>
+                            <span class="star">*</span><input type="text" name="receptionAddName">
                         </td>
                     </tr>
                     <tr>
                         <th>받는분 이름</th>
                         <td>
-                            <span class="star">*</span><input type="text" name="receptionName" required>
+                            <span class="star">*</span><input type="text" name="receptionName">
                         </td>
                     </tr>
                     <tr>
                         <th>연락처 1</th>
                         <td>
-                            <span class="star">*</span><input type="tel" name="receptionPhoneNum1" requried>
+                            <span class="star">*</span><input type="tel" name="receptionPhoneNum1">
                         </td>
                     </tr>
                     <tr>
@@ -93,78 +98,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="prodImgContainer">
-                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
-                                </div>
-                                <div class="prodContentContainer">
-                                    <p>상품명</p>
-                                    <p>
-                                    	[1등 컨실러/NEW컬러출시] 더샘 
-                                        커버 퍼펙션 트리플 팟 컨실러 5colors
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="prodImgContainer">
-                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
-                                </div>
-                                <div class="prodContentContainer">
-                                    <p>상품명</p>
-                                    <p>[1등 컨실러/NEW컬러출시] 더샘 
-                                        커버 퍼펙션 트리플 팟 컨실러 5colors
-                                        </p>
-                                </div>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="prodImgContainer">
-                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
-                                </div>
-                                <div class="prodContentContainer">
-                                    <p>상품명</p>
-                                    <p>[1등 컨실러/NEW컬러출시] 더샘 
-                                        커버 퍼펙션 트리플 팟 컨실러 5colors
-                                        </p>
-                                </div>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                            <td class="numtd">
-                                <p>1</p>
-                            </td>
-                        </tr>
                         <%for(ProductInfo p : cartInfo) {%>
 	                        <tr>
 	                            <td>
 	                                <div class="prodImgContainer">
-	                                    <img src="<%= p.getProdImage() %>" alt="" width="100px" height="100px">
+	                                    <img src="<%= p.getProdImage1() %>" alt="" width="100px" height="100px">
 	                                </div>
 	                                <div class="prodContentContainer">
 	                                    <p><%= p.getProdName() %></p>
@@ -260,7 +198,7 @@
                         <li>
                         	<span>배송비</span>
                         	
-                        	<span id="deliveryPriceSpan">3000</span><span>원</span>
+                        	<span id="deliveryPriceSpan">0</span><span>원</span>
                         </li>
                         <li>
                             <span>총 결제금액</span>
@@ -729,6 +667,13 @@
     	sumProdName = "<%= totalProdName %>";
     	document.querySelector("span[id='totalPaySpan']").innerText = totalPay;
     	
+    	//총 상품금액에 따라 배송비여부를 결정합니다.
+    	if(totalPay > 50000) {
+    		document.getElementById("deliveryPriceSpan").innerText = 0;
+    	} else {
+    		document.getElementById("deliveryPriceSpan").innerText = 3000;
+    	}
+    	
     	//쿠폰을 선택하면 그에맞는 수치들을 수정합니다.(전체금액, 쿠폰 할인금액, 총 결제금액)
     	document.getElementById("choiceCoupon").addEventListener("change", e => {
     		const applyPoint = document.getElementById("pointApplySpan").innerText;
@@ -931,6 +876,14 @@
        		const roadAddress = document.getElementById("sample4_roadAddress").value;// 도로명 주소
        		const detailAddress = document.getElementById("sample4_detailAddress").value;// 상세 주소
        		
+       		//사용자가 마일리지를 입력만하고 적용하지 않았을때 마일리지 입력란으로 focus해줍니다.
+       		const pointInput = document.querySelector("input[name='pointInput']");
+       		if(pointInput.value.length > 0) {
+       			alert("마일리지를 입력하고나서 적용버튼을 눌러야합니다.");
+       			pointInput.focus();
+       			return;
+       		}
+       		
        		//필수로 입력되어야 하는 input태그 안에 공란이면 공란인 input태그로 focus되고 결제가 진행되지 않습니다.
        		if(!receptionName || !receptionPhoneNum1 || !postcode || !roadAddress || detailAddress) {
        			console.log(!receptionName + receptionName);
@@ -1008,7 +961,7 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "http://localhost:8080/semi_aja/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    "approval_url": "<%= wantURL %>/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
                     + "&cartKey=" + "<%= cartKey %>",
                     <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
                     + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)

@@ -99,6 +99,8 @@ main {
 
 </style>
 
+<button onclick="location.assign('<%=request.getContextPath()%>/qna/qnawrite.do')">문의하기</button>
+
 <body>
     <header>
         <h3><strong>NOTICE</strong></h3>
@@ -109,7 +111,6 @@ main {
             <table class="qna-table">
                 <thead>
                     <tr>
-                        <th>상담구분</th>
                         <th>상담제목</th>
                         <th>작성일</th>
                         <th>답변유무</th>
@@ -118,8 +119,9 @@ main {
                 <tbody>
                 <%for(Qna q : qna) {%>
                     <tr>
-                        <td></td>
-                        <td><%=q.getQnaTitle() %></td>
+                        <td>
+                        <a href="<%=request.getContextPath()%>/qna/qnaview.do?no=<%=q.getQnaKey() %>">
+                        <%=q.getCustTitle()%></a></td>
                         <td><%=q.getQnaEnrollDate() %></td>
                         <td>답변 완료</td> 
                     </tr>

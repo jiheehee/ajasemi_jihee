@@ -568,14 +568,51 @@
     <main>
         <div id="product-main">    <!-- 상품사진, 상품 정보 -->
             <div id="product-main-img-div"> <!-- 상품사진 -->
-                <div class="product-main-img">
-                    <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
-                     alt="상품1" width="100%">
+            	
+            	
+            	<%if(product.getProdImage1()!=null){%>
+            			<div class="product-main-img">
+                        <img src="<%=request.getContextPath()%>/upload/product/<%=product.getProdImage1()%>"
+                         alt="상품" width="100%">
+                    </div>
+            		<%} %>
+            		
+            		
+            		<% if(product.getProdImage2()!=null){%>
+            			<div class="product-main-img">
+                    <img src="<%=request.getContextPath()%>/upload/product/<%=product.getProdImage2()%>"
+                     alt="상품" width="100%">
                 </div>
-                <div class="product-main-img">
-                    <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
-                     alt="상품2" width="100%">
+            		<%} %>
+            		
+            		
+            		<% if(product.getProdImage3()!=null){%>
+            			<div class="product-main-img">
+                    <img src="<%=request.getContextPath()%>/upload/product/<%=product.getProdImage3()%>"
+                     alt="상품" width="100%">
                 </div>
+            		<% }%>
+            		
+            		
+            		<% if(product.getProdImage4()!=null){%>
+            			<div class="product-main-img">
+                    <img src="<%=request.getContextPath()%>/upload/product/<%=product.getProdImage4()%>"
+                     alt="상품" width="100%">
+                </div>
+            		<% }%>
+            		
+            		
+            		<% if(product.getProdImage5()!=null){%>
+            			<div class="product-main-img">
+                    <img src="<%=request.getContextPath()%>/upload/product/<%=product.getProdImage5()%>"
+                     alt="상품" width="100%">
+                </div>
+            		<%}%>
+            		
+                
+                
+                
+                
             </div> <!-- 상품사진 닫 -->
 
             <div id="product-main-content"> <!-- 상품 정보 -->
@@ -597,7 +634,7 @@
 			                        <div class="product-main-content-productlist">
 			                            <input type="text" value="prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>" hidden> 
 			                            <button class="product-main-content-listbtn" onclick="relproduct(event);"> 
-			                                <img src="https://web-resource.tamburins.com/catalog/product/1504792781/bb74101c-120c-4cbc-88bd-7acdf9bbe528/Thumbnail_ChainHand_65ml_000.jpg"
+			                                <img src="<%=request.getContextPath()%>/upload/product/<%=p.getProdImage1()%>"
 			                                alt="상품" width="100%">
 			                            	<p><%=p.getProdName()%></p>
 			                            </button>
@@ -607,12 +644,8 @@
                         	} 
                         }%>
                     </div>  <!-- 관련상품 닫 -->
-                    <!-- <button onclick="retire()">학원탈퇴</button>
-                    <script>
-                    	const retire = () => {
-                    		window.alert("중도철회합니다.")
-                    	}
-                    </script> -->
+                    
+                    
                     <br>
                     <hr style="width: 95%;">    
 	
@@ -1003,9 +1036,9 @@
         
     });
     //	value 이용해서 화면에 출력되는 값 변경하기
-    const qnabutton=(e)=>{
+    /* const qnabutton=(e)=>{
 		console.log(e.target.value);
-	}
+	} */
 
 
     

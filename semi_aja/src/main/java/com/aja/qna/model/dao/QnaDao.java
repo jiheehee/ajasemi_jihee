@@ -5,6 +5,7 @@ import static com.aja.common.JDBCTemplate.close;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,16 +28,18 @@ public class QnaDao {
 			e.printStackTrace();
 		}		
 	}
-	
-	
-	public int insertQna(Connection conn, Qna q) {
+		
+	public int insertQna(Connection conn, Qna q,int custKey) {
 		PreparedStatement pstmt=null;
 		int result=0;
 		try {
-			pstmt=conn.prepareStatement(sql.getProperty("insertNotice"));
-			pstmt.setString(1, q.getQnaTitle());
-			pstmt.setString(2, q.getQnaContent());
-			pstmt.setDate(3, q.getQnaEnrollDate());
+			pstmt=conn.prepareStatement(sql.getProperty("insertQna"));
+			
+			pstmt.setInt(1, custKey);
+			pstmt.setString(2, q.getCustTitle());
+			pstmt.setString(3, q.getQnaContent());
+			pstmt.setString(4, q.getQnaImage());
+			pstmt.setString(5, q.getFilePath());
 			result=pstmt.executeUpdate();			
 		}catch(SQLException e){
 			e.printStackTrace();
@@ -52,7 +55,7 @@ public class QnaDao {
 		 ResultSet rs=null; 
 		 List<Qna> result=new ArrayList<>();		 
 		 try {
-		 pstmt=conn.prepareStatement("SELECT QNA_CONTENT ,QNA_ENROLLDATE FROM QNA");		 		 
+		 pstmt=conn.prepareStatement("SELECT * FROM QNA WHERE CUST_KEY LIKE ?");		 		 
 		 
 		 pstmt.setInt(1, custKey);
 		 rs=pstmt.executeQuery();
@@ -60,7 +63,7 @@ public class QnaDao {
 			 Qna q=Qna.builder()
 				.qnaKey(rs.getInt("qna_key"))
 				.custKey(rs.getInt("cust_key"))
-				.qnaTitle(rs.getString("qna_title"))
+				.custTitle(rs.getString("cust_title"))
 				.qnaContent(rs.getString("qna_content"))
 				.qnaEnrollDate(rs.getDate("qna_enrolldate"))
 				.build();
@@ -74,5 +77,34 @@ public class QnaDao {
 		}return result;
 	 }
 	 
+	 public Qna selectQnaByNo(Connection conn, int qnaKey) {
+		 PreparedStatement pstmt=null;
+		 ResultSet rs=null;
+		 Qna q=null;
+		 try {
+			 pstmt=conn.prepareStatement(sql.getProperty("selectQnaByNo"));
+			 pstmt.setInt(1, qnaKey);
+			 rs=pstmt.executeQuery();
+			 if(rs.next()) {
+				 q=getQna(rs);
+			 }			 
+		 }catch(SQLException e) {
+			 e.printStackTrace();
+		 }finally {
+			 close(rs);
+			 close(pstmt);
+		 }return q;		 				 
+	 }
+	 
+	 public static Qna getQna(ResultSet rs) throws SQLException{
+		return Qna.builder()
+				.custKey(rs.getInt("cust_key"))
+				.custTitle(rs.getString("cust_title"))
+				.qnaContent(rs.getString("qna_content"))
+				.qnaEnrollDate(rs.getDate("qna_enrolldate"))
+				.qnaImage(rs.getString("qna_image"))
+				.filePath(rs.getString("qna_image2"))
+				.build();		
+	 }	 
 
 }

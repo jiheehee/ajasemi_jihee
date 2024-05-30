@@ -45,6 +45,12 @@ public class ProductDetailService {
 		return reviewQnaCount;
 	}
 	
+//	public Product selectProductImage(int prodKey) {
+//		Connection conn = getConnection();
+//		Product p = dao.selectProductImage(conn,prodKey);
+//		close(conn);
+//		return p;
+//	}
 	
 	
 }
