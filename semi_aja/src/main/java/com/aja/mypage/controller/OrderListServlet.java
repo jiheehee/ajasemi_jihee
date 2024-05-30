@@ -62,19 +62,19 @@ public class OrderListServlet extends HttpServlet {
 		
 		String pageBar="<ul class='pagination justify-content-center'>";
 		if(pageNo==1) {
-			pageBar+="<li class='page-item disabled'>";
-			pageBar+="<a class='page-link' href='#'>이전</a>";
+			pageBar+="<li class='disabled'>";
+			pageBar+="<a href='#'>PREV</a>";
 			pageBar+="</li>";
 		}else {
-			pageBar+="<li class='page-item'>";
-			pageBar+="<a class='page-link' href='"+request.getRequestURI()
-						+"?cPage="+(pageNo-1)+"&numPerpage="+numPerpage+"'>이전</a>";
+			pageBar+="<li>";
+			pageBar+="<a href='"+request.getRequestURI()
+						+"?cPage="+(pageNo-1)+"&numPerpage="+numPerpage+"'>PREV</a>";
 			pageBar+="</li>";
 		}
 		while(!(pageNo>pageEnd||pageNo>totalPage)) {
 			if(pageNo==cPage) {
-				pageBar+="<li class='page-item active'>";
-				pageBar+="<a class='page-link' href='#'>"+pageNo+"</a>";
+				pageBar+="<li class='active'>";
+				pageBar+="<a href='#'>"+pageNo+"</a>";
 				pageBar+="</li>";
 			}else {
 				pageBar+="<li class='page-item'>";
@@ -87,13 +87,13 @@ public class OrderListServlet extends HttpServlet {
 		}
 		
 		if(pageNo>totalPage) {
-			pageBar+="<li class='page-item disabled'>";
-			pageBar+="<a class='page-link' href='#'>다음</a>";
+			pageBar+="<li class='disabled'>";
+			pageBar+="<a href='#'>NEXT</a>";
 			pageBar+="</li>";
 		}else {
-			pageBar+="<li class='page-item'>";
-			pageBar+="<a class='page-link' href='"+request.getRequestURI()
-						+"?cPage="+(pageNo)+"&numPerpage="+numPerpage+"'>다음</a>";
+			pageBar+="<li>";
+			pageBar+="<a href='"+request.getRequestURI()
+						+"?cPage="+(pageNo)+"&numPerpage="+numPerpage+"'>NEXT</a>";
 			pageBar+="</li>";
 		}
 		pageBar+="</ul>";

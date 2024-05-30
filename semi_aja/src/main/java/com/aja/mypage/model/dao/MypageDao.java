@@ -75,6 +75,25 @@ public class MypageDao {
 		}return result;
 	}
 	
+	public int updateOrderStatus(Connection conn, int orderKey) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sql.getProperty("updateOrderStatus"));
+			pstmt.setString(1,"환불신청");
+			pstmt.setInt(2, orderKey);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
 	private void getOrderAndOrderDetail(List<Order> result, ResultSet rs) throws SQLException {
 		int pk = rs.getInt("order_key");
 		
@@ -106,6 +125,7 @@ public class MypageDao {
 				.optionSize(rs.getInt("option_size"))
 				.optionPrice(rs.getInt("option_price"))
 				.optionFlavor(rs.getString("option_flavor"))
+				.prodImage(rs.getString("prod_image1"))
 				.build();
 	}
 	
@@ -128,6 +148,7 @@ public class MypageDao {
 	
 	private OrderDetail getOrderDetail(ResultSet rs) throws SQLException{
 		return OrderDetail.builder()
+				.odPrice(rs.getInt("od_price"))
 				.odQuantity(rs.getInt("od_quantity"))
 				.optionKey(rs.getInt("option_key"))
 				.prodKey(rs.getInt("prod_key"))

@@ -72,7 +72,7 @@
 				for(OrderDetail od: o.getOrderDetail()) { %>
 			<div id="product">
 				<div id="product-img">
-					<img src="" alt="상품사진">
+					<img src="<%=request.getContextPath() %>/upload/product/<%=od.getProduct().getProdImage() %>" alt="상품사진">
 				</div>
 				<div id="product-detail">
 					<div><%=od.getProduct().getProdName()%></div>
