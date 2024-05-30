@@ -365,7 +365,7 @@
         height: 90%;
     }
 
-    #product-footer-main-three-header-category>li>button, #product-footer-main-three-header>div>button{
+    #product-footer-main-three-header-category>li>button  {
         height: 100%;
         cursor: pointer;
         border: 0;
@@ -374,6 +374,15 @@
         white-space: nowrap;
     }
 
+
+	#product-footer-main-three-header>div>button {
+		background-color : #9bce26;
+		color : white;
+		border : 0; 
+		border-radius: 10px;
+		padding : 5px 10px 5px 10px;
+		font-size: 20px;
+	}
     /* Q&A 작성버튼  */
     #product-footer-main-three-header>div:last-child>button{
         margin-left: 20px;
@@ -383,19 +392,20 @@
     #product-footer-main-three-content-list{
         list-style-type: none;
         padding: 0;
+        height: 55px;
     }
 
     #product-footer-main-three-content-list>li>div{
         display: flex;
         align-items: center;
-        padding: 10px 0 10px 0;
+        padding: 0;
     }
 
    
 
     /* Q&A span 선택자 */
     #product-footer-main-three-content-list>li>div>span:nth-of-type(1){
-        background-color:  #9bce26;
+        /* background-color:  #9bce26; */
         border-radius: 50px;
         color: white;
         padding: 5px 10px 5px 10px;
@@ -420,12 +430,14 @@
     /* Q&A 답변 박스 */
     .product-footer-main-three-qnacontainer{
         display: flex;
-        flex-direction: column;
+        flex-direction: column; 
+        
     }
 
     .product-footer-main-three-qnacontainer>div{
         display: flex;
         width: 100%;
+        
     }
 
     /* Q A */
@@ -643,7 +655,7 @@
                                 	찜 전,후 다른 UI띄움
                                 	찜한 상태에서 찜버튼을 누르면 찜 취소기능
                                 -->
-                                    <% 
+                                <% 
 								    String imgSrc = "https://i.pinimg.com/236x/d1/b1/14/d1b11450ff68b1400487a63e8dc78702.jpg"; // 기본 이미지 URL
 								    if (loginMember != null) {
 							            if (wishNumber > 0) {
@@ -729,183 +741,13 @@
 
 
 
-            <div id="product-footer-main-three">   <!-- Q&A -->
-                <!-- 제목 내용 상품이미지... 등록일 비밀글(y,n) 카테고리 / 답변은 내용 작성일 -->
-                <div id="product-footer-main-three-header">   <!-- 상단바 문의 카테고리 -->
-                    <div>   <!-- 왼쪽 -->
-                        <h3>상품 Q&A (4)</h3>
-                    </div>
-                    <div>   <!-- 오른쪽 -->
-                        <ul id="product-footer-main-three-header-category"> 
-                            <li>
-                                <button>ALL</button>
-                                <span>|</span>
-                            </li>
-                            <li>
-                                <button>배송문의 (1)</button>
-                                <span>|</span>
-                            </li>
-                            <li>
-                                <button>주문문의 (1)</button>
-                                <span>|</span>
-                            </li>
-                            <li>
-                                <button>재입고문의 (1)</button>
-                                <span>|</span>
-                            </li>
-                            <li>
-                                <button>사이즈문의 (0)</button>
-                                <span>|</span>
-                            </li>
-                            <li>
-                                <button>기타문의 (1)</button>
-                            </li>
-                        </ul>
-                        <button>Q&A 작성</button>
-                    </div>
-                </div>  <!-- 상단바 닫힘 -->
-                <hr style="border: 3px solid black; width: 100%;">
-                <div>   <!-- 답변 -->
-                    <ul id="product-footer-main-three-content-list">
-                        <li>
-                            <div>   <!-- Q -->
-                                <span>답변완료</span>
-                                <span>[배송문의]</span>
-                                <img src="https://i.pinimg.com/236x/7f/5c/7c/7f5c7cd30efc2190db8c19614d073516.jpg" 
-                                    alt="비밀글여부" width="30px" height="30px">
-                                <span>이거왜이래이거왜이래이거왜이래</span>
-                                <span>작성자</span>
-                                <span>2024.05.21</span>
-                            </div>
-                            <hr width="100%">
-            
-                            <div class="product-footer-main-three-qnacontainer">   <!-- Q&A -->
-                                <div>   <!-- Q -->
-                                    <p>Q</p>
-                                    <p>이거왜이래이거왜이래이거왜이래</p>
-                                </div>
-                                <hr width="70%">
-                                <div>   <!-- A -->
-                                    <p>A</p>
-                                    <p>
-                                        안녕하세요. 라운드랩 담당자입니다.<br>먼저 저희 제품에 관심가져주셔서 감사합니다.자작나무 수분 
-                                        선크림의 차단 지수는 판매 페이지에 기재된 SPF 55±8.5 PFA 19.80(PA++++)입니다.<br>해당 지수는 
-                                        임의로 기재한 숫자가 아닌 제 3의 임상 기관인 한국 피부 과학 연구원에서 자외선 차단 인체 적용 실험을 실시한
-                                        결과이니 믿고 사용해 주시면 감사하겠습니다:)<br>감사합니다.
-                                        <br><br>
-                                        Apricot<br>
-                                        Guide to Better Choice
-                                    </p>
-                                </div>
-                                <hr width="100%">
-                            </div>
-                        </li>
-
-                        <li>
-                            <div>   <!-- Q -->
-                                <span>답변완료</span>
-                                <span>[주문문의]</span>
-                                <img src="https://i.pinimg.com/236x/7f/5c/7c/7f5c7cd30efc2190db8c19614d073516.jpg" 
-                                    alt="비밀글여부" width="30px" height="30px">
-                                <span>이거왜이래이거왜이래이거왜이래</span>
-                                <span>작성자</span>
-                                <span>2024.05.21</span>
-                            </div>
-                            <hr width="100%">
-            
-                            <div class="product-footer-main-three-qnacontainer">   <!-- Q&A -->
-                                <div>   <!-- Q -->
-                                    <p>Q</p>
-                                    <p>이거왜이래이거왜이래이거왜이래</p>
-                                </div>
-                                <hr width="70%">
-                                <div>   <!-- A -->
-                                    <p>A</p>
-                                    <p>
-                                        안녕하세요. 라운드랩 담당자입니다.<br>먼저 저희 제품에 관심가져주셔서 감사합니다.자작나무 수분 
-                                        선크림의 차단 지수는 판매 페이지에 기재된 SPF 55±8.5 PFA 19.80(PA++++)입니다.<br>해당 지수는 
-                                        임의로 기재한 숫자가 아닌 제 3의 임상 기관인 한국 피부 과학 연구원에서 자외선 차단 인체 적용 실험을 실시한
-                                        결과이니 믿고 사용해 주시면 감사하겠습니다:)<br>감사합니다.
-                                        <br><br>
-                                        Apricot<br>
-                                        Guide to Better Choice
-                                    </p>
-                                </div>
-                                <hr width="100%">
-                            </div>
-                        </li>
-
-                        <li>
-                            <div>   <!-- Q -->
-                                <span>답변완료</span>
-                                <span>[재입고문의]</span>
-                                <img src="https://i.pinimg.com/236x/7f/5c/7c/7f5c7cd30efc2190db8c19614d073516.jpg" 
-                                    alt="비밀글여부" width="30px" height="30px">
-                                <span>이거왜이래이거왜이래이거왜이래</span>
-                                <span>작성자</span>
-                                <span>2024.05.21</span>
-                            </div>
-                            <hr width="100%">
-            
-                            <div class="product-footer-main-three-qnacontainer">   <!-- Q&A -->
-                                <div>   <!-- Q -->
-                                    <p>Q</p>
-                                    <p>이거왜이래이거왜이래이거왜이래</p>
-                                </div>
-                                <hr width="70%">
-                                <div>   <!-- A -->
-                                    <p>A</p>
-                                    <p>
-                                        안녕하세요. 라운드랩 담당자입니다.<br>먼저 저희 제품에 관심가져주셔서 감사합니다.자작나무 수분 
-                                        선크림의 차단 지수는 판매 페이지에 기재된 SPF 55±8.5 PFA 19.80(PA++++)입니다.<br>해당 지수는 
-                                        임의로 기재한 숫자가 아닌 제 3의 임상 기관인 한국 피부 과학 연구원에서 자외선 차단 인체 적용 실험을 실시한
-                                        결과이니 믿고 사용해 주시면 감사하겠습니다:)<br>감사합니다.
-                                        <br><br>
-                                        Apricot<br>
-                                        Guide to Better Choice
-                                    </p>
-                                </div>
-                                <hr width="100%">
-                            </div>
-                        </li>
-
-                        <li>
-                            <div>   <!-- Q -->
-                                <span>답변완료</span>
-                                <span>[기타문의]</span>
-                                <img src="https://i.pinimg.com/236x/7f/5c/7c/7f5c7cd30efc2190db8c19614d073516.jpg" 
-                                    alt="비밀글여부" width="30px" height="30px">
-                                <span>이거왜이래이거왜이래이거왜이래</span>
-                                <span>작성자</span>
-                                <span>2024.05.21</span>
-                            </div>
-                            <hr width="100%">
-            
-                            <div class="product-footer-main-three-qnacontainer">   <!-- Q&A -->
-                                <div>   <!-- Q -->
-                                    <p>Q</p>
-                                    <p>이거왜이래이거왜이래이거왜이래</p>
-                                </div>
-                                <hr width="70%">
-                                <div>   <!-- A -->
-                                    <p>A</p>
-                                    <p>
-                                        안녕하세요. 라운드랩 담당자입니다.<br>먼저 저희 제품에 관심가져주셔서 감사합니다.자작나무 수분 
-                                        선크림의 차단 지수는 판매 페이지에 기재된 SPF 55±8.5 PFA 19.80(PA++++)입니다.<br>해당 지수는 
-                                        임의로 기재한 숫자가 아닌 제 3의 임상 기관인 한국 피부 과학 연구원에서 자외선 차단 인체 적용 실험을 실시한
-                                        결과이니 믿고 사용해 주시면 감사하겠습니다:)<br>감사합니다.
-                                        <br><br>
-                                        Apricot<br>
-                                        Guide to Better Choice
-                                    </p>
-                                </div>
-                                <hr width="100%">
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
+            <div id="product-footer-main-three">   <!-- Q&A / Q&A가 없으면 등록된 Q&A가 없습니다. 띄우기 -->
+                
             </div>  <!-- Q&A 닫힘 -->
+				
+				
+				
+				
 				
         </div>  <!-- 아래공간 닫 -->
         
@@ -1046,7 +888,7 @@
 							//	모달창안에 버튼 두개 장바구니로이동, 계속쇼핑하기 만들어서 a태그로 어디로 넘길지 정하기
 						}
 					}); //ajax닫힘
-			  	}); 				
+			  	}); 					
 			}
 		<%}else{%>
 			document.querySelector("#addCart").addEventListener("click",e=>{
@@ -1081,8 +923,7 @@
         one.style.display = "none";
         two.style.display = "block";
         three.style.display = "none";
-        //리뷰 버튼을 누르면 PROD_KEY를 이용해서 알 맞는 리뷰룰 리스트형태로 가져오고 innerHTML해서 넣기..?   append?
-        
+        //리뷰 버튼을 누르면 PROD_NAME를 이용해서 알 맞는 리뷰를 리스트형태로 가져오고 innerHTML해서 넣기..?   append?
 		$.ajax({
 			type: "get",
 			url : "<%=request.getContextPath()%>/product/productreviewprint.do",
@@ -1119,19 +960,52 @@
         one.style.display = "none";
         two.style.display = "none";
         three.style.display = "block";
+        
+        $.ajax({
+			type: "get",
+			url : "<%=request.getContextPath()%>/product/productqnaprint.do",
+			data : {prodName : "<%=product.getProdName()%>"}, 
+			dataType : "html",
+			success:function(data){
+				
+				//console.log(data);
+				//QNA jsp 가져오기
+				document.querySelector("#product-footer-main-three").innerHTML = data;
+				
+				//Q&A ^0^
+			    let $qna = document.querySelectorAll("#product-footer-main-three-content-list>li>div:nth-of-type(1)");
+			    let $qnacontainer = document.querySelectorAll("#product-footer-main-three-content-list>li>div:nth-of-type(2)");
+			    $qna.forEach((e)=>{
+			        e.addEventListener("click",(e)=>{
+			            	let number = 0;
+			            	if(e.currentTarget.parentElement.lastElementChild.style.display === "flex"){
+			            		number = 1;
+			            	}
+			            $qnacontainer.forEach((q)=>{
+			                q.style.display="none";
+			            })
+			                //flex를 한번 더 눌렀을때 none으로 숨겨 주기
+			                if(number > 0){
+				                e.currentTarget.parentElement.lastElementChild.style.display = "none";			                	
+			                }else{
+			                	e.currentTarget.parentElement.lastElementChild.style.display = "flex";		
+			                }
+			        })
+			    });
+			    //qna작성 버튼
+				document.getElementById("qnawrite").addEventListener("click",e=>{
+					//console.log(e.target);
+					alert("개발 중 입니다.");
+					<%-- window.location.href = "<%=request.getContextPath()%>"; --%>
+				});
+			}
+		});	//ajax 닫
+        
     });
-
-    //Q&A ^0^
-    let $qna = document.querySelectorAll("#product-footer-main-three-content-list>li>div:nth-of-type(1)");
-    let $qnacontainer = document.querySelectorAll("#product-footer-main-three-content-list>li>div:nth-of-type(2)");
-    $qna.forEach((e)=>{
-        e.addEventListener("click",(e)=>{
-            $qnacontainer.forEach((q)=>{
-                q.style.display="none";
-                e.currentTarget.parentElement.lastElementChild.style.display = "flex";
-            })
-        })
-    });
+    //	value 이용해서 화면에 출력되는 값 변경하기
+    const qnabutton=(e)=>{
+		console.log(e.target.value);
+	}
 
 
     

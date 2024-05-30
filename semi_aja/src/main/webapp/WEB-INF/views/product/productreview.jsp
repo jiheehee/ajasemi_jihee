@@ -9,7 +9,7 @@
 %>    
     
     
-
+<%if(reviewList.size()!=0){ %>
 <div id="product-footer-main-two-header">   <!-- 별 만들기 -->
     <h3>리뷰 (<%=reviewList.size()%>)</h3>
     <div class="star-ratings">
@@ -55,6 +55,18 @@
         
       </ul>
      </div>
+     <%}else{ %>
+     	<div>
+     		<h3 style="text-align: center;	margin: 70px 0 100px 0; ">작성된 리뷰가 없습니다.</h3>
+     		<hr>
+     	</div>
+     <%} %>
+     
+     
+     
+     
+     
+     
      
      
      
