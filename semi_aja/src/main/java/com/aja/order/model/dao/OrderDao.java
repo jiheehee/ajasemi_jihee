@@ -108,15 +108,13 @@ public class OrderDao {
 		}
 		return orderList;
 	}
-	public List<CustomerOrder> selectOrderAll(Connection conn,int cPage,int numPerpage, String status){
+	public List<CustomerOrder> selectOrderAll1(Connection conn, String status){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<CustomerOrder> orderList = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sql.getProperty("selectOrderDeliveryAll"));
 			pstmt.setString(1, status);
-			pstmt.setInt(2, (cPage-1)*numPerpage+1);
-			pstmt.setInt(3, cPage*numPerpage);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				orderList.add(getOrder(rs));
@@ -323,7 +321,7 @@ public class OrderDao {
 	public OrderStock orderStockRollback(Connection conn, int odKey) {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		OrderStock os = null;
+		OrderStock os = new OrderStock();
 		try {
 			pstmt = conn.prepareStatement(sql.getProperty("orderStockRollback"));
 			pstmt.setInt(1, odKey);
@@ -377,7 +375,7 @@ public class OrderDao {
 	private OrderDetail getOrderDetail(ResultSet rs) throws SQLException{
 		return OrderDetail.builder()
 				.odKey(rs.getInt("OD_KEY"))
-				.optionName(rs.getString("OPTION_NAME"))
+				.optionFlavor(rs.getString("OPTION_FLAVOR"))
 				.prodName(rs.getString("PROD_NAME"))
 				.odPrice(rs.getInt("OD_PRICE"))
 				.odQuantity(rs.getInt("OD_QUANTITY"))
