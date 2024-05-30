@@ -961,7 +961,8 @@
                     "total_amount": finalPrice,
                     "vat_amount": "200",
                     "tax_free_amount": "0",
-                    "approval_url": "<%= wantURL %>/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
+                    
+                    "approval_url": "http://14.36.141.71:10079/GDJ79_semi_aja_semi/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
                     + "&cartKey=" + "<%= cartKey %>",
                     <%-- ?custKey=<%= session.getAttribute("cust_key") %>"
                     + "&orderPrice=" + Number(document.getElementById("finalPriceSpan").innerText)
