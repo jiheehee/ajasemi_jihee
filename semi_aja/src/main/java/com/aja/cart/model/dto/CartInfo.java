@@ -18,4 +18,5 @@ public class CartInfo {
 	private int prodPrice;
 	private String prodName;
 	private int prodStock;
+	private String cartImage1;
 }

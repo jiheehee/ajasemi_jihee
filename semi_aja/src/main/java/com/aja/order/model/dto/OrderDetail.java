@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OrderDetail {
 	private int odKey;
-	private String optionName;
+	private String optionFlavor;
 	private String prodName;
 	private int odPrice;
 	private int odQuantity;

@@ -190,7 +190,7 @@
                         <tr>
                             <td>
                                 <div class="prodImgContainer">
-                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" wdith="100px" height="100px">
+                                    <img src="https://cdn.imweb.me/thumbnail/20220923/d4e7acfcd9fc0.png" alt="" width="100px" height="100px">
                                 </div>
                                 <div class="prodContentContainer">
                                     <p>상품명</p>
@@ -213,7 +213,7 @@
 	                        <tr>
 	                            <td>
 	                                <div class="prodImgContainer">
-	                                    <img src="<%= p.getProdImage() %>" alt="" wdith="100px" height="100px">
+	                                    <img src="<%= request.getContextPath() %>/upload/product/<%= p.getProdImage1() %>" alt="" width="100px" height="100px">
 	                                </div>
 	                                <div class="prodContentContainer">
 	                                    <p><%= p.getProdName() %></p>

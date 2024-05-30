@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.aja.member.model.dto.Customer;
 import com.aja.member.model.dto.ProductInfo;
 import com.aja.payment.model.dto.Order;
 import com.aja.payment.service.PaymentService;
@@ -34,12 +35,10 @@ public class PaymentSuccessServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-//		HttpSession session = request.getSession();
-//		Customer loginMember = (Customer)session.getAttribute("loginMember");
-//		int custKey = loginMember.getCustKey();
+		Customer loginMember = (Customer)session.getAttribute("loginMember");
+		int custKey = loginMember.getCustKey();
 		System.out.println("paySuccessServlet 실행");
 		
-		int custKey = 52;
 		System.out.println("session에서 받아온 custKey : " + custKey);
 		
 		//int dcKey = Integer.parseInt(request.getParameter("dcKey"));
@@ -49,10 +48,14 @@ public class PaymentSuccessServlet extends HttpServlet {
 		Order orderInfo = (Order)session.getAttribute("orderInfo");
 		request.setAttribute("orderInfo", orderInfo);
 		List<ProductInfo> purchaseList = (List<ProductInfo>)session.getAttribute("productInfo");
+		purchaseList.forEach(e -> System.out.println(e));
 		System.out.println("session에서 받아온 orderInfo : " + orderInfo);
 		
 		//주문 테이블과 주문상세 테이블 업데이트
 		new PaymentService().updatePaymentInfo(orderInfo, purchaseList, custKey);
+		
+		//상품수량 변경
+		new PaymentService().updateProductStock(purchaseList);
 		
 		//포인트테이블 업데이트와 CUSTOEMR 포인트 UPDATE
 		int usingPoint = Integer.parseInt(request.getParameter("usingPoint"));

@@ -35,6 +35,7 @@ public class Product {
 	private int optionPrice;
 	private String cateName;
 	
-	private List<ProdImage> prodImages = new ArrayList<>();
+	private String prodImage;
+//	private List<ProdImage> prodImages = new ArrayList<>();
 
 }

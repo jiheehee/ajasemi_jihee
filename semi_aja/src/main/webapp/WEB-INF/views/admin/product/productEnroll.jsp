@@ -159,7 +159,7 @@
         		
         		const formData = new FormData();
         		const files = $("#prodImages")[0].files;
-        		for(let i=0;i<files.length;i++){
+   	    		for(let i=0;i<files.length;i++){
         			formData.append("upFile"+i,files[i]);
         		}
         	    formData.append("prodCategory", $("#prodCategory").val());

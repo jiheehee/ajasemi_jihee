@@ -25,6 +25,17 @@ public class CartService2 {
 		int result = new CartDao2().updateAmountFromCart(conn, custKey, cartKey, amount);
 		if(result > 0) commit(conn);
 		else rollback(conn);
+		close(conn);
 		return result;
 	}
+	
+	public int asynDeleteCart(int custKey, int cartKey) {
+		Connection conn = getConnection();
+		int result = new CartDao2().asynDeleteCart(conn, custKey, cartKey);
+		if(result > 0) commit(conn);
+		else rollback(conn);
+		close(conn);
+		return result;
+	}
+	
 }

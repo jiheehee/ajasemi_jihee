@@ -32,14 +32,13 @@ public class CartDao2 {
 		ResultSet rs = null;
 		List<CartInfo> cartInfoList = new ArrayList<CartInfo>();
 		try {
-			pstmt = conn.prepareStatement("SELECT * FROM "
-					+ "( SELECT ROWNUM AS RNUM, N.* FROM "
-					+ "( SELECT P.PROD_NAME, P.PROD_STOCK, C.CART_KEY, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, C.CART_QUANTITY, P.PROD_PRICE "
+			pstmt = conn.prepareStatement("SELECT P.PROD_NAME, P.PROD_STOCK, C.CART_KEY, O.OPTION_FLAVOR, O.OPTION_SIZE, O.OPTION_PRICE, C.CART_QUANTITY, P.PROD_PRICE, I.PROD_IMAGE1 "
 					+ "FROM CART C "
 					+ "LEFT JOIN PRODUCT P ON C.PROD_KEY = P.PROD_KEY "
 					+ "LEFT JOIN PROD_OPTION O ON C.OPTION_KEY = O.OPTION_KEY "
-					+ "WHERE CUST_KEY = 52 ORDER BY CART_KEY) N ) ");
-//				
+					+ "LEFT JOIN PROD_IMAGE I ON C.PROD_KEY = I.PROD_KEY "
+					+ "WHERE CUST_KEY = ? ORDER BY CART_KEY");
+			pstmt.setInt(1, custKey);	
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				cartInfoList.add(CartInfo.builder()
@@ -51,6 +50,7 @@ public class CartDao2 {
 						.prodPrice(rs.getInt("prod_price"))
 						.prodName(rs.getString("prod_name"))
 						.prodStock(rs.getInt("prod_stock"))
+						.cartImage1(rs.getString("prod_image1"))
 						.build());
 			}
 		} catch(SQLException e) {
@@ -70,6 +70,22 @@ public class CartDao2 {
 			pstmt.setInt(1, amount);
 			pstmt.setInt(2, custKey);
 			pstmt.setInt(3, cartKey);
+			result = pstmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	public int asynDeleteCart(Connection conn, int custKey, int cartKey) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement("DELETE CART WHERE CUST_KEY = ? AND CART_KEY = ?");
+			pstmt.setInt(1, custKey);
+			pstmt.setInt(2, cartKey);
 			result = pstmt.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();

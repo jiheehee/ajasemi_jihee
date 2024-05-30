@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ProductInfo implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String prodImage;
 	private String prodName;
 	private String prodContent;
 	private String optionFlavor;
@@ -24,4 +23,5 @@ public class ProductInfo implements Serializable{
 	private int cartKey;
 	private int optionKey;
 	private int prodKey;
+	private String prodImage1;
 }
