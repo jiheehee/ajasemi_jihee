@@ -29,9 +29,9 @@
     /* 팝업 보여질때 */
    .popup_show {
         display: block;
-        border:1px solid red;
-        width:1000px;
-        height:1000px;
+        /* border:1px solid red; */
+        width:2800px;
+        height:2800px;
     }
 
     /* 팝업 토글 버튼 스타일 */
@@ -39,13 +39,37 @@
         cursor: pointer;
 /*         background-color: #e1dcd6; /* 팝업 토글 영역 강조*/ */
         background-color: ##ffffff; /* 팝업 토글 영역 강조*/
-        border:1px solid red;
-    }
-</style>
+        /* border:1px solid red; */
+    } 
+    
+    /* 초기 모든 팝업 숨김 */
+.popup {
+    display: none;
+}
 
-<div>
-    <a href="<%=request.getContextPath()%>/faq/faqlist.do"><p> FAQ </p></a>
-</div>
+/* 팝업 보여질 때 */
+.popup_show {
+    display: block;
+    /* border: 1px solid red; */
+    width: auto;
+    height: auto;
+    max-width: 1000px;
+    max-height: 500px;
+    overflow: auto;
+    background-color: #ffffff;
+    padding: 10px;
+}
+
+/* 팝업 토글 버튼 스타일 */
+tr.titleId {
+    cursor: pointer;
+    background-color: #ffffff; /* 팝업 토글 영역 강조 */
+}
+    /* border: 1px solid red; */
+    
+
+    
+</style>
 
 <section id="notice-container">
 	<h3><strong>NOTICE</strong></h3>
@@ -70,7 +94,7 @@
 			<td><%= notice.getNoticeEnrolldate() %></td>
 		</tr>
 		<tr class="popup">
-			<td><%=notice.getNoticeContent() %></td>
+			<td colspan="1"><%=notice.getNoticeContent() %></td>
 		</tr>
 		<%
 				}
