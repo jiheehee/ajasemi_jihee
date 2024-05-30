@@ -58,9 +58,9 @@
 	            <td><%= coupon.getCouponSale() %> %</td>
 	            <td>
 	            	<form action="<%=request.getContextPath()%>/coupon/distributecoupon.do">
-	            	<input type="submit" value="발급">
 	            	<input type="hidden" name="couponKey" value="<%=coupon.getCouponKey() %>">
 	            	<input type="hidden" name="couponName" value="<%=coupon.getCouponName() %>">
+	            	<input type="submit" value="발급">
 	            	</form>
 	            
 	            

@@ -40,10 +40,10 @@ public class OptionEnrollServlet extends HttpServlet {
 	String msg="", loc="";
 	if(result>0) {
 		msg="등록 성공했습니다. :)";
-		loc = "/";
+		loc = "/product/optionlist.do";
 	}else {
 		msg = "등록 실패했습니다. :(";
-		loc = "/";
+		loc = "/product/optionlist.do";
 	}
 	request.setAttribute("msg", msg);
 	request.setAttribute("loc",loc);

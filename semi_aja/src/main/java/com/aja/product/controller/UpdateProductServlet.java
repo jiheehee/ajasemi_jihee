@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.aja.product.model.dto.Category;
 import com.aja.product.model.dto.Keyword;
+import com.aja.product.model.dto.ProdOption;
 import com.aja.product.model.dto.Product2;
 import com.aja.product.service.CategoryService;
+import com.aja.product.service.OptionService;
 import com.aja.product.service.ProductService;
 
 /**
@@ -38,8 +40,10 @@ public class UpdateProductServlet extends HttpServlet {
 		Product2 p = new ProductService().selectProduct(prodKey);
 		List<Category> categoryList = new CategoryService().searchAllCategory();
 		List<Keyword> keywordList = new CategoryService().searchAllKeyword();
+		List<ProdOption> optionList = new OptionService().searchAllOption();
 		request.setAttribute("categoryList", categoryList);
 		request.setAttribute("keywordList", keywordList);
+		request.setAttribute("optionList", optionList);
 		request.setAttribute("Product", p);
 		request.getRequestDispatcher("/WEB-INF/views/admin/product/updateProduct.jsp").forward(request, response);
 	}

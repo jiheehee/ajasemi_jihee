@@ -34,10 +34,10 @@ public class DeleteProductServlet extends HttpServlet {
 		String msg="", loc="";
 		if(result>0) {
 			msg="삭제 성공했습니다. :)";
-			loc = "/";
+			loc = "/product/productlist.do";
 		}else {
 			msg = "삭제 실패했습니다. :(";
-			loc = "/";
+			loc = "/product/productlist.do";
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc",loc);

@@ -27,7 +27,7 @@ public class Product {
 	private String prodDetailCon;
 	private String prodComponent;
 	private Date prodEnrollDate;
-	private boolean prodDeleted;
+	private String prodDeleted;
 	
 	private String keywordName;
 	private String optionFlavor;
