@@ -21,12 +21,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>배송지명</th>
-                        <td class="needStarTd">
-                            <span class="star">*</span><input type="text" name="receptionAddName">
-                        </td>
-                    </tr>
-                    <tr>
                         <th>받는분 이름</th>
                         <td>
                             <span class="star">*</span><input type="text" name="receptionName">
@@ -70,12 +64,6 @@
                                 <option value="">직접 입력하기</option>
                             </select>
                             <input type="text" name="deliveryRequestMessage" style="width:500px" hidden="true" required placeholder="요청사항을 입력하세요">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>공동현관 출입방법</th>
-                        <td>
-                            <input type="text" name="deliAddName" placeholder="없으면 건너뛰세요" required>
                         </td>
                     </tr>
                 </table>
@@ -869,6 +857,17 @@
        		const postcode = document.getElementById("sample4_postcode").value; //우편번호
        		const roadAddress = document.getElementById("sample4_roadAddress").value;// 도로명 주소
        		const detailAddress = document.getElementById("sample4_detailAddress").value;// 상세 주소
+       		
+       		//사용자가 요청사항을 직접입력으로 선택했을시 빈란인지 확인해주는 기능입니다.
+       		const selectRequest = document.getElementById("deliveryRequestSelect");
+       		const deliveryReqInput = document.querySelector("input[name='deliveryRequestMessage']");
+       		if(selectRequest.selectedIndex == 4) {
+       			if(deliveryReqInput.innerText.length == 0) {
+	       			alert("배송요청사항을 입력해주세요");
+	       			deliveryReqInput.focus();
+	       			return;
+       			}
+       		}
        		
        		//사용자가 마일리지를 입력만하고 적용하지 않았을때 마일리지 입력란으로 focus해줍니다.
        		const pointInput = document.querySelector("input[name='pointInput']");
