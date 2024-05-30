@@ -7,7 +7,6 @@ import java.sql.Connection;
 import java.util.List;
 
 import com.aja.productprint.model.dao.ProductListDao;
-import com.aja.productprint.model.dto.Option;
 import com.aja.productprint.model.dto.Product;
 
 
@@ -20,7 +19,7 @@ public class ProductListService {
 		List<Product> result = dao.selectAllProduct(conn, cateKey, cPage, numPerpage);
 		close(conn);
 		return result;
-	}S
+	}
 	
 	
 	public int selectAllProductCount(int cateKey){
@@ -44,7 +43,7 @@ public class ProductListService {
 		close(conn);
 		return p;
 	}
-	
+
 	
 	
 }

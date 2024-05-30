@@ -63,4 +63,10 @@ public class ProductService {
 		close(conn);
 		return result;
 	}
+	public int selectOption(String flavor,int size) {
+		Connection conn = getConnection();
+		int optionKey = dao.selectOption(conn,flavor,size);
+		close(conn);
+		return optionKey;
+	}
 }

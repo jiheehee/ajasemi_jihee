@@ -34,14 +34,15 @@ public class ProductDao {
 		int[] result = new int[2];
 		try {
 			pstmt = conn.prepareStatement(sql.getProperty("enrollProduct"));
-			pstmt.setInt(1,p.getKeywordKey());
-			pstmt.setInt(2,p.getCateKey());
-			pstmt.setString(3,p.getProdName());
-			pstmt.setInt(4, p.getProdPrice());
-			pstmt.setInt(5, p.getProdStock());
-			pstmt.setString(6, p.getProdContent());
-			pstmt.setString(7,p.getProdDetailCon());
-			pstmt.setString(8, p.getProdComponent());
+			pstmt.setInt(1, p.getOptionKey());
+			pstmt.setInt(2,p.getKeywordKey());
+			pstmt.setInt(3,p.getCateKey());
+			pstmt.setString(4,p.getProdName());
+			pstmt.setInt(5, p.getProdPrice());
+			pstmt.setInt(6, p.getProdStock());
+			pstmt.setString(7, p.getProdContent());
+			pstmt.setString(8,p.getProdDetailCon());
+			pstmt.setString(9, p.getProdComponent());
 			int enrollResult = pstmt.executeUpdate();
 			result[0] = enrollResult;
 			pstmt = conn.prepareStatement(sql.getProperty("searchProduct"));
@@ -74,6 +75,26 @@ public class ProductDao {
 //			}
 //		}
 //		return result;
+	}
+	public int selectOption(Connection conn,String flavor,int size) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int optionKey= 0;
+		try {
+			pstmt= conn.prepareStatement(sql.getProperty("selectOption"));
+			pstmt.setString(1, flavor);
+			pstmt.setInt(2, size);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				optionKey=rs.getInt("OPTION_KEY");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(rs);
+			close(pstmt);
+		}
+		return optionKey;
 	}
 	
 	public int updateImages(Connection conn,MultipartRequest mr,int prodKey) {
@@ -233,15 +254,16 @@ public class ProductDao {
 		int result = 0;
 		try {
 			pstmt=conn.prepareStatement(sql.getProperty("updateProduct"));
-			pstmt.setInt(1, p.getKeywordKey());
-			pstmt.setInt(2, p.getCateKey());
-			pstmt.setString(3, p.getProdName());
-			pstmt.setInt(4,p.getProdPrice());
-			pstmt.setInt(5, p.getProdStock());
-			pstmt.setString(6, p.getProdContent());
-			pstmt.setString(7, p.getProdDetailCon());
-			pstmt.setString(8, p.getProdComponent());
-			pstmt.setInt(9, p.getProdKey());
+			pstmt.setInt(1, p.getOptionKey());
+			pstmt.setInt(2, p.getKeywordKey());
+			pstmt.setInt(3, p.getCateKey());
+			pstmt.setString(4, p.getProdName());
+			pstmt.setInt(5,p.getProdPrice());
+			pstmt.setInt(6, p.getProdStock());
+			pstmt.setString(7, p.getProdContent());
+			pstmt.setString(8, p.getProdDetailCon());
+			pstmt.setString(9, p.getProdComponent());
+			pstmt.setInt(10, p.getProdKey());
 			
 			result = pstmt.executeUpdate();
 			

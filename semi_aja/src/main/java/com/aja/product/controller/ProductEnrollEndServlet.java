@@ -52,10 +52,15 @@ public class ProductEnrollEndServlet extends HttpServlet {
 		int stock = Integer.parseInt(mr.getParameter("prodStock"));
 		String detailCon = mr.getParameter("prodDetailCon");
 		String component = mr.getParameter("prodComponent");
+		String flavor = mr.getParameter("prodOptionFlavor");
+		int size = Integer.parseInt(mr.getParameter("prodOptionSize"));
+		
+		int optionKey = new ProductService().selectOption(flavor,size);
 		
 		Product p= Product.builder()
 				.cateKey(cateKey)
 				.keywordKey(keywordKey)
+				.optionKey(optionKey)
 				.prodName(name)
 				.prodPrice(price)
 				.prodComponent(component)

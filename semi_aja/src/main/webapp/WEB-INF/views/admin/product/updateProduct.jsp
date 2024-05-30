@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import = "java.util.List,com.aja.product.model.dto.Category,com.aja.product.model.dto.Keyword,com.aja.product.model.dto.Product2" %>
+<%@ page import = "java.util.List,com.aja.product.model.dto.Category,com.aja.product.model.dto.Keyword,com.aja.product.model.dto.Product2,com.aja.product.model.dto.ProdOption" %>
 <%
 	List<Category> categoryList= (List<Category>)request.getAttribute("categoryList");
 	List<Keyword> keywordList = (List<Keyword>)request.getAttribute("keywordList");
+	List<ProdOption> optionList = (List<ProdOption>)request.getAttribute("optionList");
 	Product2 p =(Product2)request.getAttribute("Product");
 	String image1 = (p.getProdImage1() != null) ? p.getProdImage1() : "";
     String image2 = (p.getProdImage2() != null) ? p.getProdImage2() : "";
@@ -92,6 +93,23 @@
                         <% } %>	
                     </select>
                 	<% } %>
+                	 상품옵션
+                   <%if(optionList.size()>0){ %>
+                   <select id="prodOptionFlavor" >
+                   		<%for(ProdOption o : optionList){ %>
+					<option value="<%=o.getOptionFlavor() %>"class ="optionFlavor"><%=o.getOptionFlavor() %></option>
+					<% } %>                   
+                   </select>
+                   <% } %>
+                   
+                     <%if(optionList.size()>0){ %>
+                   <select id="prodOptionSize">
+                   		<%for(ProdOption o : optionList){ %>
+					<option value="<%=o.getOptionSize() %>" class="optionSize"><%=o.getOptionSize() %></option>
+					<% } %>                   
+                   </select>
+                   <% } %>
+                   <br>
                 	<input type="hidden" id="prodKey" value="<%=p.getProdKey() %>">
                     상품이름<input type="text" id="prodName" placeholder="상품이름" value ="<%=p.getProdName() %>" required><br>
                     상품가격<input type="number" id="prodPrice" placeholder="상품가격" value ="<%=p.getProdPrice() %>" required min="0"><br>
@@ -126,6 +144,30 @@
 	                }
 	            });
 	        });
+	        $(document).ready(function(){
+        		const flavors = document.querySelectorAll("#prodOptionFlavor>option ");
+        		const sizes = document.querySelectorAll("#prodOptionSize>option");
+        		const usedSizes = new Set();
+        		flavors.forEach(option =>{
+        			const flavor = option.value;
+        			console.log(flavor);
+        			if(usedSizes.has(option.value)){
+        				option.style.display = "none";
+        			}else{
+        				option.style.display = "block";
+        			}
+        			usedSizes.add(flavor);
+        		});
+        		sizes.forEach(option =>{
+        			const size = option.value;
+        			if(usedSizes.has(option.value)){
+        				option.style.display = "none";
+        			}else{
+        				option.style.display = "block";
+        			}
+        			usedSizes.add(size);
+        		});
+        });
 	        $("#prodImages").change(e=>{
         		$("#preview").empty();
         		$.each(e.target.files,(i,file)=>{
@@ -160,6 +202,8 @@
         	    formData.append("prodDetailCon", $("#prodDetailCon").val());
         	    formData.append("prodComponent", $("#prodComponent").val());
         	    formData.append("prodKey",$("#prodKey").val());
+        	    formData.append("prodOptionSize",$("#prodOptionSize").val());
+        	    formData.append("prodOptionFlavor",$("#prodOptionFlavor").val());
         		$.ajax({
         			url: '<%=request.getContextPath()%>/product/updateproductend.do',
         			type: 'post',
@@ -169,14 +213,15 @@
         			success:data=>{
         				const responseData = JSON.parse(data);
         				if(responseData.result){
-        					alert("업로드 성공");
+        					alert("수정 성공");
         					
         				}else{
-        					alert("업로드 실패");
+        					alert("수정 실패");
         				}
         			},
         			complete:()=>{
-        				close(); 
+        				window.opener.location.reload();
+        				close();
         			}
         		
         		});

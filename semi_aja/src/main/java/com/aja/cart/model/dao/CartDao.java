@@ -70,7 +70,7 @@ public class CartDao {
 				.prodDetailCon(rs.getString("PROD_DETAILCON"))
 				.prodComponent(rs.getString("PROD_COMPONENT"))
 				.prodEnrollDate(rs.getDate("PROD_ENROLLDATE"))
-				.prodDeleted(rs.getBoolean("PROD_DELETED"))
+				.prodDeleted(rs.getString("PROD_DELETED"))
 				.keywordName(rs.getString("KEYWORD_NAME"))
 				.cateName(rs.getString("CATE_NAME"))
 				.optionFlavor(rs.getString("OPTION_FLAVOR"))

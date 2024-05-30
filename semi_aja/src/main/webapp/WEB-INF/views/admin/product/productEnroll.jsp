@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import = "java.util.List,com.aja.product.model.dto.Category,com.aja.product.model.dto.Keyword" %>
+<%@ page import = "java.util.List,com.aja.product.model.dto.Category,com.aja.product.model.dto.Keyword,com.aja.product.model.dto.ProdOption" %>
 <%
 	List<Category> categoryList= (List<Category>)request.getAttribute("categoryList");
 	List<Keyword> keywordList = (List<Keyword>)request.getAttribute("keywordList");
+	List<ProdOption> optionList = (List<ProdOption>)request.getAttribute("optionList");
 %>
 <script src="http://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
@@ -79,6 +80,22 @@
 					<% } %>                   
                    </select>
                    <% } %>
+                   상품옵션
+                   <%if(optionList.size()>0){ %>
+                   <select id="prodOptionFlavor" >
+                   		<%for(ProdOption o : optionList){ %>
+					<option value="<%=o.getOptionFlavor() %>"class ="optionFlavor"><%=o.getOptionFlavor() %></option>
+					<% } %>                   
+                   </select>
+                   <% } %>
+                   
+                     <%if(optionList.size()>0){ %>
+                   <select id="prodOptionSize">
+                   		<%for(ProdOption o : optionList){ %>
+					<option value="<%=o.getOptionSize() %>" class="optionSize"><%=o.getOptionSize() %></option>
+					<% } %>                   
+                   </select>
+                   <% } %>
                    <br>
                     상품이름<input type="text" id="prodName" placeholder="상품이름" required><br>
                     상품가격<input type="number" id="prodPrice" placeholder="상품가격" required min="0"><br>
@@ -96,6 +113,31 @@
         
         
         <script>
+        $(document).ready(function(){
+        		const flavors = document.querySelectorAll("#prodOptionFlavor>option ");
+        		const sizes = document.querySelectorAll("#prodOptionSize>option");
+        		const usedSizes = new Set();
+        		flavors.forEach(option =>{
+        			const flavor = option.value;
+        			console.log(flavor);
+        			if(usedSizes.has(option.value)){
+        				option.style.display = "none";
+        			}else{
+        				option.style.display = "block";
+        			}
+        			usedSizes.add(flavor);
+        		});
+        		sizes.forEach(option =>{
+        			const size = option.value;
+        			if(usedSizes.has(option.value)){
+        				option.style.display = "none";
+        			}else{
+        				option.style.display = "block";
+        			}
+        			usedSizes.add(size);
+        		});
+        });
+        
         	$("#prodImages").change(e=>{
         		$("#preview").empty();
         		$.each(e.target.files,(i,file)=>{
@@ -128,6 +170,8 @@
         	    formData.append("prodStock", $("#prodStock").val());
         	    formData.append("prodDetailCon", $("#prodDetailCon").val());
         	    formData.append("prodComponent", $("#prodComponent").val());
+        	    formData.append("prodOptionFlavor",$("#prodOptionFlavor").val());
+        	    formData.append("prodOptionSize",$("#prodOptionSize").val());
         		$.ajax({
         			url: '<%=request.getContextPath()%>/product/productenrollend.do',
         			type: 'post',
