@@ -217,7 +217,7 @@
 				
 				innerDataForPrice(buttonId);
 				
-				//callUpdateCartFetch(modifyAmount, cartKey);
+				callUpdateCartFetch(modifyAmount, cartKey);
 			}
 		})
 	});
@@ -241,7 +241,7 @@
 				
 				if(totalCheckedPrice() > 50000) document.getElementById("finalPriceSpan").innerText = totalCheckedPrice();
 				else document.getElementById("finalPriceSpan").innerText = totalCheckedPrice() + 3000;
-				//callUpdateCartFetch(modifyAmount, cartKey);
+				callUpdateCartFetch(modifyAmount, cartKey);
 				
 			}
 		})
