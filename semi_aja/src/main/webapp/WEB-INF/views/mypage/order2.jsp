@@ -93,6 +93,9 @@
         border-bottom: 1px solid #ddd;
         padding-bottom: 10px;
         margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
     .order-info p {
         margin: 0;
@@ -104,10 +107,9 @@
         margin-bottom: 20px;
     }
     .product-img img {
-        width: 100px;
-        height: 100px;
+        width: 200px;
+        height: 200px;
         object-fit: cover;
-        border-radius: 10px;
     }
     .product-detail {
         flex-grow: 1;
@@ -119,8 +121,7 @@
     }
     .product-button {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        gap: 10px;
     }
     .product-button button {
         background-color: black;
@@ -132,12 +133,14 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
+    
     .product-button button:hover {
         background-color: white;
         color: black;
         border: none;
         
     }
+    
     @media (max-width: 1000px) {
         .product {
             flex-direction: column;
@@ -155,6 +158,26 @@
             width: 30%;
         }
     }
+    
+    
+    /* 
+    @media (max-width: 1000px) {
+        .product {
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-img, .product-detail, .product-button {
+            width: 100%;
+            text-align: center;
+        }
+        .product-button {
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .product-button button {
+            width: 30%;
+        }
+    } */
 </style>
 
 <section>
@@ -165,8 +188,15 @@
             for (Order o : orders) { %>
         <div class="order-container">    
             <div class="order-info">
-                <p>주문 날짜: <%= o.getOrderDate() %></p>
-                <p>주문 번호: <%= o.getOrderKey() %></p>
+            	<div>
+	                <p>[<%= o.getOrderDate() %>]</p>
+	                <p>주문번호[<%= o.getOrderKey() %>]</p>
+                </div>
+                <div class="product-button">
+                    <button onclick="cancle('<%=o.getOrderKey()%>');">구매취소</button>
+					<button onclick="refund('<%= o.getOrderKey() %>');">환불</button>
+                    <button onclick="check();">구매확정</button>
+                </div>
             </div>
             <% if (!o.getOrderDetail().isEmpty()) {
                 for (OrderDetail od: o.getOrderDetail()) { %>
@@ -184,11 +214,6 @@
                     <div><strong><%= o.getOrderStatus() %></strong></div>
                     <div><%= o.getOrderDelivery() %></div>
                 </div>
-                <div class="product-button">
-                    <button onclick="cancle();">구매취소</button>
-					<button onclick="refund('<%= o.getOrderKey() %>');">환불</button>
-                    <button onclick="check();">구매확정</button>
-                </div>
             </div>
             <% }
             } %>
@@ -203,12 +228,13 @@
 </section>
 
 <script>
-	const cancle = () => {
-		
+	const cancle = (orderKey) => {
+		console.log("취소 주문 번호:", orderKey);
+		location.assign("<%=request.getContextPath()%>/mypage/orderrefund.do?orderKey="+orderKey+"&type=취소");
 	}
 	const refund = (orderKey) => {
         console.log("환불 주문 번호:", orderKey);
-       	location.assign("<%=request.getContextPath()%>/mypage/orderrefund.do?orderKey="+orderKey);
+       	location.assign("<%=request.getContextPath()%>/mypage/orderrefund.do?orderKey="+orderKey+"&type=환불");
     }
 
 </script>
