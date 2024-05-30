@@ -159,7 +159,8 @@
             
             
             	<%for(Product p : productlist){ %>
-            
+            		<!-- if(p.getProdDeleted().contains("N")){  -->
+            	
                 <div class="products"> <!-- aspect-ratio : 3/1 너비100 높이33.3 이거 안쓰고 grid씀 -->
                     <a href="<%=request.getContextPath()%>/product/productdetailprint.do?prodKey=<%=p.getProdKey()%>&cateKey=<%=p.getCateKey()%>&prodName=<%=p.getProdName()%>">
                         <div class="product-img">
@@ -210,7 +211,9 @@
                     </div>
                 </div> <!-- priducts 닫힘 div -->
                 
-                <%} %> <!-- for문 끝남 --> 
+                			
+                <% } %> 	<!-- if, for문 끝남 --> 
+                
             </div>	<!-- product 담고있는 div 끝 -->
             
             <div id="loading">Loading...</div>
