@@ -37,12 +37,12 @@ public class ProductListService {
 		close(conn);
 		return result;
 	}
-	public List<Option> selectOptionAll(){
-		Connection conn = getConnection();
-		List<Option> optionList = dao.selectOptionAll(conn);
-		close(conn);
-		return optionList;
-	}
+//	public List<Option> selectOptionAll(){
+//		Connection conn = getConnection();
+//		List<Option> optionList = dao.selectOptionAll(conn);
+//		close(conn);
+//		return optionList;
+//	}
 	
 	
 }
