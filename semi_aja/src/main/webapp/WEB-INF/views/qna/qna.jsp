@@ -128,8 +128,8 @@ a {
 <button onclick="location.assign('<%=request.getContextPath()%>/qna/qnawrite.do')">문의하기</button>
 
     <header>
-        <h3><strong>NOTICE</strong></h3>
-		<h6><strong>공지사항</strong></h6>
+        <h3><strong>QNA</strong></h3>
+		<h6><strong>1:1 문의</strong></h6>
     </header>
 <body>
     <main>
