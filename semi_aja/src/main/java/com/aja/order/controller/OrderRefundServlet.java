@@ -56,7 +56,7 @@ public class OrderRefundServlet extends HttpServlet {
 				System.out.println(or.getDcKey());
 			}
 			//3. 상태변경
-			new OrderService().orderStatusUpdate(or.getOsKey());
+			int result = new OrderService().orderStatusUpdate(or.getOsKey());
 			System.out.println(or.getOsKey());
 			//4. 재고변경
 			for(int j=0;j<detailOrderList.size();j++) {
@@ -65,6 +65,19 @@ public class OrderRefundServlet extends HttpServlet {
 				new OrderService().orderStockUpdate(os.getProdKey(),os.getQuantity());
 			}
 			
+			if(result>0) {
+				String msg="", loc="";
+				if(result>0) {
+					msg = "환불 성공했습니다. :)";
+					loc = "/order/orderstatuslist.do";
+				}else {
+					msg = "환불 실패했습니다. :(";
+					loc = "/order/orderstatuslist.do";
+				}
+				request.setAttribute("msg", msg);
+				request.setAttribute("loc",loc);
+				request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
+			}
 		}
 		
 		

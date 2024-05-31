@@ -16,10 +16,13 @@ h3{
 h3,h6 {
 		padding-left:250px;
 	}
+	
+h6 {
+	margin-bottom:40px;
+}
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
     color: #333;
     margin: 0;
     padding: 0;
@@ -39,7 +42,7 @@ main {
     margin: 20px auto;
     background-color: #fff;
     box-shadow: 0 0 15px rgba(139, 139, 139, 0.1);
-    border-radius: 8px;
+    /* border-radius: 8px; */
     overflow: hidden;
 }
 
@@ -96,16 +99,39 @@ main {
     color: red;
 }
 
+/* 버튼 스타일 */
+button {
+    float: right;
+    background-color: #222120;
+    color: white;
+    padding: 7px 10px;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+	margin-right:280px;
+	margin-top:60px;    
+   
+}
+
+button:hover {
+    background-color: #919191;
+}
+
+a {
+    text-decoration: none;
+    color:black;
+}
 
 </style>
 
 <button onclick="location.assign('<%=request.getContextPath()%>/qna/qnawrite.do')">문의하기</button>
 
-<body>
     <header>
-        <h3><strong>NOTICE</strong></h3>
-		<h6><strong>공지사항</strong></h6>
+        <h3><strong>QNA</strong></h3>
+		<h6><strong>1:1 문의</strong></h6>
     </header>
+<body>
     <main>
         <div class="table-container">
             <table class="qna-table">

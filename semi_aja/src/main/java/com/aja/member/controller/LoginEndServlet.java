@@ -55,7 +55,7 @@ public class LoginEndServlet extends HttpServlet {
 			response.addCookie(saveIdCookie);
 		}	
 		
-		if(custEmail.equals("")||custPw.equals("")) {
+		if(custEmail.equals("")||custPw.equals("")||custPw==null) {
 			
 			request.setAttribute("msg", "아이디나 패스워드를 입력하세요.");
 			request.setAttribute("loc", "/");

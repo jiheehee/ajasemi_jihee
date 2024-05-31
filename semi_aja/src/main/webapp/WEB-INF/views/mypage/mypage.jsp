@@ -61,7 +61,9 @@
 <section>
     <div id="mypage-container">
         <div id="mypageUser">
-            <div id="mypageLoginMember"><h3><%=loginMember.getCustName() %></h3></div>
+        	<% if(loginMember.getCustName()!=null) {%>
+            	<div id="mypageLoginMember"><h3><%=loginMember.getCustName() %></h3></div>
+            <%} %>
             <div id="mypageGrade"><h5>GRADE</h5><h2>custGrade</h2></div>
             <div><h4>TOTAL KRW 구매실적</h4></div>
         </div>

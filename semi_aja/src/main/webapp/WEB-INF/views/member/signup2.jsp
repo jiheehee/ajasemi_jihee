@@ -141,7 +141,7 @@
                 <div style="height: 100px;"><h5>회원가입</h5></div>
                 <div style="height: 80px;"><h6>INFORMATION</h6></div>
             </div>
-       		<form action="" method="POST" >
+       		<form action="<%=request.getContextPath() %>/member/signupend.do" method="POST" >
 	            <div id="profileId" class="profileInput">
 	                <div class="profilefont">아이디</div>
 	                <input type="text" name="custEmail">

@@ -41,7 +41,14 @@ public class MemberService {
 		Customer ct = dao.searchMemberById(conn,custEmail);
 		// 1. id 가 존재하지 않음
 		// 2. pw 가 일치하지 않음
-		if(ct==null || !ct.getCustPw().equals(custPw)) ct = null;
+		// custPw : 값이 존재함	
+		// ct.getCustPw() == null
+		if(ct.getCustPw()==null) {
+			ct =null;
+		} else if(ct==null || !ct.getCustPw().equals(custPw)) {
+			ct=null;
+		}
+	
 		
 		System.out.println(ct);
 		
