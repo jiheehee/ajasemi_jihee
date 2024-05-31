@@ -956,7 +956,7 @@
                     "approval_url": "http://14.36.141.71:10079/GDJ79_semi_aja_semi/pay/paysuccess.do?usingPoint=" + usingPoint + "&dcKey=" + dcKey
                     + "&cartKey=" + "<%= cartKey %>",
                     "fail_url": "http://localhost:8080/testproject/fail",
-                    "cancel_url": "http://localhost:8080/semi_aja/WEB-INF/views/payment/paycancel.jsp",
+                    "cancel_url": "http://14.36.141.71:10079/GDJ79_semi_aja_semi/WEB-INF/views/payment/paycancel.jsp",
                     "custKey" : "52",
                     "dcKey" : Number(document.getElementById("pointApplySpan").innerText),
                     "orderPrice" : Number(document.getElementById("finalPriceSpan").innerText),
