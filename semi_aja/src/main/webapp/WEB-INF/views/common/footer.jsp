@@ -3,7 +3,6 @@
 
     <footer>
         <div id="footerMain">
-
             
             <!-- 주소 전화번호 등 -->
             <div id="footerMainLeft">
@@ -28,19 +27,19 @@
             <!-- Q&A 등 하이퍼링크 -->
             <div id="footerMainRight">
                 <div>
-                    <a href=""><p>Q&A</p></a>
+                    <a href="<%=request.getContextPath() %>/qna/qnalist.do"><p>Q&A</p></a>
                 </div>
                 <div>
                     <a href=""><p>CONTACT</p></a>
                 </div>
                 <div>
-                    <a href=""><p>FAQ</p></a>
+                    <a href="<%=request.getContextPath() %>/faq/faqlist.do"><p>FAQ</p></a>
                 </div>
                 <div>
-                    <a href=""><p>INSTARGRAM</p></a>
+                    <a href="https://www.instagram.com/mango_ili/"><p>INSTARGRAM</p></a>
                 </div>
                 <div>
-                    <a href=""><p>NOTICE</p></a>
+                    <a href="<%=request.getContextPath() %>/notice/noticelist.do"><p>NOTICE</p></a>
                 </div>
             </div>
 

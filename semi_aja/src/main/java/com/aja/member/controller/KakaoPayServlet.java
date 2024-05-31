@@ -12,10 +12,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.aja.payment.model.dto.Order;
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class KakaoTestServlet
@@ -28,9 +32,10 @@ public class KakaoPayServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {    	
-    	System.out.println("doPost moethod execute");
+    	
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        HttpSession session = req.getSession();
 
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = req.getReader()) {
@@ -39,11 +44,17 @@ public class KakaoPayServlet extends HttpServlet {
                 sb.append(line);
             }
         }
-
+        
+        String jsonData = sb.toString();
+        System.out.println(jsonData);
+        
+        Gson orderGson = new Gson();
+        Order orderInfo = orderGson.fromJson(jsonData, Order.class);
+        session.setAttribute("orderInfo", orderInfo);
         JSONParser parser = new JSONParser();
         try {
             JSONObject requestJson = (JSONObject) parser.parse(sb.toString());
-
+            //kakaopayapi url주소 설정후 header와 method 설정해주고 url주소로 이동하니다.
             URL url = new URL("https://open-api.kakaopay.com/online/v1/payment/ready");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
@@ -51,7 +62,6 @@ public class KakaoPayServlet extends HttpServlet {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             
-
             try (OutputStream os = connection.getOutputStream()) {
                 byte[] input = requestJson.toString().getBytes("utf-8");
                 os.write(input, 0, input.length);

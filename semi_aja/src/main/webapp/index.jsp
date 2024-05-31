@@ -2,8 +2,13 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <style>
+
+	#sectionDiv{
+		width:100%;
+		height:1000px;
+	}
 	#videoSection{
-		border:1px solid orange;
+		/* border:1px solid black; */
 	}
 	#productContainer{
 		display: flex;
@@ -27,11 +32,7 @@
 		margin:0;
 		font-size:10.5px;
 	}
-	#productContainer{
-		width:100%;
-		height:300px;
-		border: 1px solid red;
-	}
+	
 	#bestSeller{
 		text-align:center;
 		border: 1px solid blue;
@@ -47,7 +48,8 @@
 		<div id="videoSection">
 			<video src="<%=request.getContextPath()%>/images/main.mp4" width="100%" autoplay muted loop></video>
 		</div>
-		<div id="productSection">
+	</div>
+	<%-- 	<div id="productSection">
 			<div><h3 id="bestSeller">Best Seller</h3></div>
 			<div id="productContainer">
 				<div class="product">
@@ -82,7 +84,7 @@
 				</div>
 			</div>
 			</div>
-	</div>
+	</div> --%>
 </section>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

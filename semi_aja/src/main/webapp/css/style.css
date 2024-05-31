@@ -51,7 +51,7 @@
 	}
 	 
 	#headerMain{
-		border: 1px solid red;
+		/* border: 1px solid red; */
 		/* background-color: red; */
 		height: 70px;
 		display: flex;
@@ -60,7 +60,7 @@
 
 	/* 로고 */
 	#headerLogo{
-		/* border: 1px solid orange; */
+/* 		border: 1px solid orange; */
 		margin-left: 1%;
 		display: flex;
 		align-items: center;
@@ -80,7 +80,8 @@
       /* 폰트적용 */
       #headerTitle a{
           text-decoration-line: none;
-          font-size: 20px;
+          font-size: 15px;
+          color:black;
       }
 
       /* 장바구니,마이페이지,검색,메뉴? */

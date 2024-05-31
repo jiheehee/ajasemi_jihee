@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-            
+                     
     
     <wb-module deploy-name="semi_aja">
-                        
+                                        
+                                    
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
                         
+                
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                
+        
+        
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+                                        
+        
+        
         
         <property name="context-root" value="semi_aja"/>
-                        
+                                        
+        
+        
         
         <property name="java-output-path" value="/semi_aja/src/main/webapp/WEB-INF/build/classes"/>
-                    
+                                    
+    
+    
     
     </wb-module>
-        
+                
+
+
 
 </project-modules>
