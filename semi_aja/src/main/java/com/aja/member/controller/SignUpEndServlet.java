@@ -45,15 +45,15 @@ public class SignUpEndServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 다,, input태그로 받아올 거니까.. 파라미터로 가저오기 .. 
 		
-		String custEmailId = request.getParameter("custEmailId");
-		String emailDomain = request.getParameter("emailDomain");
-		String custEmail = custEmailId + emailDomain;
+		String custEmail = request.getParameter("custEmail");
+//		String emailDomain = request.getParameter("emailDomain");
+//		String custEmail = custEmailId + emailDomain;
 		String custPw = request.getParameter("custPw");
 		String custNickname = request.getParameter("custNickname");
 		String custPhone = request.getParameter("custPhone");
 		String custGender = request.getParameter("custGender");
 		String custBirth = request.getParameter("custBirth");
-		custBirth= custBirth.substring(0,4)+"-"+custBirth.substring(4,6)+"-"+custBirth.substring(6);
+		System.out.println(custBirth);
 		String custPostcode = request.getParameter("custPostcode");
 		
 		String custAddress = request.getParameter("custAddress");
@@ -84,6 +84,7 @@ public class SignUpEndServlet extends HttpServlet {
 		} else {
 			// 회원가입 실패 시 회원가입 페이지 입력한 데이터 그대로 유지하면서 회원가입창 띄우고싶다.. 
 			// session 에 설정하고 쓰고 나면 . . 지우기 . . . 
+			
 			response.sendRedirect(request.getContextPath()+"/member/signup.do");
 		}
 		

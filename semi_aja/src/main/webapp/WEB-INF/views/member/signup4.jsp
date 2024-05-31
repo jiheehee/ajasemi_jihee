@@ -210,6 +210,9 @@
                         <div class="profileInput">
                             <input type="text" id="sample6_detailAddress" name="custDetailAddress" placeholder="상세주소">
                         </div>
+                        <div>
+                            <input type="text" id="sample6_extraAddress" placeholder="참고항목">
+                        </div>
                     </div>
                 </div>
                 <div id="addressMessage" class="errormessage"></div>
@@ -260,7 +263,6 @@
     // 유효성 검사
 
     // 아이디 중복 체크 함수 / 이메일 유효성 검사(@와 .이 있어야 함)
-    document.addEventListener('DOMContentLoaded', (event) => {
 
     const emailInput = document.querySelector("input[name='custEmail']");
     const emailMessage = document.getElementById("emailIdMessage");
@@ -295,9 +297,8 @@
         })
         return true;
     	};
-    emailInput.addEventListener('blur', checkIdDuplicate);
-    });
 
+    emailInput.addEventListener('blur', checkIdDuplicate);
 
 
     // 이름 유효성 검사 (한글만 허용)
@@ -454,7 +455,7 @@
     detailAddressInput.addEventListener('input', addressInputChangeHandler);
 
     function signUp() {
-        const isEmailValid = emailBlurChangeHandler();
+        const isEmailValid = checkIdDuplicate();
         const isNameValid = nameInputChangeHandler();
         const isPasswordValid = passwordInputChangeHandler();
         const isPasswordCheckValid = newPasswordCheckInputChangeHandler();
