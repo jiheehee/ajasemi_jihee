@@ -581,9 +581,7 @@
 	    	document.querySelector("input[value='신규 배송지']").addEventListener("click", e => {
 	    		document.querySelector("input[name='receptionName']").readOnly = false;
     	    	document.querySelector("input[name='receptionPhoneNum1']").readOnly = false;
-    	    	document.querySelector("input[id='sample4_postcode']").readOnly = false;
     	    	document.querySelector("input[id='sample4_detailAddress']").readOnly = false;
-    	    	document.querySelector("input[id='sample4_roadAddress']").readOnly = false;
     	    	document.querySelector("input[value='우편번호 찾기']").hidden = false;
 	    	})
 	    <%}%>
@@ -878,7 +876,7 @@
        		}
        		
        		//필수로 입력되어야 하는 input태그 안에 공란이면 공란인 input태그로 focus되고 결제가 진행되지 않습니다.
-       		if(!receptionName || !receptionPhoneNum1 || !postcode || !roadAddress || detailAddress) {
+       		if(!receptionName || !receptionPhoneNum1 || !postcode || !roadAddress || !detailAddress) {
        			console.log(!receptionName + receptionName);
        			console.log(!receptionPhoneNum1 + receptionPhoneNum1);
        			console.log(!postcode + postcode);
@@ -981,7 +979,7 @@
             	console.log(data);
             	//data.next_redirect_pc_url의 문자열이 존재하면 if문에 빠지며 존재하지 않을경우 else문으로 빠집니다.
             	if (data.next_redirect_pc_url) {
-                    window.open(data.next_redirect_pc_url);
+                    window.location.href = data.next_redirect_pc_url;
                 } else {
                     console.error('next_redirect_pc_url not found in the response.');
                 }
