@@ -1,2 +1,3 @@
-![image](https://github.com/user-attachments/assets/40ad1718-9361-4e1e-b5cf-b48b577ef6c4)
+![아자아자파이팀 로고](https://github.com/user-attachments/assets/f9b87fc4-dbc3-4703-b7c9-1634106807dd)
+
 
