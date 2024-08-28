@@ -1,4 +1,4 @@
-<br>
+![image](https://github.com/user-attachments/assets/0f572b08-8deb-4f08-b982-15fbebb41a60)<br>
 <br>
 
 ![아자아자파이팀 로고](https://github.com/user-attachments/assets/f9b87fc4-dbc3-4703-b7c9-1634106807dd)
@@ -20,10 +20,25 @@ FAQ 게시판: 자주 묻는 질문에 대한 답변을 제공하는 게시판�
 Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게시판입니다.
 게시판: 사용자들이 소통할 수 있는 자유 게시판을 제공합니다.
 관리자 페이지: 관리자 전용 페이지에서 상품 관리, 주문 관리, 게시판 관리 등을 할 수 있습니다.
-
-
+<br>
+<br>
 
 ## 👀 서비스 화면
+
+### 메인화면
+- `카카오 소셜 로그인` 및 유저 회원가입/로그인
+<div>
+<img src="https://github.com/user-attachments/assets/d9be6ffc-8c30-4944-a431-14c71224840e" width="80%"/>
+</div>
+
+### 회원가입 & 로그인 & 로그아웃
+<div>
+<img src="https://github.com/user-attachments/assets/553b835b-0623-4217-9e38-9df089df2fc5" width="80%"/>
+</div>
+
+
+
+
 
 
 
