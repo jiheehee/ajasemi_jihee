@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/0f572b08-8deb-4f08-b982-15fbebb41a60)<br>
+<br>
 <br>
 
 ![아자아자파이팀 로고](https://github.com/user-attachments/assets/f9b87fc4-dbc3-4703-b7c9-1634106807dd)
