@@ -16,7 +16,8 @@
 <br>
 <h1>화장품 쇼핑몰 웹사이트</h1>
 이 프로젝트는 소비자와 사업자를 위한 화장품 쇼핑몰 웹사이트입니다. 사용자는 다양한 화장품을 탐색하고 구매할 수 있으며, 사업자는 상품과 주문을 관리할 수 있습니다.
-
+<br>
+<br>
 <br> 
 
 ### 주요 기능 
@@ -34,6 +35,23 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <br>
 <br>
 <br>
+
+### 개발 환경
+#### 사용 툴
+ Eclipse, SQL Developer 
+
+ #### 데이터베이스
+ ORACLE
+
+#### 언어
+Java, SQL, HTML, CSS, JavaScript, JSP
+
+#### 기술
+jQuery, JSON, Ajax
+
+#### 시스템
+Git, Tomcat
+
 
 ## 👀 서비스 화면
 
@@ -70,7 +88,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <img src="https://github.com/user-attachments/assets/11271ce6-c1c4-4e6b-889e-cc8e8ebc5f9c" width="40%"/>
 <img src="https://github.com/user-attachments/assets/53c809fc-1a20-4290-898b-c802433780a1" width="50%"/>
 </div>
-
+<br>
+<br>
+<br>
 
 ### 상품 목록
 - 지정된 카테고리에 해당하는 상품 목록 출력
@@ -79,6 +99,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <img src="https://github.com/user-attachments/assets/1497562e-5e58-4f11-83fa-3e3ff7151872" width="70%"/>
 <img src="https://github.com/user-attachments/assets/ecfa4061-558c-44a1-a5fa-2b97285a2f23" width="70%"/>
 </div>
+<br>
+<br>
+<br>
 
 
 ### 주문 및 결제
@@ -88,6 +111,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <img src="https://github.com/user-attachments/assets/5efa436a-93d0-49fc-b469-7626609f9cbe" width="70%"/>
 <img src="https://github.com/user-attachments/assets/9cb80e2f-22f5-4fcf-9284-672609054d07" width="70%"/>
 </div>
+<br>
+<br>
+<br>
 
 ### 장바구니/위시리스트
 - 장바구니에서 선택된 상품 수량 변경시 주문 금액도 자동으로 변경
@@ -97,6 +123,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <img src="https://github.com/user-attachments/assets/d872f55e-d5d1-4a5c-8a1e-6215ca572681" width="70%"/>
 <img src="https://github.com/user-attachments/assets/367afb97-a3e2-40b2-a8df-fab5160c398e" width="70%"/>
 </div>
+<br>
+<br>
+<br>
 
 ### 게시판(FAQ, Q&A, 공지사항)
 #### FAQ
