@@ -41,7 +41,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 - 메뉴/로고 클릭 시 해당 기능 실행
 - 로그인 하지 않고 회원 기능 실행시 로그인 화면으로 이동
 <div>
-<img src="C:\Users\MTU\AppData\Local\Temp\cac12552-240f-4653-80f8-80ab658f215e_aja gif.zip.15e\aja gif\크기작은 gif.gif"/>
+<img src="https://github.com/user-attachments/assets/7922d83e-067f-4a0b-a289-aaab02099600" width="80%"/>
+</div>
+<div>
 <img src="https://github.com/user-attachments/assets/d9be6ffc-8c30-4944-a431-14c71224840e" width="80%"/>
 </div>
 <br>
@@ -61,8 +63,9 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <br>
 
 ### 관리자 페이지
-- `상품 등록` 관리자가 상품을 등록하여 관리할 수 있습니다. 6
-- `배송/주문관리` 회원들의 배송/주문 현황을 파악할 수 있습니다.
+-  `상품/주문/회원/게시판 관리`
+- `상품 등록` 관리자가 상품을 등록하여 관리
+- `배송/주문관리` 회원들의 배송/주문 현황을 파악
 <div>
 <img src="https://github.com/user-attachments/assets/11271ce6-c1c4-4e6b-889e-cc8e8ebc5f9c" width="40%"/>
 <img src="https://github.com/user-attachments/assets/53c809fc-1a20-4290-898b-c802433780a1" width="50%"/>
@@ -78,17 +81,41 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 </div>
 
 
+### 주문 및 결제
+- 결제금액에 따라 유동적으로 변하는 `쿠폰/포인트` 적용
+- api를 사용한 배송지 입력 기능
+<div>
+<img src="https://github.com/user-attachments/assets/5efa436a-93d0-49fc-b469-7626609f9cbe" width="70%"/>
+<img src="https://github.com/user-attachments/assets/9cb80e2f-22f5-4fcf-9284-672609054d07" width="70%"/>
+</div>
+
+### 장바구니/위시리스트
+- 장바구니에서 선택된 상품 수량 변경시 주문 금액도 자동으로 변경
+- 장바구니/위시리스트에 담긴 상품 클릭시 해당 상품의 상세페이지로 이동
+- 장바구니/위시리스트 상품 추가/삭제 기능
+<div>
+<img src="https://github.com/user-attachments/assets/d872f55e-d5d1-4a5c-8a1e-6215ca572681" width="70%"/>
+<img src="https://github.com/user-attachments/assets/367afb97-a3e2-40b2-a8df-fab5160c398e" width="70%"/>
+</div>
+
+### 게시판(FAQ, Q&A, 공지사항)
+#### FAQ
+- `카테고리 필터링` 카테고리별 버튼을 클릭하여 특정 카테고리의 글만 출력 
+- `FAQ 제목 검색` 사용자가 입력한 검색어를 기반으로 FAQ 검색
+<div>
+<img src="https://github.com/user-attachments/assets/65bdb91c-63d1-48f4-bb3c-f0b8e41978bf" width="70%"/>
+<img src="https://github.com/user-attachments/assets/45dda465-6857-424d-bebc-c35e24b245be" width="70%"/>
+</div>
+<br>
+
+#### Q&A
+- `1대1 문의사항 페이지` 해당 회원이 남긴 게시글만 마이페이지 Q&A에 출력
+- 관리자 게시판에서 회원별 문의 확인 가능
+<div>
+<img src="https://github.com/user-attachments/assets/157c1b93-fd78-4df2-9cee-fbde5e1e92c3" width="70%"/>
+<img src="https://github.com/user-attachments/assets/f6b85db4-30ee-4984-822c-fe7f7f8b639b" width="70%"/>
+</div>
 
 <br>
 <br>
 <br>
-## ✨ 주요 기능
-
-- `회원가입 및 로그인`
-	- 사용자는 계정을 생성하고 로그인할 수 있습니다.
-  	- 사용자는 계정을 생성하고 로그인할 수 있습니다.
-	- 사용자는 계정을 생성하고 로그인할 수 있습니다.
-	
-- `상품 상세 페이지`
-	- 각 상품에 대한 상세 정보를 제공합니다.
-	- 각 상품에 대한 상세 정보를 제공합니다.
