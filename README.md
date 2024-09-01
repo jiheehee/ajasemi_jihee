@@ -36,26 +36,6 @@ Q&A 게시판: 사용자가 질문을 올리고 답변을 받을 수 있는 게�
 <br>
 <br>
 
-### 개발 환경
-#### 사용 툴
- Eclipse, SQL Developer 
-
- #### 데이터베이스
- ORACLE
-
-#### 언어
-Java, SQL, HTML, CSS, JavaScript, JSP
-
-#### 기술
-jQuery, JSON, Ajax
-
-#### 시스템
-Git, Tomcat
-<br>
-<br>
-<br> 
-<br>
-
 ## 👀 서비스 화면
 
 ### 메인화면
@@ -151,3 +131,38 @@ Git, Tomcat
 <br>
 <br>
 <br>
+
+## 🖥️ 개발 환경
+
+**Management Tool**
+- 형상 관리 : Git
+- 커뮤니케이션 : Notion
+- 디자인 : Figma, Illustrator
+
+**🌐 언어**
+Java, SQL, HTML, CSS, JavaScript, JSP
+
+**🔨 개발 도구**
+ - IDE : Eclipse, SQL Developer
+ - 서버 : Tomcat
+ 
+**🗂️ DB**
+ ORACLE
+
+**✨ 기술**
+jQuery, JSON, Ajax
+
+<br>
+<br> 
+<br>
+
+# 📂 기획 및 설계 산출물
+### [✨ ER Diagram]([https://www.erdcloud.com/d/p9ocstx53DrdNzupt](https://www.erdcloud.com/d/qrG6povgeePhaRyWJ))
+![Copy of realerd](https://github.com/user-attachments/assets/f59fc487-4a78-42e0-8ebd-b90c9bd5a0d0)
+
+<br>
+<br>
+<br> 
+<br>
+
+
